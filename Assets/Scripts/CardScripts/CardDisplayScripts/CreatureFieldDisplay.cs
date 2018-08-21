@@ -11,10 +11,10 @@ public class CreatureFieldDisplay : CardDisplay {
     [SerializeField] GameObject taunt, divine_shield, immune, poisonous, charge, rush, stealth, windfury, mega_windfury, lifesteal;
     Creature creature;
 
-    HashSet<CreatureMod> current_mods;
+    HashSet<Modifiers> current_mods;
 
     protected override void Awake() {
-        current_mods = new HashSet<CreatureMod>();
+        current_mods = new HashSet<Modifiers>();
         card = creature = GetComponent<Creature>();
     }
 
@@ -30,7 +30,7 @@ public class CreatureFieldDisplay : CardDisplay {
     }
 
     void UpdateModDisplay() {
-        foreach (CreatureMod mod in System.Enum.GetValues(typeof(CreatureMod))) {
+        foreach (Modifiers mod in System.Enum.GetValues(typeof(Modifiers))) {
             if (creature.mods.HasMod(mod)) {
                 if (!current_mods.Contains(mod)) {
                     DisplayMod(mod);
@@ -43,46 +43,46 @@ public class CreatureFieldDisplay : CardDisplay {
         }
     }
 
-    void ClearMod(CreatureMod mod) {
+    void ClearMod(Modifiers mod) {
         current_mods.Remove(mod);
         SetMod(mod, false);
     }
 
-    void DisplayMod(CreatureMod mod) {
+    void DisplayMod(Modifiers mod) {
         current_mods.Add(mod);
         SetMod(mod, true);
     }
 
-    void SetMod(CreatureMod mod, bool enabled) {
+    void SetMod(Modifiers mod, bool enabled) {
         switch (mod) {
-            case CreatureMod.charge:
+            case Modifiers.charge:
                 charge.SetActive(enabled);
                 break;
-            case CreatureMod.divine_shield:
+            case Modifiers.divine_shield:
                 divine_shield.SetActive(enabled);
                 break;
-            case CreatureMod.immune:
+            case Modifiers.immune:
                 immune.SetActive(enabled);
                 break;
-            case CreatureMod.lifesteal:
+            case Modifiers.lifesteal:
                 lifesteal.SetActive(enabled);
                 break;
-            case CreatureMod.mega_windfury:
+            case Modifiers.mega_windfury:
                 mega_windfury.SetActive(enabled);
                 break;
-            case CreatureMod.poisonous:
+            case Modifiers.poisonous:
                 poisonous.SetActive(enabled);
                 break;
-            case CreatureMod.rush:
+            case Modifiers.rush:
                 rush.SetActive(enabled);
                 break;
-            case CreatureMod.stealth:
+            case Modifiers.stealth:
                 stealth.SetActive(enabled);
                 break;
-            case CreatureMod.taunt:
+            case Modifiers.taunt:
                 taunt.SetActive(enabled);
                 break;
-            case CreatureMod.windfury:
+            case Modifiers.windfury:
                 windfury.SetActive(enabled);
                 break;
         }

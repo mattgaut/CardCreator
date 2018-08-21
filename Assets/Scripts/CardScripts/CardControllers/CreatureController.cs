@@ -53,7 +53,7 @@ public class CreatureController : CardController {
             }
         } else if (card.container == card.controller.hand) {
             if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {
-                if (creature.mods.HasMod(CreatureMod.battlecry) && creature.mods.battlecry_info.needs_target) {
+                if (creature.mods.HasMod(Modifiers.battlecry) && creature.mods.battlecry_info.needs_target) {
                     
                 }
                 card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));

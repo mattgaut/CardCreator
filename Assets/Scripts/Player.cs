@@ -157,7 +157,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public bool CanBeAttacked(ICombatant attacker) {
         foreach (Creature c in controller.field.cards) {
-            if (c.mods.HasMod(CreatureMod.taunt)) {
+            if (c.mods.HasMod(Modifiers.taunt)) {
                 return false;
             }
         }
