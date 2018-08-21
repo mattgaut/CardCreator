@@ -20,7 +20,7 @@ public class Creature : Card, ICombatant {
         get { return _mods; }
     }
 
-    public bool can_attack { get { return attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifiers.charge) || mods.HasMod(Modifiers.rush)); } }
+    public bool can_attack { get { return attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifier.charge) || mods.HasMod(Modifier.rush)); } }
     public int attacks_taken { get; private set; }
     public int attacks_per_turn { get { return NumberOfAttacksPerTurn(); } }
     public bool retaliate { get { return true; } }
@@ -28,8 +28,8 @@ public class Creature : Card, ICombatant {
 
     public void NoteAttack() {
         attacks_taken += 1;
-        if (mods.HasMod(Modifiers.stealth)) {
-            mods.RemoveMod(Modifiers.stealth);
+        if (mods.HasMod(Modifier.stealth)) {
+            mods.RemoveMod(Modifier.stealth);
         }
     }
     public void ResetAttacksTaken() {
@@ -49,8 +49,8 @@ public class Creature : Card, ICombatant {
         if (!can_attack) {
             return false;
         }
-        if (summoned_this_turn && !mods.HasMod(Modifiers.charge)) {
-            if (mods.HasMod(Modifiers.rush)) {
+        if (summoned_this_turn && !mods.HasMod(Modifier.charge)) {
+            if (mods.HasMod(Modifier.rush)) {
                 if (target.entity_type == EntityType.player) {
                     return false;
                 }
@@ -65,12 +65,12 @@ public class Creature : Card, ICombatant {
         if (container != controller.field) {
             return false;
         }
-        if (mods.HasMod(Modifiers.stealth)) {
+        if (mods.HasMod(Modifier.stealth)) {
             return false;
         }
-        if (!mods.HasMod(Modifiers.taunt)) {
+        if (!mods.HasMod(Modifier.taunt)) {
             foreach (Creature c in controller.field.cards) {
-                if (c != this && c.mods.HasMod(Modifiers.taunt)) {
+                if (c != this && c.mods.HasMod(Modifier.taunt)) {
                     return false;
                 }
             }
@@ -83,7 +83,7 @@ public class Creature : Card, ICombatant {
     }
 
     bool LocalCanBeTargeted(IEntity source) {
-        if (mods.HasMod(Modifiers.stealth) && source.controller != controller) {
+        if (mods.HasMod(Modifier.stealth) && source.controller != controller) {
             return false;
         }
         return true;
@@ -95,24 +95,24 @@ public class Creature : Card, ICombatant {
 
     public int DealDamage(IDamageable target, int damage) {
         int damage_dealt = target.TakeDamage(this, damage);
-        if (mods.HasMod(Modifiers.lifesteal)) {
+        if (mods.HasMod(Modifier.lifesteal)) {
             GameStateManager.instance.Heal(this, controller, damage_dealt);
         }
         return damage_dealt;
     }
 
     public int TakeDamage(IDamages source, int damage) {
-        if (mods.HasMod(Modifiers.immune)) {
+        if (mods.HasMod(Modifier.immune)) {
             return 0;
         }
-        if (mods.HasMod(Modifiers.divine_shield)) {
-            mods.RemoveMod(Modifiers.divine_shield);
+        if (mods.HasMod(Modifier.divine_shield)) {
+            mods.RemoveMod(Modifier.divine_shield);
             return 0;
         }
         current_health -= damage;
         if (source.entity_type == EntityType.card) {
             if ((source as Card).type == CardType.Creature) {
-                if ((source as Creature).mods.HasMod(Modifiers.poisonous)) {
+                if ((source as Creature).mods.HasMod(Modifier.poisonous)) {
                     if (damage > 0) {
                         poisioned = true;
                     }
@@ -134,10 +134,10 @@ public class Creature : Card, ICombatant {
     }
 
     int NumberOfAttacksPerTurn() {
-        if (mods.HasMod(Modifiers.mega_windfury)) {
+        if (mods.HasMod(Modifier.mega_windfury)) {
             return 4;
         }
-        if (mods.HasMod(Modifiers.windfury)) {
+        if (mods.HasMod(Modifier.windfury)) {
             return 2;
         }
         return 1;

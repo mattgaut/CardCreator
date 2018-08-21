@@ -60,12 +60,12 @@ public class GameStateManager : MonoBehaviour {
 
     public void PlayCreatureFromHand(Creature c, int position) {
         if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
-            if (c.mods.HasMod(Modifiers.overload)) {
+            if (c.mods.HasMod(Modifier.overload)) {
                 c.controller.LockManaCrystals(c.mods.overload_cost);
             }
             MoveCard(c, c.controller.stack);
             AddToStack(c);
-            if (c.mods.HasMod(Modifiers.battlecry)) {
+            if (c.mods.HasMod(Modifier.battlecry)) {
                 AddToStack(c.mods.battlecry_info);
             }
             ResolveStack();

@@ -2,47 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Modifiers { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload }
-
 [RequireComponent(typeof(Creature))]
-public class CreatureModifiers : MonoBehaviour {
-
-    [SerializeField] List<Modifiers> base_mods;
-    List<Modifiers> buffed_mods;
+public class CreatureModifiers : ModifierContainer {
 
     [SerializeField] Battlecry _battlecry_info;
-    [SerializeField] int _overload_cost;
-
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
     }
-    public int overload_cost {
-        get { return _overload_cost; }
-    }
 
-    public void Awake() {
-        buffed_mods = new List<Modifiers>();
+    protected override void OnAwake() {
         if (battlecry_info != null) {
             battlecry_info.SetSource(GetComponent<Creature>());
         }
-    }
-
-    public bool HasMod(Modifiers mod) {
-        return base_mods.Contains(mod) || buffed_mods.Contains(mod);
-    }
-    public void AddMod(Modifiers mod) {
-        buffed_mods.Add(mod);
-    }
-    public void RemoveMod(Modifiers mod) {
-        if (mod == Modifiers.divine_shield || mod == Modifiers.stealth) {
-            buffed_mods.RemoveAll(a => a == mod);
-            base_mods.RemoveAll(a => a == mod);
-        }
-        buffed_mods.Remove(mod);
-    }
-    public void RemoveAllMods() {
-        buffed_mods.Clear();
-        base_mods.Clear();
     }
 }
 
