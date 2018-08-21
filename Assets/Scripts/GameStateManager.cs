@@ -58,6 +58,18 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void PlaySpellFromHand(Spell spell) {
+        if (spell.controller.hand.ContainsCard(spell) && spell.controller.SpendMana(spell.mana_cost)) {
+            if (spell.mods.HasMod(Modifier.overload)) {
+                spell.controller.LockManaCrystals(spell.mods.overload_cost);
+            }
+            MoveCard(spell, spell.controller.stack);
+            AddToStack(spell);
+            ResolveStack();
+            MoveCard(spell, spell.controller.graveyard);
+        }
+    }
+
     public void PlayCreatureFromHand(Creature c, int position) {
         if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
             if (c.mods.HasMod(Modifier.overload)) {

@@ -12,7 +12,7 @@ public class SpellController : CardController {
 
     public override void OnClick() {
         if (!spell.needs_target && card.container == card.controller.hand) {
-            card.controller.command_manager.AddCommand(new PlayCardCommand(card));
+            card.controller.command_manager.AddCommand(new PlaySpellCommand(spell));
         }
     }
     public override void OnHoldDrag(GameObject dragged_to, Vector3 position_dragged_to) {

@@ -69,6 +69,21 @@ public class PlayCardCommand : Command {
     }
 }
 
+public class PlaySpellCommand : Command {
+    Spell to_play;
+    public PlaySpellCommand(Spell c) {
+        to_play = c;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.PlaySpellFromHand(to_play);
+    }
+
+    public override bool ValidateCommand() {
+        return to_play.controller.current_mana >= to_play.mana_cost;
+    }
+}
+
 public class PlayCreatureCommand : Command {
     Creature to_play;
     int position;
@@ -96,7 +111,7 @@ public class PlayTargetedSpellCommand : PlayCardCommand {
 
     public override void ResolveCommand() {
         to_play.SetTarget(target);
-        GameStateManager.instance.PlayCardFromHand(to_play);
+        GameStateManager.instance.PlaySpellFromHand(to_play);
     }
 
     public override bool ValidateCommand() {
