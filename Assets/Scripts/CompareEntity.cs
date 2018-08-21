@@ -56,13 +56,12 @@ public class CompareEntity {
         if (entity == null) {
             return false;
         }
-        if (match_card_type && card_types.Contains(entity.card.type)) {
+        if (match_card_type && !card_types.Contains(entity.card.type)) {
             return false;
         }
         if (check_mana_cost && !NumberInRange(entity.card.mana_cost, mana_cost, mana_cost_range)) {
             return false;
         }
-
         Creature creature = entity.card as Creature;
         if (check_attack && (creature == null || !NumberInRange(creature.attack, attack, attack_range))) {
             return false;
@@ -70,7 +69,6 @@ public class CompareEntity {
         if (check_health && (creature == null || !NumberInRange(creature.current_health, health, health_range))) {
             return false;
         }
-
         return true;
     }
 
@@ -78,7 +76,6 @@ public class CompareEntity {
         if (r == Range.Equal) {
             return check == against;
         } else if (r == Range.Less) {
-            Debug.Log(check + " < " + against + " : " + (check < against));
             return check < against;
         } else if (r == Range.LessOrEqual) {
             return check <= against;
