@@ -112,7 +112,7 @@ public class PlayTagetedCreatureCommand : Command {
     }
 
     public override void ResolveCommand() {
-        GameStateManager.instance.PlayCreatureFromHand(to_play, position);
+        GameStateManager.instance.PlayCreatureWithTargetFromHand(to_play, position, target);
     }
 
     public override bool ValidateCommand() {

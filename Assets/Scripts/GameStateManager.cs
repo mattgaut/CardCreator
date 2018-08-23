@@ -71,6 +71,11 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void PlayCreatureFromHand(Creature c, int position) {
+        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target) {
+            if (TargetExists(c, c.mods.battlecry_info)) {
+                return;
+            }
+        }
         if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
             if (c.mods.HasMod(Modifier.overload)) {
                 c.controller.LockManaCrystals(c.mods.overload_cost);
@@ -83,6 +88,38 @@ public class GameStateManager : MonoBehaviour {
             ResolveStack();
             MoveCard(c, c.controller.field, position);
         
+            c.NoteSummon();
+            foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
+                AddToStack(ta);
+            }
+            ResolveStack();
+        }
+    }
+
+    public void PlayCreatureWithTargetFromHand(Creature c, int position, IEntity target) {
+        if (c.mods.battlecry_info.needs_target) {
+            if (!target.CanBeTargeted(c)) {
+                return;
+            }
+            if (!c.mods.battlecry_info.SetTarget(target)) {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
+            if (c.mods.HasMod(Modifier.overload)) {
+                c.controller.LockManaCrystals(c.mods.overload_cost);
+            }
+            MoveCard(c, c.controller.stack);
+            AddToStack(c);
+            if (c.mods.HasMod(Modifier.battlecry)) {
+                AddToStack(c.mods.battlecry_info);
+            }
+            ResolveStack();
+            MoveCard(c, c.controller.field, position);
+
             c.NoteSummon();
             foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
                 AddToStack(ta);
