@@ -8,6 +8,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard {
     [SerializeField] int _mana_cost;
     [SerializeField] string _card_name, _card_text;
     [SerializeField] Sprite _art;
+    [SerializeField] ModifierContainer _mods;
 
     public int mana_cost {
         get { return _mana_cost; }
@@ -20,6 +21,10 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard {
     }
     public Sprite art {
         get { return _art; }
+    }
+
+    public ModifierContainer mods {
+        get { return _mods; }
     }
 
     public EntityType entity_type { get { return EntityType.card; } }

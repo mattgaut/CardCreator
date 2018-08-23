@@ -6,8 +6,6 @@ public class Creature : Card, ICombatant {
 
     [SerializeField] int _attack, _max_health;
 
-    [SerializeField] CreatureModifiers _mods;
-
     public override CardType type { get { return CardType.Creature; } }
 
     public int attack { get { return _attack; } }
@@ -15,10 +13,6 @@ public class Creature : Card, ICombatant {
     public int current_health { get; private set; }
     public bool poisioned { get; private set; }
     public bool dead { get { return current_health <= 0 || poisioned; } }
-
-    public CreatureModifiers mods {
-        get { return _mods; }
-    }
 
     public bool can_attack { get { return attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifier.charge) || mods.HasMod(Modifier.rush)); } }
     public int attacks_taken { get; private set; }

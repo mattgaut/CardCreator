@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(CreatureModifiers))]
-public class CreatureModifiersEditor : Editor {
+[CustomEditor(typeof(ModifierContainer))]
+public class ModifierContainerEditor : Editor {
     Modifier mod_mask;
     public override void OnInspectorGUI() {
 

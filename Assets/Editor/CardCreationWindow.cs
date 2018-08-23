@@ -88,7 +88,7 @@ public class CardCreationWindow : EditorWindow {
         if (type == CardType.Creature) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/CreatureTemplate.prefab", typeof(GameObject)));
             ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
-            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<CreatureModifiers>());
+            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Creature>());
         } else if (type == CardType.Spell) {
 
