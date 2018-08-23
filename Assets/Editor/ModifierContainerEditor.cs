@@ -7,8 +7,6 @@ using UnityEngine;
 public class ModifierContainerEditor : Editor {
     Modifier mod_mask;
     public override void OnInspectorGUI() {
-
-
         SerializedProperty mod_property = serializedObject.FindProperty("base_mods");
         Modifier mod_mask = SetModMask(mod_property);
         mod_mask = (Modifier)EditorGUILayout.EnumMaskField("Mods: ", mod_mask);

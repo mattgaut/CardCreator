@@ -8,7 +8,7 @@ public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windf
 public class ModifierContainer : MonoBehaviour {
 
     [SerializeField] protected List<Modifier> base_mods;
-    [SerializeField] protected List<Modifier> unavailable_mods;
+    protected List<Modifier> unavailable_mods;
     protected List<Modifier> buffed_mods;
 
     [SerializeField] Battlecry _battlecry_info;
