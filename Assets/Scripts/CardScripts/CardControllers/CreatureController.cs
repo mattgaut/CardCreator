@@ -21,13 +21,6 @@ public class CreatureController : CardController {
 
     protected override void Update() {
         base.Update();
-        if (selecting_targeting) {
-            InterfaceManager.DrawTargetingArrow(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            if (Input.GetMouseButtonDown(1)) {
-                InterfaceManager.RemoveTargetingArrow();
-                selecting_targeting = false;
-            }
-        }
     }
 
     protected override void UpdateContainer() {
@@ -57,13 +50,6 @@ public class CreatureController : CardController {
         }
     }
     public override void OnFinishDrag(GameObject dragged_to, Vector3 position_dragged_to) {
-        if (selecting_targeting) {
-            IEntity target = dragged_to.GetComponent<IEntity>();
-            if (target != null) {
-                card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position_saved, target));
-            }
-            InterfaceManager.RemoveTargetingArrow();
-        }
         if (card.container == card.controller.field) {
             if (dragged_to != null) {
                 ICombatant c = dragged_to.GetComponent<ICombatant>();
@@ -73,9 +59,8 @@ public class CreatureController : CardController {
             }
         } else if (card.container == card.controller.hand) {
             if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {
-                if (creature.mods.HasMod(Modifier.battlecry) && creature.mods.battlecry_info.needs_target) {
-                    selecting_targeting = true;
-                    position_saved = FindPositionInField(position_dragged_to);
+                if (creature.mods.HasMod(Modifier.battlecry) && creature.mods.battlecry_info.needs_target && GameStateManager.instance.TargetExists(creature, creature.mods.battlecry_info)) {
+                    StartCoroutine(TargetingCoroutine(FindPositionInField(position_dragged_to)));
                 } else {
                     card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));
                 }
@@ -116,5 +101,34 @@ public class CreatureController : CardController {
         base.HideCard();
         field_box.enabled = false;
         creature_field_display.HideCard();
+    }
+
+    IEnumerator TargetingCoroutine(int position) {
+        while (!Input.GetMouseButtonDown(1)) {
+            yield return null;
+            InterfaceManager.DrawTargetingArrow(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (Input.GetMouseButtonDown(0)) {
+                GameObject hover_object = OverObject();
+                if (hover_object != null) {
+                    IEntity target = hover_object.GetComponent<IEntity>();
+                    if (target != null) {
+                        card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position, target));
+                    }
+                }
+                break;
+            }
+        }
+        InterfaceManager.RemoveTargetingArrow();
+    }
+
+    GameObject OverObject() {
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit floorHit;
+        Physics.Raycast(camRay, out floorHit, 20f);
+        if (floorHit.collider) {
+            return floorHit.collider.gameObject;
+        } else {
+            return null;
+        }
     }
 }
