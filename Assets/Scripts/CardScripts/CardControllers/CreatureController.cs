@@ -23,6 +23,10 @@ public class CreatureController : CardController {
         base.Update();
         if (selecting_targeting) {
             InterfaceManager.DrawTargetingArrow(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (Input.GetMouseButtonDown(1)) {
+                InterfaceManager.RemoveTargetingArrow();
+                selecting_targeting = false;
+            }
         }
     }
 
@@ -58,6 +62,7 @@ public class CreatureController : CardController {
             if (target != null) {
                 card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position_saved, target));
             }
+            InterfaceManager.RemoveTargetingArrow();
         }
         if (card.container == card.controller.field) {
             if (dragged_to != null) {
