@@ -44,6 +44,7 @@ public class ModifierContainer : MonoBehaviour {
 
     private void Awake() {
         buffed_mods = new List<Modifier>();
+        unavailable_mods = new List<Modifier>();
         foreach (Modifier mod in unavailable_mods) {
             RemoveMod(mod);
         }

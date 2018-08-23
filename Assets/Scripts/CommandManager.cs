@@ -101,6 +101,26 @@ public class PlayCreatureCommand : Command {
     }
 }
 
+public class PlayTagetedCreatureCommand : Command {
+    Creature to_play;
+    int position;
+    IEntity target;
+    public PlayTagetedCreatureCommand(Creature c, int position, IEntity target) {
+        to_play = c;
+        this.position = position;
+        this.target = target;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.PlayCreatureFromHand(to_play, position);
+    }
+
+    public override bool ValidateCommand() {
+        return to_play.controller.current_mana >= to_play.mana_cost && !to_play.controller.field.full 
+            && to_play.mods.battlecry_info.CanTarget(target) && target.CanBeTargeted(to_play);
+    }
+}
+
 public class PlayTargetedSpellCommand : PlayCardCommand {
     Spell to_play;
     IEntity target;
