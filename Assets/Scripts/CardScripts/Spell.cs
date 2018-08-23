@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spell : Card, ITargets {
-    [SerializeField] ModifierContainer _mods;
     [SerializeField] List<UntargetedEffect> spell_effects;
     [SerializeField] List<TargetedEffect> targeted_effects;
     [SerializeField] CompareEntity _targeting_comparer;
@@ -22,10 +21,6 @@ public class Spell : Card, ITargets {
         get {
             return _targeting_comparer;
         }
-    }
-
-    public ModifierContainer mods {
-        get { return _mods; }
     }
 
     bool NeedsTarget() {
