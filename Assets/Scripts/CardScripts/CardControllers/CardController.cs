@@ -18,7 +18,7 @@ public class CardController : MonoBehaviour, IClickable {
         card = GetComponent<Card>();
     }
 
-    protected void Update() {
+    protected virtual void Update() {
         UpdateContainer();
     }
 

@@ -11,9 +11,19 @@ public class CreatureController : CardController {
 
     float field_height;
 
+    bool selecting_targeting;
+    int position_saved;
+
     protected override void Awake() {
         base.Awake();
         creature = GetComponent<Creature>();
+    }
+
+    protected override void Update() {
+        base.Update();
+        if (selecting_targeting) {
+            InterfaceManager.DrawTargetingArrow(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
     }
 
     protected override void UpdateContainer() {
@@ -27,7 +37,6 @@ public class CreatureController : CardController {
         }
     }
     public override void OnClick() {
-        //card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, 0));
     }
     public override void OnMouseDown() {
         if (card.container == card.controller.hand) {
@@ -44,6 +53,12 @@ public class CreatureController : CardController {
         }
     }
     public override void OnFinishDrag(GameObject dragged_to, Vector3 position_dragged_to) {
+        if (selecting_targeting) {
+            IEntity target = dragged_to.GetComponent<IEntity>();
+            if (target != null) {
+                card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position_saved, target));
+            }
+        }
         if (card.container == card.controller.field) {
             if (dragged_to != null) {
                 ICombatant c = dragged_to.GetComponent<ICombatant>();
@@ -54,9 +69,11 @@ public class CreatureController : CardController {
         } else if (card.container == card.controller.hand) {
             if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {
                 if (creature.mods.HasMod(Modifier.battlecry) && creature.mods.battlecry_info.needs_target) {
-                    
+                    selecting_targeting = true;
+                    position_saved = FindPositionInField(position_dragged_to);
+                } else {
+                    card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));
                 }
-                card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));
             }
         }
     }
