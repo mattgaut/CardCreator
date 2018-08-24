@@ -155,7 +155,7 @@ public class CardCreationWindow : EditorWindow {
         if (GUILayout.Button("Save To Prefab")) {
             SaveCard();
 
-            string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", "Card.prefab", "prefab", "Save Card File to Prefab", "Assets/Cards");
+            string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", card_name + ".prefab", "prefab", "Save Card File to Prefab", "Assets/Cards");
             if (save_path.Length != 0) {
                 PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
             }
