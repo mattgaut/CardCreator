@@ -5,8 +5,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(AbilityHolder))]
 public abstract class Card : MonoBehaviour, IStackEffect, ICard {
+
+    public enum Class { neutral, druid, hunter, mage, palladin, priest, rouge, shaman, warlock, warrior }
+
     [SerializeField] int _mana_cost;
     [SerializeField] string _card_name, _card_text;
+    [SerializeField] Class card_class;
     [SerializeField] Sprite _art;
     [SerializeField] ModifierContainer _mods;
 
