@@ -20,6 +20,7 @@ public class CardCreationWindow : EditorWindow {
     public CardType card_type { get; private set; }
 
     public string card_name { get; private set; }
+    public Card.Class card_class { get; private set; }
     public string card_text { get; private set; }
     public int card_cost { get; private set; }
     public int card_attack { get; private set; }
@@ -119,6 +120,9 @@ public class CardCreationWindow : EditorWindow {
 
         // Card Name
         card_name = EditorGUILayout.TextField("Name: ", card_name);
+
+        // Card Class
+        card_class = (Card.Class)EditorGUILayout.EnumPopup("Class: ", card_class);
 
         // Card Description
         if (GUILayout.Button(enable_rich_text ? "Disable Rich Text" : "Enable Rich Text")) {
@@ -229,6 +233,7 @@ public class CardCreationWindow : EditorWindow {
 
     void SaveCard() {
         card_object.FindProperty("_card_name").stringValue = card_name;
+        card_object.FindProperty("_card_class").enumValueIndex = (int)card_class;
         card_object.FindProperty("_card_text").stringValue = card_text;
         card_object.FindProperty("_mana_cost").intValue = card_cost;
         card_object.FindProperty("_art").objectReferenceValue = card_art;
