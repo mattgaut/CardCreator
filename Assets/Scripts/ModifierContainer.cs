@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload }
+public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload, spellpower }
 
 [RequireComponent(typeof(Card))]
 public class ModifierContainer : MonoBehaviour {
@@ -13,12 +13,16 @@ public class ModifierContainer : MonoBehaviour {
 
     [SerializeField] Battlecry _battlecry_info;
     [SerializeField] protected int _overload_cost;
+    [SerializeField] protected int _spellpower_amount;
 
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
     }
     public int overload_cost {
         get { return _overload_cost; }
+    }
+    public int spellpower_amount {
+        get { return _spellpower_amount; }
     }
 
     public bool HasMod(Modifier mod) {
