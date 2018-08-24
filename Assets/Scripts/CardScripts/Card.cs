@@ -10,7 +10,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard {
 
     [SerializeField] int _mana_cost;
     [SerializeField] string _card_name, _card_text;
-    [SerializeField] Class card_class;
+    [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
     [SerializeField] ModifierContainer _mods;
 
@@ -19,6 +19,9 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard {
     }
     public string card_name {
         get { return _card_name; }
+    }
+    public Class card_class {
+        get { return _card_class; }
     }
     public string card_text {
         get { return _card_text; }
