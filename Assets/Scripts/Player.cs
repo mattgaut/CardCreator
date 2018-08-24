@@ -29,6 +29,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public int max_mana {
         get; private set;
     }
+    public bool frozen { get; private set; }
 
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets;
     public CardContainer deck { get { return _deck; } }
@@ -65,6 +66,15 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
         command_manager = GetComponent<CommandManager>();
         current_health = max_health;
+    }
+
+    public void NoteBeginTurn() {
+        AdvanceLockedMana();
+        ResetAttacksTaken();
+        AddOneMaxMana();
+        FillMana();
+
+        frozen = false;
     }
 
     public void AdvanceLockedMana() {
@@ -162,6 +172,10 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
             }
         }
         return true;
+    }
+    
+    public void Freeze() {
+        frozen = true;
     }
 
     public int TakeDamage(IDamages source, int damage) {

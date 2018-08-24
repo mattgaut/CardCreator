@@ -26,10 +26,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void BeginTurn(Player p) {
-        p.AdvanceLockedMana();
-        p.ResetAttacksTaken();
-        p.AddOneMaxMana();
-        p.FillMana();
+        p.NoteBeginTurn();
 
         if (p.deck.count > 0) {
             DrawCard(p);

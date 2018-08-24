@@ -57,6 +57,7 @@ public interface IClickable {
 public interface ICombatant : IDamageable, IDamages, IEntity {
     bool CanAttack(ICombatant target);
     bool CanBeAttacked(ICombatant attacker);
+    void Freeze();
     void NoteAttack();
 
     int attacks_taken {
@@ -68,6 +69,10 @@ public interface ICombatant : IDamageable, IDamages, IEntity {
 
     bool retaliate {
         get; 
+    }
+
+    bool frozen {
+        get;
     }
 
     int attack {

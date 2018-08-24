@@ -14,11 +14,13 @@ public class Creature : Card, ICombatant {
     public bool poisioned { get; private set; }
     public bool dead { get { return current_health <= 0 || poisioned; } }
 
-    public bool can_attack { get { return attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifier.charge) || mods.HasMod(Modifier.rush)); } }
+    public bool can_attack { get { return !frozen && attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifier.charge) || mods.HasMod(Modifier.rush)); } }
     public int attacks_taken { get; private set; }
     public int attacks_per_turn { get { return NumberOfAttacksPerTurn(); } }
     public bool retaliate { get { return true; } }
     public bool summoned_this_turn { get; private set; }
+
+    public bool frozen { get; private set; }
 
     public void NoteAttack() {
         attacks_taken += 1;
@@ -36,6 +38,10 @@ public class Creature : Card, ICombatant {
     public void NoteBeginTurn() {
         ResetAttacksTaken();
         summoned_this_turn = false;
+        frozen = false;
+    }
+    public void Freeze() {
+        frozen = true;
     }
 
 
