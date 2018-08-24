@@ -45,6 +45,13 @@ public class ModifierContainerEditor : Editor {
         } else {
             overload_property.intValue = 0;
         }
+
+        SerializedProperty spellpower_amount = serializedObject.FindProperty("_spellpower_amount");
+        if (HasMod(Modifier.spellpower, (int)mod_mask)) {
+            spellpower_amount.intValue = EditorGUILayout.IntField("Spellpower Amount: ", spellpower_amount.intValue);
+        } else {
+            spellpower_amount.intValue = 0;
+        }
         EditorGUI.indentLevel -= 1;
 
         serializedObject.ApplyModifiedProperties();
