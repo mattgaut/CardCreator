@@ -23,15 +23,6 @@ public class Spell : Card, ITargets {
         }
     }
 
-    bool NeedsTarget() {
-        foreach (TargetedEffect te in targeted_effects) {
-            if (!te.has_target) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public bool CanTarget(IEntity target) {
         return targeting_comparer.CompareTo(target, this);
     }
@@ -52,5 +43,18 @@ public class Spell : Card, ITargets {
         for (int i = 0; i < spell_effects.Count; i++) {
             spell_effects[i].Resolve(this);
         }
+    }
+
+    public override int DealDamage(IDamageable target, int damage) {
+        return base.DealDamage(target, mods.HasMod(Modifier.spellpower) ? damage + mods.spellpower_amount : damage);
+    }
+
+    bool NeedsTarget() {
+        foreach (TargetedEffect te in targeted_effects) {
+            if (!te.has_target) {
+                return true;
+            }
+        }
+        return false;
     }
 }
