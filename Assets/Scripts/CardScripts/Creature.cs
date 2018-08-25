@@ -12,7 +12,8 @@ public class Creature : Card, ICombatant {
     public int max_health { get { return _max_health; } }
     public int current_health { get; private set; }
     public bool poisioned { get; private set; }
-    public bool dead { get { return current_health <= 0 || poisioned; } }
+    public bool destroyed { get; private set; }
+    public bool dead { get { return current_health <= 0 || poisioned || destroyed; } }
 
     public bool can_attack { get { return !frozen && attacks_taken < attacks_per_turn && attack > 0 && (!summoned_this_turn || mods.HasMod(Modifier.charge) || mods.HasMod(Modifier.rush)); } }
     public int attacks_taken { get; private set; }
@@ -34,6 +35,8 @@ public class Creature : Card, ICombatant {
     public void NoteSummon() {
         summoned_this_turn = true;
         poisioned = false;
+        destroyed = false;
+        frozen = false;
     }
     public void NoteBeginTurn() {
         ResetAttacksTaken();
@@ -123,6 +126,10 @@ public class Creature : Card, ICombatant {
         }
 
         return current_health - old;
+    }
+
+    public void Destroy() {
+        destroyed = true;
     }
 
     int NumberOfAttacksPerTurn() {
