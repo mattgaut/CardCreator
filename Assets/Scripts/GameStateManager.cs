@@ -34,11 +34,17 @@ public class GameStateManager : MonoBehaviour {
         foreach (Creature c in p.field.cards) {
             c.NoteBeginTurn();
         }
-    }
+    }   
 
     public void DrawCard(Player p) {
         if (!p.hand.full) {
             p.hand.AddCard(p.deck.GetNext());
+        }
+    }
+
+    public void DrawCard(Player p, int amount) {
+        for (int i = 0; i < amount; i++) {
+            DrawCard(p);
         }
     }
 
