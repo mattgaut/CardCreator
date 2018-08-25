@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AbilityHolder))]
-public abstract class Card : MonoBehaviour, IStackEffect, ICard {
+public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 
     public enum Class { neutral, druid, hunter, mage, palladin, priest, rouge, shaman, warlock, warrior }
 
@@ -67,6 +67,14 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard {
 
     public virtual bool CanBeTargeted(IEntity source) {
         return card.container.visible && !card.container.hidden_to_opponent;
+    }
+
+    public virtual int DealDamage(IDamageable target, int damage) {
+        int damage_dealt = target.TakeDamage(this, damage);
+        if (mods.HasMod(Modifier.lifesteal)) {
+            controller.Heal(controller, damage_dealt);
+        }
+        return damage_dealt;
     }
 }
 

@@ -93,14 +93,6 @@ public class Creature : Card, ICombatant {
         current_health = max_health;
     }
 
-    public int DealDamage(IDamageable target, int damage) {
-        int damage_dealt = target.TakeDamage(this, damage);
-        if (mods.HasMod(Modifier.lifesteal)) {
-            GameStateManager.instance.Heal(this, controller, damage_dealt);
-        }
-        return damage_dealt;
-    }
-
     public int TakeDamage(IDamages source, int damage) {
         if (mods.HasMod(Modifier.immune)) {
             return 0;

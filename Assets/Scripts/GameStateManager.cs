@@ -140,10 +140,6 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
     }
 
-    public int Heal(IEntity source, IHealth target, int healing) {
-        return target.Heal(source, healing);
-    }
-
     void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
     }
