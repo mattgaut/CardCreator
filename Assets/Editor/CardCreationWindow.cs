@@ -21,6 +21,7 @@ public class CardCreationWindow : EditorWindow {
 
     public string card_name { get; private set; }
     public Card.Class card_class { get; private set; }
+    public Creature.CreatureType card_creature_type { get; private set; }
     public string card_text { get; private set; }
     public int card_cost { get; private set; }
     public int card_attack { get; private set; }
@@ -75,6 +76,9 @@ public class CardCreationWindow : EditorWindow {
     }
 
     void MakeCreatue() {
+        // Card Creature Type
+        card_creature_type = (Creature.CreatureType)EditorGUILayout.EnumPopup("Creature Type: ", card_creature_type);
+
         // Card Statline
         card_attack = EditorGUILayout.IntField("Attack: ", card_attack);
         card_health = EditorGUILayout.IntField("Health: ", card_health);
