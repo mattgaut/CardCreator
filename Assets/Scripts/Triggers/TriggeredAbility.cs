@@ -10,7 +10,7 @@ public abstract class TriggeredAbility : IStackEffect {
     protected Card source;
 
     [SerializeField] List<UntargetedEffect> effects;
-    [SerializeField] List<Zone> subscribed_zones;
+    [SerializeField] List<Zone> active_zones;
 
     public abstract TriggerType type { get; }
 
@@ -31,7 +31,7 @@ public abstract class TriggeredAbility : IStackEffect {
     }
 
     public bool InZone(Zone z) {
-        return subscribed_zones.Contains(z);
+        return active_zones.Contains(z);
     }
 }
 
