@@ -235,11 +235,11 @@ public class CardCreationWindow : EditorWindow {
         card_object.FindProperty("_card_name").stringValue = card_name;
         card_object.FindProperty("_card_class").enumValueIndex = (int)card_class;
         card_object.FindProperty("_card_text").stringValue = card_text;
-        card_object.FindProperty("_mana_cost").intValue = card_cost;
+        card_object.FindProperty("_mana_cost").FindPropertyRelative("_base_value").intValue = card_cost;
         card_object.FindProperty("_art").objectReferenceValue = card_art;
         if (card_type == CardType.Creature) {
-            card_object.FindProperty("_attack").intValue = card_attack;
-            card_object.FindProperty("_max_health").intValue = card_health;
+            card_object.FindProperty("_attack").FindPropertyRelative("_base_value").intValue = card_attack;
+            card_object.FindProperty("_max_health").FindPropertyRelative("_base_value").intValue = card_health;
         }
 
         card_object.ApplyModifiedProperties();
