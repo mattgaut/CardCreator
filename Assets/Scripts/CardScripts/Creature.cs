@@ -6,14 +6,14 @@ public class Creature : Card, ICombatant {
 
     public enum CreatureType { none, beast, mech, dragon }
 
-    [SerializeField] int _attack, _max_health;
+    [SerializeField] Stat _attack, _max_health;
     [SerializeField] CreatureType _creature_type;
 
     public override CardType type { get { return CardType.Creature; } }
     public CreatureType creature_type { get { return _creature_type; } }
 
-    public int attack { get { return _attack; } }
-    public int max_health { get { return _max_health; } }
+    public Stat attack { get { return _attack; } }
+    public Stat max_health { get { return _max_health; } }
     public int current_health { get; private set; }
     public bool poisioned { get; private set; }
     public bool destroyed { get; private set; }

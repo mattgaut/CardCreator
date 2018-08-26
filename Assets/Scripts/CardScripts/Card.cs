@@ -8,13 +8,13 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 
     public enum Class { neutral, druid, hunter, mage, palladin, priest, rouge, shaman, warlock, warrior }
 
-    [SerializeField] int _mana_cost;
+    [SerializeField] Stat _mana_cost;
     [SerializeField] string _card_name, _card_text;
     [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
     [SerializeField] ModifierContainer _mods;
 
-    public int mana_cost {
+    public Stat mana_cost {
         get { return _mana_cost; }
     }
     public string card_name {

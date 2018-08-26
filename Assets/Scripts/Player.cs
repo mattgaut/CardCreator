@@ -8,9 +8,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         get; private set;
     }
 
-
-    [SerializeField] int _max_health;
-    public int max_health {
+    public Stat max_health {
         get { return _max_health; }
     }
     public int current_health {
@@ -31,7 +29,6 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     }
     public bool frozen { get; private set; }
 
-    [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets;
     public CardContainer deck { get { return _deck; } }
     public CardContainer hand { get { return _hand; } }
     public CardContainer secrets { get { return _secrets; } }
@@ -49,11 +46,17 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public bool retaliate { get { return false; } }
 
-    public int attack { get { return 0; } }
+    public Stat attack { get { return _attack; } }
 
     public Player player {
         get { return this; }
     }
+
+    Stat _attack;
+
+    [SerializeField] Stat _max_health;
+    [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets;
+
 
     public void Awake() {
         deck.SetController(this);
@@ -66,6 +69,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
         command_manager = GetComponent<CommandManager>();
         current_health = max_health;
+
+        _attack = new Stat(0);
     }
 
     public void NoteBeginTurn() {

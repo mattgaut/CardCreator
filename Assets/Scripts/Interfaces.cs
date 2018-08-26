@@ -30,7 +30,7 @@ public interface IHealth {
     int current_health {
         get;
     }
-    int max_health {
+    Stat max_health {
         get;
     }
     int Heal(IEntity source, int to_heal);
@@ -75,7 +75,7 @@ public interface ICombatant : IDamageable, IDamages, IEntity {
         get;
     }
 
-    int attack {
+    Stat attack {
         get;
     }
 }
