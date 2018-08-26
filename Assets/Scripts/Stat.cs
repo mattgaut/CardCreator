@@ -6,8 +6,17 @@ using UnityEngine;
 public class Stat {
 
     [SerializeField] int _base_value;
+    [SerializeField] bool is_zero_minimum;
 
-    public int value { get { return use_force_value ? force_value : base_value + buff_value; } }
+    public int value {
+        get {
+            if (is_zero_minimum) {
+                return System.Math.Max(use_force_value ? force_value : base_value + buff_value, 0);
+            } else {
+                return use_force_value ? force_value : base_value + buff_value;
+            }
+        }
+    }
     public int base_value { get { return _base_value; } }
 
     protected int force_value;
