@@ -10,20 +10,20 @@ public class Stat {
     public int value { get { return base_value + buff_value; } }
     public int base_value { get { return use_force_value ? force_value : base_value + buff_value; } }
 
-    int force_value;
-    bool use_force_value;
+    protected int force_value;
+    protected bool use_force_value;
 
-    int buff_value;
+    protected int buff_value;
 
     public Stat(int base_value) {
         _base_value = base_value;
     }
 
-    public void ApplyBuff(int buff_value) {
+    public virtual void ApplyBuff(int buff_value) {
         this.buff_value += buff_value;
     }
 
-    public void RemoveBuff(int buff_value) {
+    public virtual void RemoveBuff(int buff_value) {
         this.buff_value -= buff_value;
     }
 
@@ -44,5 +44,36 @@ public class Stat {
 
     public static implicit operator int(Stat s){
         return s.value;
+    }
+}
+
+public class ResourceStat : Stat {
+
+    public int current_value {
+        get { return _current_value; }
+        set {
+            _current_value = value;
+            if (_current_value > this.value) {
+                _current_value = this.value;
+            }
+        }
+    }
+
+    int _current_value;
+
+    public ResourceStat(int base_value) : base(base_value) {
+        current_value = base_value;
+    }
+
+    public override void ApplyBuff(int buff_value) {
+        base.ApplyBuff(buff_value);
+        current_value += buff_value;
+    }
+
+    public override void RemoveBuff(int buff_value) {
+        this.buff_value -= buff_value;
+        if (current_value > value) {
+            current_value = value;
+        }
     }
 }
