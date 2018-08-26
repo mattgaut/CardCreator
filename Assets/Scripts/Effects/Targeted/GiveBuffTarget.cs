@@ -11,7 +11,7 @@ public class GiveBuffTarget : TargetedEffect {
         Creature creature = target as Creature;
         if (creature != null) {
             creature.attack.ApplyBuff(attack_buff_amount);
-            creature.max_health.ApplyBuff(health_buff_amount);
+            creature.health.ApplyBuff(health_buff_amount);
         }
     }
 }

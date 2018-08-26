@@ -8,11 +8,12 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         get; private set;
     }
 
-    public Stat max_health {
-        get { return _max_health; }
+    public ResourceStat health {
+        get { return _health; }
     }
     public int current_health {
-        get; private set;
+        get { return health.current_value; }
+        private set { health.current_value = value; }
     }
 
     public int current_mana {
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     Stat _attack;
 
-    [SerializeField] Stat _max_health;
+    [SerializeField] ResourceStat _health;
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets;
 
 
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         secrets.SetController(this);
 
         command_manager = GetComponent<CommandManager>();
-        current_health = max_health;
+        current_health = health;
 
         _attack = new Stat(0);
     }
@@ -153,8 +154,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         int old = current_health;
         current_health += to_heal;
 
-        if (current_health > max_health) {
-            current_health = max_health;
+        if (current_health > health) {
+            current_health = health;
         }
 
         return current_health - old;

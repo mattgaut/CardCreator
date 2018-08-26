@@ -6,15 +6,16 @@ public class Creature : Card, ICombatant {
 
     public enum CreatureType { none, beast, mech, dragon }
 
-    [SerializeField] Stat _attack, _max_health;
+    [SerializeField] Stat _attack;
+    [SerializeField] ResourceStat _health;
     [SerializeField] CreatureType _creature_type;
 
     public override CardType type { get { return CardType.Creature; } }
     public CreatureType creature_type { get { return _creature_type; } }
 
     public Stat attack { get { return _attack; } }
-    public Stat max_health { get { return _max_health; } }
-    public int current_health { get; private set; }
+    public ResourceStat health { get { return _health; } }
+    public int current_health { get { return health.current_value; } private set { health.current_value = value; } }
     public bool poisioned { get; private set; }
     public bool destroyed { get; private set; }
     public bool dead { get { return current_health <= 0 || poisioned || destroyed; } }
@@ -97,7 +98,7 @@ public class Creature : Card, ICombatant {
     }
 
     public override void Resolve() {
-        current_health = max_health;
+        current_health = health;
     }
 
     public int TakeDamage(IDamages source, int damage) {
@@ -125,8 +126,8 @@ public class Creature : Card, ICombatant {
         int old = current_health;
         current_health += to_heal;
 
-        if (current_health > max_health) {
-            current_health = max_health;
+        if (current_health > health) {
+            current_health = health;
         }
 
         return current_health - old;

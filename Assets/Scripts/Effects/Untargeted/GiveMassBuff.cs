@@ -23,7 +23,7 @@ public class GiveMassBuff : UntargetedEffect {
 
         foreach (Creature c in creatures_to_affect) {
             c.attack.ApplyBuff(attack_buff_amount);
-            c.max_health.ApplyBuff(health_buff_amount);
+            c.health.ApplyBuff(health_buff_amount);
         }
     }
 }

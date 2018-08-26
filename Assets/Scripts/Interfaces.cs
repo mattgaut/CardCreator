@@ -30,7 +30,7 @@ public interface IHealth {
     int current_health {
         get;
     }
-    Stat max_health {
+    ResourceStat health {
         get;
     }
     int Heal(IEntity source, int to_heal);
