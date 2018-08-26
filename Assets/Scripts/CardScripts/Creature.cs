@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Creature : Card, ICombatant {
 
+    public enum CreatureType { none, beast, mech, dragon }
+
     [SerializeField] int _attack, _max_health;
+    [SerializeField] CreatureType _creature_type;
 
     public override CardType type { get { return CardType.Creature; } }
+    public CreatureType creature_type { get { return _creature_type; } }
 
     public int attack { get { return _attack; } }
     public int max_health { get { return _max_health; } }
