@@ -37,4 +37,8 @@ public class Stat {
         use_force_value = false;
     }
 
+
+    public static implicit operator int(Stat s){
+        return s.value;
+    }
 }
