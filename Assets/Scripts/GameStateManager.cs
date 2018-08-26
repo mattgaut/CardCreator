@@ -131,6 +131,21 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public Card CreateToken(CardContainer initial_container, Card card_to_create, int position = -1) {
+        if (initial_container.full) {
+            return null;
+        }
+        Card card = Instantiate(card_to_create);
+
+        if (position >= 0) {
+            initial_container.AddCard(card, position);
+        } else {
+            initial_container.AddCard(card);
+        }
+
+        return card;
+    }
+
     public bool CanAttack(ICombatant attacker, ICombatant defender) {
         return attacker.controller != defender.controller && attacker.CanAttack(defender) && defender.CanBeAttacked(attacker);
     }
