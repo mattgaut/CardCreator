@@ -7,8 +7,8 @@ public class Stat {
 
     [SerializeField] int _base_value;
 
-    public int value { get { return base_value + buff_value; } }
-    public int base_value { get { return use_force_value ? force_value : base_value + buff_value; } }
+    public int value { get { return use_force_value ? force_value : base_value + buff_value; } }
+    public int base_value { get { return _base_value; } }
 
     protected int force_value;
     protected bool use_force_value;
