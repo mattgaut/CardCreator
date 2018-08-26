@@ -15,6 +15,10 @@ public class Stat {
 
     int buff_value;
 
+    public Stat(int base_value) {
+        _base_value = base_value;
+    }
+
     public void ApplyBuff(int buff_value) {
         this.buff_value += buff_value;
     }
