@@ -5,9 +5,8 @@ using System.Linq;
 
 [RequireComponent(typeof(Card))]
 public class AbilityHolder : MonoBehaviour {
-    [SerializeField] List<ETBTriggeredAbility> etb_triggered_abilities;
-
-    [SerializeField] List<TriggeredAbility> triggered_abilities;
+    [SerializeField] List<TriggeredAbility> global_triggered_abilities;
+    [SerializeField] List<TriggeredAbility> local_triggered_abilities;
 
     public Card card {
         get; private set;
@@ -15,19 +14,19 @@ public class AbilityHolder : MonoBehaviour {
 
     private void Awake() {
         card = GetComponent<Card>();
-        triggered_abilities = new List<TriggeredAbility>();
-        triggered_abilities.AddRange(triggered_abilities);
-        foreach (TriggeredAbility ta in triggered_abilities) {
+        global_triggered_abilities = new List<TriggeredAbility>();
+        global_triggered_abilities.AddRange(global_triggered_abilities);
+        foreach (TriggeredAbility ta in global_triggered_abilities) {
             ta.SetSource(card);
         }
     }
 
     public IEnumerable<TriggeredAbility> GetTriggersActiveInZone(Zone zone) {
-        return triggered_abilities.Where(a => a.InZone(zone));
+        return global_triggered_abilities.Where(a => a.InZone(zone));
     }
 
     public void AddTriggeredAbility(TriggeredAbility ta) {
-        triggered_abilities.Add(ta);
+        global_triggered_abilities.Add(ta);
         ta.SetSource(card);
     }
 }
