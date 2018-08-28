@@ -71,6 +71,10 @@ public interface ICombatant : IDamageable, IDamages, IEntity {
         get; 
     }
 
+    bool dead {
+        get;
+    }
+
     bool frozen {
         get;
     }
