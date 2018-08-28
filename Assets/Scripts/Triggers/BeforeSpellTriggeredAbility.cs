@@ -34,5 +34,4 @@ public class BeforeSpellTriggerInfo : TriggerInfo {
     public BeforeSpellTriggerInfo(Spell cast) {
         spell_cast = cast;
     }
-
 }
