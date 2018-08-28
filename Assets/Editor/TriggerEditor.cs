@@ -7,10 +7,12 @@ using UnityEngine;
 public class TriggerEditor : PropertyDrawer {
 
     protected void BaseTriggerGUI(SerializedProperty property) {
-        // Subscribed Zones        
-        property.FindPropertyRelative("subscried_zones");
+        // Global Or Local
+        SerializedProperty global = property.FindPropertyRelative("_is_global");
+        global.boolValue = EditorGUILayout.Toggle("Global?", global.boolValue);
 
-        SerializedProperty zones_property = property.FindPropertyRelative("subscribed_zones");
+        // Subscribed Zones
+        SerializedProperty zones_property = property.FindPropertyRelative("active_zones");
         Zone zoneMask = SetZoneMask(zones_property);
         zoneMask = (Zone)EditorGUILayout.EnumMaskField("Zones: ", zoneMask);
 
