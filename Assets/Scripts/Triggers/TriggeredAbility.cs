@@ -43,4 +43,4 @@ public abstract class TriggerInfo {
     public abstract TriggerType type { get; }
 }
 
-public enum TriggerType { enter_battlefield, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_dies, damage_taken }
+public enum TriggerType { enter_battlefield, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_killed, damage_taken }
