@@ -11,8 +11,12 @@ public abstract class TriggeredAbility : IStackEffect {
 
     [SerializeField] List<UntargetedEffect> effects;
     [SerializeField] List<Zone> active_zones;
+    [SerializeField] bool _is_global;
 
     public abstract TriggerType type { get; }
+
+    public bool is_global { get { return _is_global; } }
+    public bool is_local { get { return !_is_global; } }
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
