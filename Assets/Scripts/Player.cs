@@ -49,6 +49,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public Stat attack { get { return _attack; } }
 
+    public bool dead { get { return current_health <= 0; } }
+
     public Player player {
         get { return this; }
     }
