@@ -54,7 +54,7 @@ public interface IClickable {
     void OnEndClick();
 }
 
-public interface ICombatant : IDamageable, IDamages, IEntity {
+public interface ICombatant : IDamageable, IDamages {
     bool CanAttack(ICombatant target);
     bool CanBeAttacked(ICombatant attacker);
     void Freeze();

@@ -159,7 +159,14 @@ public class GameStateManager : MonoBehaviour {
             if (defender.retaliate) {
                 defender.DealDamage(attacker, defender.attack);
             }
-            AddTriggersToStack(trigger_manager.GetTriggers(new AfterAttackTriggerInfo(attacker, defender, dealt)));
+
+            AfterAttackTriggerInfo info = new AfterAttackTriggerInfo(attacker, defender, dealt);
+
+            Creature creature = attacker as Creature;
+            if (creature != null) {
+                AddTriggersToStack(creature.abilities.GetLocalTriggers(info));
+            }
+            AddTriggersToStack(trigger_manager.GetTriggers(info));
         }
         ResolveStack();
     }
