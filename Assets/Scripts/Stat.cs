@@ -56,6 +56,7 @@ public class Stat {
     }
 }
 
+[System.Serializable]
 public class ResourceStat : Stat {
 
     public int current_value {
