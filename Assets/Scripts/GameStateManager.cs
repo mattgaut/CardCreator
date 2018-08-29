@@ -197,20 +197,20 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void MoveCard(Card c, CardContainer to) {
-        foreach (TriggeredAbility ta in c.abilities.GetTriggersActiveInZone(c.container.zone)) {
+        foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.UnsubscribeTrigger(ta);
         }
         CardContainer.MoveCard(c, c.container, to);
-        foreach (TriggeredAbility ta in c.abilities.GetTriggersActiveInZone(c.container.zone)) {
+        foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.SubscribeTrigger(ta);
         }
     }
     public void MoveCard(Card c, CardContainer to, int position) {
-        foreach (TriggeredAbility ta in c.abilities.GetTriggersActiveInZone(c.container.zone)) {
+        foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.UnsubscribeTrigger(ta);
         }
         CardContainer.MoveCard(c, c.container, to, position);
-        foreach (TriggeredAbility ta in c.abilities.GetTriggersActiveInZone(c.container.zone)) {
+        foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.SubscribeTrigger(ta);
         }
     }

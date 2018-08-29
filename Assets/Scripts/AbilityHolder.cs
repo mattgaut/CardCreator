@@ -24,29 +24,32 @@ public class AbilityHolder : MonoBehaviour {
         local_triggered_abilities = new List<TriggeredAbility>();
 
         // Add All trigger types to their proper lists
-        AddTriggersToList(etb_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggersToList(after_attack_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggersToList(before_spell_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggersToList(after_spell_triggered_abilities.OfType<TriggeredAbility>());
+        AddTriggeredAbilities(etb_triggered_abilities.OfType<TriggeredAbility>());
+        AddTriggeredAbilities(after_attack_triggered_abilities.OfType<TriggeredAbility>());
+        AddTriggeredAbilities(before_spell_triggered_abilities.OfType<TriggeredAbility>());
+        AddTriggeredAbilities(after_spell_triggered_abilities.OfType<TriggeredAbility>());
     }
 
-    public IEnumerable<TriggeredAbility> GetTriggersActiveInZone(Zone zone) {
+    public IEnumerable<TriggeredAbility> GetGlobalTriggersActiveInZone(Zone zone) {
+        return global_triggered_abilities.Where(a => a.InZone(zone));
+    }
+
+    public IEnumerable<TriggeredAbility> GetLocalTriggersActiveInZone(Zone zone) {
         return global_triggered_abilities.Where(a => a.InZone(zone));
     }
 
     public void AddTriggeredAbility(TriggeredAbility ta) {
-        global_triggered_abilities.Add(ta);
+        if (ta.is_local) {
+            local_triggered_abilities.Add(ta);
+        } else {
+            global_triggered_abilities.Add(ta);
+        }
         ta.SetSource(card);
     }
 
-    void AddTriggersToList(IEnumerable<TriggeredAbility> abilities) {
+    void AddTriggeredAbilities(IEnumerable<TriggeredAbility> abilities) {
         foreach (TriggeredAbility ta in abilities) {
-            if (ta.is_local) {
-                local_triggered_abilities.Add(ta);
-            } else {
-                global_triggered_abilities.Add(ta);
-            }
-            ta.SetSource(card);
+            AddTriggeredAbility(ta);
         }
     }
 }
