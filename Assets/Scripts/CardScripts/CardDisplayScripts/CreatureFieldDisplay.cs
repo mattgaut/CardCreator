@@ -24,7 +24,7 @@ public class CreatureFieldDisplay : CardDisplay {
 
     public override void UpdateDisplay() {
         border.color = creature.can_attack && creature.controller == GameManager.current_player ? Color.yellow : Color.black;
-        attack.text = "" + creature.attack;
+        attack.text = "" + creature.attack.value;
         health.text = "" + creature.current_health;
         UpdateModDisplay();
     }

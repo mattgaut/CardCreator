@@ -15,8 +15,8 @@ public class CreatureDisplay : FullCardDisplay {
 
     public override void UpdateDisplay() {
         base.UpdateDisplay();
-        attack.text = "" + creature.attack;
-        health.text = "" + creature.health;
+        attack.text = "" + creature.attack.value;
+        health.text = "" + creature.health.value;
         creature_type.text = CreatureTypeToString(creature.creature_type);
     }
 
