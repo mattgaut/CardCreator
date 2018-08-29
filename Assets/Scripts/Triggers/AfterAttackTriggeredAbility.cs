@@ -36,9 +36,11 @@ public class AfterAttackTriggerInfo : TriggerInfo {
 
     public int damage_dealt { get; private set; }
     public ICombatant attacked { get; private set; }
+    public ICombatant attacker { get; private set; }
 
-    public AfterAttackTriggerInfo(ICombatant attacked, int damage_dealt) {
+    public AfterAttackTriggerInfo(ICombatant attacker, ICombatant attacked, int damage_dealt) {
         this.attacked = attacked;
+        this.attacker = attacker;
         this.damage_dealt = damage_dealt;
     }
 }
