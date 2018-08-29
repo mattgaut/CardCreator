@@ -16,7 +16,7 @@ public class ETBTriggerEditor : TriggerEditor {
             BaseTriggerGUI(property);
 
             SerializedProperty child_property = property.FindPropertyRelative("compare");
-            EditorGUILayout.PropertyField(child_property);
+            EditorGUILayout.PropertyField(child_property, new GUIContent("Matching"));
 
             EditorGUI.indentLevel -= 1;
         }
