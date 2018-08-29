@@ -13,10 +13,10 @@ public class BeforeSpellTriggerEditor : TriggerEditor {
             if (property.isExpanded) {
                 EditorGUI.indentLevel += 1;
 
-                BaseTriggerGUI(property);
-
                 SerializedProperty child_property = property.FindPropertyRelative("compare");
                 EditorGUILayout.PropertyField(child_property, new GUIContent("Matching"));
+
+                BaseTriggerGUI(property);
 
                 EditorGUI.indentLevel -= 1;
             }
