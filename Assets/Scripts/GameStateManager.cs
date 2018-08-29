@@ -67,7 +67,9 @@ public class GameStateManager : MonoBehaviour {
                 spell.controller.LockManaCrystals(spell.mods.overload_cost);
             }
             MoveCard(spell, spell.controller.stack);
+            AddTriggersToStack(trigger_manager.GetTriggers(new AfterSpellTriggerInfo(spell)));
             AddToStack(spell);
+            AddTriggersToStack(trigger_manager.GetTriggers(new BeforeSpellTriggerInfo(spell)));
             ResolveStack();
             MoveCard(spell, spell.controller.graveyard);
         }
@@ -153,10 +155,11 @@ public class GameStateManager : MonoBehaviour {
     public void Attack(ICombatant attacker, ICombatant defender) {
         if (CanAttack(attacker, defender)) {
             attacker.NoteAttack();
-            attacker.DealDamage(defender, attacker.attack);
+            int dealt = attacker.DealDamage(defender, attacker.attack);
             if (defender.retaliate) {
                 defender.DealDamage(attacker, defender.attack);
             }
+            AddTriggersToStack(trigger_manager.GetTriggers(new AfterAttackTriggerInfo(attacker, defender, dealt)));
         }
         ResolveStack();
     }
@@ -194,6 +197,12 @@ public class GameStateManager : MonoBehaviour {
                 change_made = true;
             }
         } while (change_made);
+    }
+
+    void AddTriggersToStack(IEnumerable<TriggeredAbility> triggers) {
+        foreach (TriggeredAbility trigger in triggers) {
+            AddToStack(trigger);
+        }
     }
 
     public void MoveCard(Card c, CardContainer to) {
