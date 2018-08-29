@@ -9,7 +9,7 @@ public class BeforeSpellTriggeredAbility : TriggeredAbility {
 
     public override TriggerType type {
         get {
-            return TriggerType.after_spell_resolves;
+            return TriggerType.before_spell_resolves;
         }
     }
 
