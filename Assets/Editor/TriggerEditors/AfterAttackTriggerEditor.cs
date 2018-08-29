@@ -16,7 +16,7 @@ public class AfterAttackTriggerEditor : TriggerEditor {
             child_property.boolValue = EditorGUILayout.Toggle(new GUIContent("On Kill?"), child_property.boolValue);
 
             child_property = property.FindPropertyRelative("damage_needed");
-            child_property.intValue = EditorGUILayout.IntField(new GUIContent("Damage To Trigger: "), child_property.intValue);
+            child_property.intValue = EditorGUILayout.IntField(new GUIContent("Damage: "), child_property.intValue);
 
             BaseTriggerGUI(property);
 
