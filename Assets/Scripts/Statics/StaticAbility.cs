@@ -40,6 +40,10 @@ public abstract class StaticAbility : MonoBehaviour {
         }
     }
 
+    public void SetSource(Card source) {
+        this.source = source;
+    }
+
     protected abstract void ApplyEffects(IEntity apply_to);
     protected abstract void RemoveEffects(IEntity remove_from);
 
