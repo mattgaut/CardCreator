@@ -21,6 +21,10 @@ public abstract class StaticAbility : MonoBehaviour {
         return new List<Zone>(affected_zones);
     }
 
+    public bool InZone(Zone z) {
+        return affected_zones.Contains(z);
+    }
+
     public virtual bool AppliesTo(IEntity entity) {
         return true;
     }

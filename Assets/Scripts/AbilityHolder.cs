@@ -5,7 +5,10 @@ using System.Linq;
 
 [RequireComponent(typeof(Card))]
 public class AbilityHolder : MonoBehaviour {
-   
+
+    [SerializeField] List<StaticAbility> static_abilities;
+
+    // Triggers
     [SerializeField] List<ETBTriggeredAbility> etb_triggered_abilities;
     [SerializeField] List<AfterAttackTriggeredAbility> after_attack_triggered_abilities;
     [SerializeField] List<BeforeSpellTriggeredAbility> before_spell_triggered_abilities;
@@ -36,6 +39,10 @@ public class AbilityHolder : MonoBehaviour {
 
     public IEnumerable<TriggeredAbility> GetLocalTriggers(TriggerInfo info) {
         return local_triggered_abilities.Where(a => a.InZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info));
+    }
+
+    public IEnumerable<StaticAbility> GetStaticAbilitiesActiveInZone(Zone zone) {
+        return static_abilities.Where(a => a.InZone(zone));
     }
 
     public void AddTriggeredAbility(TriggeredAbility ta) {
