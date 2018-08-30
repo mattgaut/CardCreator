@@ -48,6 +48,6 @@ public abstract class StaticAbility : MonoBehaviour {
     protected abstract void RemoveEffects(IEntity remove_from);
 
     private void Awake() {
-        entities_applied_to = new HashSet<IEntity>();    
+        entities_applied_to = new HashSet<IEntity>();
     }
 }
