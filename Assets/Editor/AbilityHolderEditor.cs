@@ -10,6 +10,7 @@ public class AbilityHolderEditor : Editor {
     TriggerType trigger_type;
     static Dictionary<GameObject, bool> show_triggers;
     SerializedProperty etb_triggers, after_spell_triggers, before_spell_triggers, after_attack_triggers;
+    SerializedProperty static_abilities;
 
     public override void OnInspectorGUI() {
         serializedObject.Update();
@@ -18,12 +19,16 @@ public class AbilityHolderEditor : Editor {
 
         GUILayout.Space(4);
 
+        // Static Abilities
+        static_abilities = serializedObject.FindProperty("static_abilities");
+
         // Triggers 
         etb_triggers = serializedObject.FindProperty("etb_triggered_abilities");
         after_spell_triggers = serializedObject.FindProperty("after_spell_triggered_abilities");
         before_spell_triggers = serializedObject.FindProperty("before_spell_triggered_abilities");
         after_attack_triggers = serializedObject.FindProperty("after_attack_triggered_abilities");
 
+        DisplayStaticAbilities(static_abilities);
         if (show_triggers == null) {
             show_triggers = new Dictionary<GameObject, bool>();
         }
@@ -90,5 +95,9 @@ public class AbilityHolderEditor : Editor {
         for (int i = 0; i < triggers.arraySize; i++) {
             EditorGUILayout.PropertyField(triggers.GetArrayElementAtIndex(i), new GUIContent(GetNameFromTriggerType(type)), true);
         }
+    }
+
+    void DisplayStaticAbilities(SerializedProperty static_abilities) {
+        EditorGUILayout.PropertyField(static_abilities, true);
     }
 }
