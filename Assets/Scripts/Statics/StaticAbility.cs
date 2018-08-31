@@ -47,7 +47,8 @@ public abstract class StaticAbility : MonoBehaviour {
     }
 
     public void RemoveAll() {
-        foreach (IEntity entity in entities_applied_to) {
+        List<IEntity> to_remove = new List<IEntity>(entities_applied_to);
+        foreach (IEntity entity in to_remove) {
             Remove(entity);
         }
     }
