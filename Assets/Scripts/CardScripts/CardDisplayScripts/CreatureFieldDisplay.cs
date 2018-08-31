@@ -18,10 +18,6 @@ public class CreatureFieldDisplay : CardDisplay {
         card = creature = GetComponent<Creature>();
     }
 
-    public void Update() {
-        UpdateDisplay();
-    }
-
     public override void UpdateDisplay() {
         border.color = creature.can_attack && creature.controller == GameManager.current_player ? Color.yellow : Color.black;
         attack.text = "" + creature.attack.value;
