@@ -53,7 +53,7 @@ public class StaticAbilityManager {
 
     public void AddCardToAbilities(Card card) {
         foreach (StaticAbility ability in affected_zones_to_abilities[card.container.zone]) {
-            if (ability.IsAppliedTo(card)) ability.Remove(card);
+            if (ability.IsAppliedTo(card)) ability.Apply(card);
         }
     }
 }
