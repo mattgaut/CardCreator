@@ -205,6 +205,8 @@ public class GameStateManager : MonoBehaviour {
                 }
                 change_made = true;
             }
+
+            // ToDo: Add Section to check static abilities are still valid
         } while (change_made);
     }
 
