@@ -146,7 +146,7 @@ public class GameStateManager : MonoBehaviour {
         } else {
             initial_container.AddCard(card);
         }
-
+        SubscribeEffects(card);
         return card;
     }
 
