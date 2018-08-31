@@ -40,7 +40,7 @@ public class GameStateManager : MonoBehaviour {
 
     public void DrawCard(Player p) {
         if (!p.hand.full) {
-            p.hand.AddCard(p.deck.GetNext());
+            MoveCard(p.deck.GetNext(), p.hand);
         }
     }
 
