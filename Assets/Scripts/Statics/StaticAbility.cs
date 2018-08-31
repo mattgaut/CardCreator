@@ -35,11 +35,13 @@ public abstract class StaticAbility : MonoBehaviour {
 
     public void Apply(IEntity apply_to) {
         if (!entities_applied_to.Contains(apply_to)) {
+            entities_applied_to.Add(apply_to);
             ApplyEffects(apply_to);
         }
     }
     public void Remove(IEntity remove_from) {
         if (entities_applied_to.Contains(remove_from)) {
+            entities_applied_to.Remove(remove_from);
             RemoveEffects(remove_from);
         }
     }
