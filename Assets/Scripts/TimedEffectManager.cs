@@ -9,15 +9,12 @@ public class TimedEffectManager {
     Dictionary<TimePoint, List<ITimedEffect>> effects_waiting_to_end;
     Dictionary<ITimedEffect, Card> sources;
 
-    GameStateManager game_state_manager;
-
-    public TimedEffectManager(GameStateManager gsm) {
+    public TimedEffectManager() {
         sources = new Dictionary<ITimedEffect, Card>();
         effects_waiting_to_end = new Dictionary<TimePoint, List<ITimedEffect>>();
         foreach (TimePoint tp in (TimePoint[])System.Enum.GetValues(typeof(TimePoint))) {
             effects_waiting_to_end.Add(tp, new List<ITimedEffect>());
         }
-        game_state_manager = gsm;
     }
 
     public void AddTimedEffect(ITimedEffect te, Card source) {

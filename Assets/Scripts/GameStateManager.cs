@@ -11,12 +11,14 @@ public class GameStateManager : MonoBehaviour {
 
     TriggerManager trigger_manager;
     StaticAbilityManager static_ability_manager;
+    TimedEffectManager timed_effect_manager;
 
     List<IStackEffect> stack;
 
     public void Awake() {
         trigger_manager = GetComponent<TriggerManager>();
         static_ability_manager = new StaticAbilityManager(this);
+        timed_effect_manager = new TimedEffectManager();
 
         stack = new List<IStackEffect>();
 
@@ -51,7 +53,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void EndTurn(Player p) {
-
+        timed_effect_manager.EndEffects(TimePoint.end_of_turn);
     }
 
     public void PlayCardFromHand(Card c) {
@@ -257,5 +259,9 @@ public class GameStateManager : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    public void TrackTimedEffect(ITimedEffect effect, Card source) {
+        timed_effect_manager.AddTimedEffect(effect, source);
     }
 }
