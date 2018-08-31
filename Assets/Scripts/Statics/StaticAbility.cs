@@ -46,6 +46,12 @@ public abstract class StaticAbility : MonoBehaviour {
         }
     }
 
+    public void RemoveAll() {
+        foreach (IEntity entity in entities_applied_to) {
+            Remove(entity);
+        }
+    }
+
     public void SetSource(Card source) {
         this.source = source;
     }
