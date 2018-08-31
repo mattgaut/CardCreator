@@ -8,9 +8,11 @@ public class TimedEffectManager {
 
     Dictionary<TimePoint, List<ITimedEffect>> effects_waiting_to_end;
     Dictionary<ITimedEffect, Card> sources;
+    Dictionary<ITimedEffect, IEntity> targets;
 
     public TimedEffectManager() {
         sources = new Dictionary<ITimedEffect, Card>();
+        targets = new Dictionary<ITimedEffect, IEntity>();
         effects_waiting_to_end = new Dictionary<TimePoint, List<ITimedEffect>>();
         foreach (TimePoint tp in (TimePoint[])System.Enum.GetValues(typeof(TimePoint))) {
             effects_waiting_to_end.Add(tp, new List<ITimedEffect>());
@@ -22,24 +24,36 @@ public class TimedEffectManager {
         sources.Add(te, source);
     }
 
+    public void AddTimedEffect(ITimedEffect te, Card source, IEntity target) {
+        effects_waiting_to_end[te.time_point].Add(te);
+        sources.Add(te, source);
+        targets.Add(te, target);
+    }
+
     public void EndEffects(TimePoint time_point) {
-        for (int i = effects_waiting_to_end.Count - 1; i >= 0; i++) {
+        for (int i = effects_waiting_to_end[time_point].Count - 1; i >= 0; i--) {
             ITimedEffect effect = effects_waiting_to_end[time_point][i];
-            effect.EndEffect(sources[effect]);
-            effects_waiting_to_end[time_point].Remove(effect);
+            EndEffect(effect, time_point);
         }
     }
 
     public void EndEffects(TimePoint time_point, Player player) {
-        foreach (ITimedEffect effect in effects_waiting_to_end[time_point]) {
-           effect.EndEffect(sources[effect]);
-        }
-        for (int i = effects_waiting_to_end.Count - 1; i >= 0; i++) {
+        for (int i = effects_waiting_to_end[time_point].Count - 1; i >= 0; i--) {
             ITimedEffect effect = effects_waiting_to_end[time_point][i];
             if (sources[effect].controller == player) {
-                effect.EndEffect(sources[effect]);
-                effects_waiting_to_end[time_point].Remove(effect);
+                EndEffect(effect, time_point);
             }
         }
+    }
+
+    void EndEffect(ITimedEffect effect, TimePoint time_point) {
+        if (targets.ContainsKey(effect)) {
+            effect.EndEffect(sources[effect], targets[effect]);
+            targets.Remove(effect);
+        } else {
+            effect.EndEffect(sources[effect]);
+        }
+        effects_waiting_to_end[time_point].Remove(effect);
+        sources.Remove(effect);
     }
 }
