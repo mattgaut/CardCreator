@@ -26,6 +26,11 @@ public interface IStackEffect {
     void Resolve();
 }
 
+public interface ITimedEffect {
+    TimePoint time_point { get; }
+    void EndEffect(Card source);
+}
+
 public interface IHealth {
     int current_health {
         get;
