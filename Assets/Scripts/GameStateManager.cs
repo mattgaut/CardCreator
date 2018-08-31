@@ -221,7 +221,7 @@ public class GameStateManager : MonoBehaviour {
             trigger_manager.UnsubscribeTrigger(ta);
         }
         foreach (StaticAbility sa in c.abilities.GetStaticAbilitiesActiveInZone(c.container.zone)) {
-            static_ability_manager.SubscribeStaticAbility(sa);
+            static_ability_manager.UnsubscribeStaticAbility(sa);
         }
         static_ability_manager.RemoveCardFromAbilities(c);
     }
@@ -230,7 +230,7 @@ public class GameStateManager : MonoBehaviour {
             trigger_manager.SubscribeTrigger(ta);
         }
         foreach (StaticAbility sa in c.abilities.GetStaticAbilitiesActiveInZone(c.container.zone)) {
-            static_ability_manager.UnsubscribeStaticAbility(sa);
+            static_ability_manager.SubscribeStaticAbility(sa);
         }
         static_ability_manager.AddCardToAbilities(c);
     }
