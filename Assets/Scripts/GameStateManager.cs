@@ -10,11 +10,13 @@ public class GameStateManager : MonoBehaviour {
     }
 
     TriggerManager trigger_manager;
+    StaticAbilityManager static_ability_manager;
 
     List<IStackEffect> stack;
 
     public void Awake() {
         trigger_manager = GetComponent<TriggerManager>();
+        static_ability_manager = new StaticAbilityManager(this);
 
         stack = new List<IStackEffect>();
 
@@ -216,11 +218,19 @@ public class GameStateManager : MonoBehaviour {
         foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.UnsubscribeTrigger(ta);
         }
+        foreach (StaticAbility sa in c.abilities.GetStaticAbilitiesActiveInZone(c.container.zone)) {
+            static_ability_manager.SubscribeStaticAbility(sa);
+        }
+        static_ability_manager.RemoveCardFromAbilities(c);
     }
     void SubscribeEffects(Card c) {
         foreach (TriggeredAbility ta in c.abilities.GetGlobalTriggersActiveInZone(c.container.zone)) {
             trigger_manager.SubscribeTrigger(ta);
         }
+        foreach (StaticAbility sa in c.abilities.GetStaticAbilitiesActiveInZone(c.container.zone)) {
+            static_ability_manager.UnsubscribeStaticAbility(sa);
+        }
+        static_ability_manager.AddCardToAbilities(c);
     }
 
     public void MoveCard(Card c, CardContainer to) {
