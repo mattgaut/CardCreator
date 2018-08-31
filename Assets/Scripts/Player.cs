@@ -60,6 +60,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     [SerializeField] ResourceStat _health;
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets;
 
+    Dictionary<Zone, CardContainer> card_containers;
 
     public void Awake() {
         deck.SetController(this);
@@ -74,6 +75,15 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         current_health = health;
 
         _attack = new Stat(0);
+
+        card_containers = new Dictionary<Zone, CardContainer>();
+        card_containers.Add(Zone.deck, deck);
+        card_containers.Add(Zone.hand, hand);
+        card_containers.Add(Zone.field, field);
+        card_containers.Add(Zone.discard, discard);
+        card_containers.Add(Zone.graveyard, graveyard);
+        card_containers.Add(Zone.secrets, secrets);
+        card_containers.Add(Zone.stack, stack);
     }
 
     public void NoteBeginTurn() {
@@ -197,5 +207,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public bool CanBeTargeted(IEntity source) {
         return true;
+    }
+
+    public CardContainer GetContainer(Zone z) {
+        return card_containers[z];
     }
 }
