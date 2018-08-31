@@ -45,14 +45,15 @@ public class StaticAbilityManager {
         }
     }
 
-    public void UpdateAbilities(Card entity, Zone last_zone) {
-        // Remove card from old abilities
-        foreach (StaticAbility ability in affected_zones_to_abilities[last_zone]) {
-            if (ability.IsAppliedTo(entity)) ability.Remove(entity);            
+    public void RemoveCardFromAbilities(Card card) {
+        foreach (StaticAbility ability in affected_zones_to_abilities[card.container.zone]) {
+            if (ability.IsAppliedTo(card)) ability.Remove(card);
         }
-        // Add card to new abilities
-        foreach (StaticAbility ability in affected_zones_to_abilities[entity.container.zone]) {
-            if (ability.AppliesTo(entity)) ability.Apply(entity);
+    }
+
+    public void AddCardToAbilities(Card card) {
+        foreach (StaticAbility ability in affected_zones_to_abilities[card.container.zone]) {
+            if (ability.IsAppliedTo(card)) ability.Remove(card);
         }
     }
 }
