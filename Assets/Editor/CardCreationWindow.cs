@@ -56,11 +56,13 @@ public class CardCreationWindow : EditorWindow {
     string search_string;
 
     Dictionary<Effect, bool> effect_foldouts;
+    Dictionary<StaticAbility, bool> statics_foldouts;
 
     private void OnEnable() {
         resizer_style = new GUIStyle();
         resizer_style.normal.background = EditorGUIUtility.Load("icons/d_AvatarBlendBackground.png") as Texture2D;
         effect_foldouts = new Dictionary<Effect, bool>();
+        statics_foldouts = new Dictionary<StaticAbility, bool>();
     }
 
     void OnGUI() {
@@ -174,22 +176,39 @@ public class CardCreationWindow : EditorWindow {
         GUILayout.BeginArea(effects_panel);
         GUILayout.Label("Effects");
         EditorGUILayout.BeginHorizontal();
-        bool untargeted = GUILayout.Button("Add Untargeted Effect");
-        bool targeted = GUILayout.Button("Add Targeted Effect");
+        bool untargeted = GUILayout.Button("Untargeted Effect");
+        bool targeted = GUILayout.Button("Targeted Effect");
+        bool _static = GUILayout.Button("Static Effect");
 
         // Search
-        if (targeted || untargeted) {
+        if (targeted || untargeted || _static) {
+            EffectPopupWindow window;
+
+            if (targeted) {
+                window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
+                    "Assets/Scripts/Effects/Targeted",
+                    AddComponentToLoadedCard);
+            } else if (untargeted) {
+                window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
+                    "Assets/Scripts/Effects/Untargeted",
+                    AddComponentToLoadedCard);
+            } else {
+                window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
+                    "Assets/Scripts/Statics/Statics",
+                    AddComponentToLoadedCard);
+            }
+
             popup_rect.x = 0;
-            PopupWindow.Show(popup_rect, new EffectPopupWindow(
-                new Vector2(effects_panel.width, (300 < effects_panel.height/2f ? 300 : effects_panel.height /2f)), 
-                targeted, 
-                AddComponentToLoadedCard));
+            PopupWindow.Show(popup_rect, window);
         }
         if (Event.current.type == EventType.Repaint) popup_rect = GUILayoutUtility.GetLastRect();
         EditorGUILayout.EndHorizontal();
 
         foreach (Effect e in loaded_card.GetComponents<Effect>()) {
             EffectFoldout(e);
+        }
+        foreach (StaticAbility sa in loaded_card.GetComponents<StaticAbility>()) {
+            StaticsFoldout(sa);
         }
 
         GUILayout.EndArea();
@@ -257,6 +276,19 @@ public class CardCreationWindow : EditorWindow {
         if (effect_foldouts[e]) {
             EditorGUI.indentLevel += 1;
             Editor editor = Editor.CreateEditor(e);
+            editor.OnInspectorGUI();
+            EditorGUI.indentLevel -= 1;
+        }
+    }
+
+    void StaticsFoldout(StaticAbility sa) {
+        if (!statics_foldouts.ContainsKey(sa)) {
+            statics_foldouts.Add(sa, false);
+        }
+        statics_foldouts[sa] = EditorGUILayout.InspectorTitlebar(statics_foldouts[sa], sa);
+        if (statics_foldouts[sa]) {
+            EditorGUI.indentLevel += 1;
+            Editor editor = Editor.CreateEditor(sa);
             editor.OnInspectorGUI();
             EditorGUI.indentLevel -= 1;
         }

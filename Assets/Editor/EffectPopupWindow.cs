@@ -10,14 +10,14 @@ public class EffectPopupWindow : PopupWindowContent {
     string search_string;
 
     Type effect_type;
-    bool targeted;
+    string folder_path;
 
     Action<Type> on_click;
 
-    public EffectPopupWindow(Vector2 size, bool targeted, Action<Type> action) {
-        this.targeted = targeted;
+    public EffectPopupWindow(Vector2 size, string folder_path, Action<Type> action) {
+        this.folder_path = folder_path;
         this.size = size;
-        this.on_click = action;
+        on_click = action;
     }
 
     public override void OnOpen() {
@@ -29,7 +29,7 @@ public class EffectPopupWindow : PopupWindowContent {
 
     public override void OnGUI(Rect rect) {
         search_string = EditorGUILayout.TextField("Search: ", search_string);
-        string[] assets = AssetDatabase.FindAssets(search_string + "t:Script", new string[] { "Assets/Scripts/Effects/" + (targeted ? "Targeted" : "Untargeted") });
+        string[] assets = AssetDatabase.FindAssets(search_string + "t:Script", new string[] { folder_path });
         for (int i = 0; i < assets.Length; i++) {
             string path_name = AssetDatabase.GUIDToAssetPath(assets[i]);
             string[] path_name_split = path_name.Split('.', '/');
