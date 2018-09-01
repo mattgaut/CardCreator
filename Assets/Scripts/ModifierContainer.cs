@@ -106,6 +106,10 @@ public class Battlecry : IStackEffect, ITargets {
         return false;
     }
 
+    public void SetTargetingComparer(CompareEntity compare) {
+        _targeting_comparer = compare;
+    }
+
     public void Resolve() {
         for (int i = 0; i < targeted_effects.Count; i++) {
             if (targeted_effects[i].has_target) targeted_effects[i].Resolve(source);
@@ -136,7 +140,7 @@ public class Deathrattle : IStackEffect {
 public class Combo : Battlecry {
     [SerializeField] bool _replaces_other_effects;
 
-    public bool replaces_other_effecs {
+    public bool replaces_other_effects {
         get { return _replaces_other_effects; }
     }
 }

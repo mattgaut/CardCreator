@@ -31,12 +31,22 @@ public class Spell : Card, ITargets {
             foreach (TargetedEffect te in targeted_effects) {
                 te.SetTarget(target);
             }
+            if (mods.HasMod(Modifier.combo) && mods.combo_info.needs_target) {
+                mods.combo_info.SetTargetingComparer(targeting_comparer);
+                mods.combo_info.SetTarget(target);
+            }
             return true;
         }
         return false;
     }
 
     public override void Resolve() {
+        if (mods.HasMod(Modifier.combo) && controller.combo_active) {
+            mods.combo_info.Resolve();
+            if (mods.combo_info.replaces_other_effects) {
+                return;
+            }
+        }
         for (int i = 0; i < targeted_effects.Count; i++) {
             if (targeted_effects[i].has_target) targeted_effects[i].Resolve(this);
         }
@@ -52,6 +62,11 @@ public class Spell : Card, ITargets {
     bool NeedsTarget() {
         foreach (TargetedEffect te in targeted_effects) {
             if (!te.has_target) {
+                return true;
+            }
+        }
+        if (mods.HasMod(Modifier.combo) && controller.combo_active) {
+            if (mods.combo_info.needs_target) {
                 return true;
             }
         }
