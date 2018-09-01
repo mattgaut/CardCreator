@@ -31,12 +31,40 @@ public class ModifierContainerEditor : Editor {
 
         EditorGUI.indentLevel += 1;
 
+        bool needs_targeting_comparer = false;
+
         SerializedProperty battlecry_property = serializedObject.FindProperty("_battlecry_info");
         if (HasMod(Modifier.battlecry, (int)mod_mask)) {
             EditorGUILayout.PropertyField(battlecry_property, new GUIContent("Battlecry Effects"), true);
+            if (battlecry_property.FindPropertyRelative("targeted_effects").arraySize > 0) {
+                needs_targeting_comparer = true;
+            }
         } else {
             battlecry_property.FindPropertyRelative("untargeted_effects").ClearArray();
-            battlecry_property.FindPropertyRelative("untargeted_effects").ClearArray();
+            battlecry_property.FindPropertyRelative("targeted_effects").ClearArray();
+        }
+
+        SerializedProperty combo_property = serializedObject.FindProperty("_combo_info");
+        if (HasMod(Modifier.combo, (int)mod_mask)) {
+            EditorGUILayout.PropertyField(combo_property, new GUIContent("Combo Effects"), true);
+            if (combo_property.FindPropertyRelative("targeted_effects").arraySize > 0) {
+                needs_targeting_comparer = true;
+            }
+        } else {
+            combo_property.FindPropertyRelative("untargeted_effects").ClearArray();
+            combo_property.FindPropertyRelative("targeted_effects").ClearArray();
+        }
+
+        if (needs_targeting_comparer) {
+            SerializedProperty comparer = serializedObject.FindProperty("targeting_comparer");
+            EditorGUILayout.PropertyField(comparer, new GUIContent("Targeting Comparer"));
+        }
+
+        SerializedProperty deathrattle_property = serializedObject.FindProperty("_deathrattle_info");
+        if (HasMod(Modifier.deathrattle, (int)mod_mask)) {
+            EditorGUILayout.PropertyField(deathrattle_property, new GUIContent("Deathrattle Effects"), true);
+        } else {
+            combo_property.FindPropertyRelative("untargeted_effects").ClearArray();
         }
 
         SerializedProperty overload_property = serializedObject.FindProperty("_overload_cost");
