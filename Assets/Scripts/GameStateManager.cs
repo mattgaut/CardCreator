@@ -75,6 +75,7 @@ public class GameStateManager : MonoBehaviour {
             AddToStack(spell);
             AddTriggersToStack(trigger_manager.GetTriggers(new BeforeSpellTriggerInfo(spell)));
             ResolveStack();
+            spell.controller.NotePlayedCard();
             MoveCard(spell, spell.controller.graveyard);
         }
     }
@@ -223,16 +224,28 @@ public class GameStateManager : MonoBehaviour {
     void ResolveCreature(Creature c, int position) {
         MoveCard(c, c.controller.stack);
         AddToStack(c);
-        // If there are battlecry effects Add them to stack 
-        if (c.mods.HasMod(Modifier.battlecry)) {
-            // Lock position in field to save space for creature
-            c.controller.field.AddLock();
-
+        bool has_combo = c.mods.HasMod(Modifier.combo) && c.controller.combo_active;
+        bool has_battlecry = c.mods.HasMod(Modifier.battlecry);
+        // If there are battlecry or combo effects Add them to stack 
+        if (has_combo && has_battlecry) {
+            // Dont add Battlecry if it is replaced
+            if (!c.mods.combo_info.replaces_other_effects) {
+                AddToStack(c.mods.battlecry_info);
+            }
+            AddToStack(c.mods.combo_info);
+        } else if (has_combo) {
+            AddToStack(c.mods.combo_info);
+        } else if (has_battlecry) {
             AddToStack(c.mods.battlecry_info);
-
-            c.controller.field.RemoveLock();
         }
+
+        // Lock a position in field to save space for creature
+        c.controller.field.AddLock();
+
         ResolveStack();
+
+        c.controller.field.RemoveLock();
+
         MoveCard(c, c.controller.field, position);
 
         c.NoteSummon();
@@ -240,6 +253,7 @@ public class GameStateManager : MonoBehaviour {
             AddToStack(ta);
         }
         ResolveStack();
+        c.controller.NotePlayedCard();
     }
 
     public void MoveCard(Card c, CardContainer to) {
