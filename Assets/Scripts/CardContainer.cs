@@ -11,6 +11,8 @@ public class CardContainer : MonoBehaviour {
     [SerializeField] bool _visible, _hidden_to_opponent;
     [SerializeField] List<Card> contained_cards;
 
+    int locked_places;
+
     public Zone zone {
         get { return _zone; }
     }
@@ -19,7 +21,7 @@ public class CardContainer : MonoBehaviour {
         get { return contained_cards.Count; }
     }
     public bool full {
-        get { return has_max && count >= max_cards; }
+        get { return has_max && count + locked_places >= max_cards; }
     }
 
 
@@ -113,6 +115,22 @@ public class CardContainer : MonoBehaviour {
                 return null;
             }  
         }
+    }
+
+    // Used to reserve spots in the container
+    public bool AddLock() {
+        if (full) {
+            return false;
+        }
+        locked_places++;
+        return true;
+    }
+    public bool RemoveLock() {
+        if (locked_places== 0) {
+            return false;
+        }
+        locked_places--;
+        return true;
     }
 }
 
