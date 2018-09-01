@@ -13,7 +13,7 @@ public class CompareEntityEditor : PropertyDrawer {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         EditorGUI.BeginProperty(position, label, property);
 
-        property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, "Entity Comparer");
+        property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, label.text);
         if (property.isExpanded) {
             EditorGUI.indentLevel += 1;
 
