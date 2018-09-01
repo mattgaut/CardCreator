@@ -51,6 +51,10 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public bool dead { get { return current_health <= 0; } }
 
+    public int cards_played_this_turn { get; private set; }
+
+    public bool combo_active { get { return cards_played_this_turn > 0; } }
+
     public Player player {
         get { return this; }
     }
@@ -91,6 +95,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         ResetAttacksTaken();
         AddOneMaxMana();
         FillMana();
+
+        cards_played_this_turn = 0;
 
         frozen = false;
     }
@@ -221,5 +227,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
             }
         }
         return spell_power;
+    }
+
+    public void NotePlayedCard() {
+        cards_played_this_turn++;
     }
 }
