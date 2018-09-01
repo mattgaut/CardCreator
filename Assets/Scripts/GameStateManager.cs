@@ -97,13 +97,24 @@ public class GameStateManager : MonoBehaviour {
 
     public void PlayCreatureWithTargetFromHand(Creature c, int position, IEntity target) {
         // Make sure creature needs a target and can target the intended target
-        if (c.mods.battlecry_info.needs_target) {
+        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target) {
             if (!target.CanBeTargeted(c)) {
                 return;
             }
             if (!c.mods.battlecry_info.SetTarget(target)) {
                 return;
             }
+        } else {
+            return;
+        }
+
+        if (c.mods.HasMod(Modifier.combo) && c.mods.combo_info.needs_target) {
+            if (!target.CanBeTargeted(c)) {
+                return;
+            }
+            if (!c.mods.combo_info.SetTarget(target)) {
+                return;
+            }            
         } else {
             return;
         }

@@ -17,6 +17,8 @@ public class ModifierContainer : MonoBehaviour {
     [SerializeField] protected int _overload_cost;
     [SerializeField] protected int _spellpower_amount;
 
+    [SerializeField] CompareEntity targeting_comparer;
+
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
     }
@@ -62,6 +64,10 @@ public class ModifierContainer : MonoBehaviour {
         }
         if (battlecry_info != null) {
             battlecry_info.SetSource(GetComponent<Card>());
+            battlecry_info.SetTargetingComparer(targeting_comparer);
+        }
+        if (combo_info != null) {
+            combo_info.SetTargetingComparer(targeting_comparer);
         }
     }
 }
@@ -70,7 +76,7 @@ public class ModifierContainer : MonoBehaviour {
 public class Battlecry : IStackEffect, ITargets {
     [SerializeField] List<UntargetedEffect> untargeted_effects;
     [SerializeField] List<TargetedEffect> targeted_effects;
-    [SerializeField] CompareEntity _targeting_comparer;
+    CompareEntity _targeting_comparer;
     Card source;
 
     public CompareEntity targeting_comparer {
