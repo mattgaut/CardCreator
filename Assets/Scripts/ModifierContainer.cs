@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload, spellpower }
+public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload, spellpower, deathrattle, combo }
 
 [RequireComponent(typeof(Card))]
 public class ModifierContainer : MonoBehaviour {
@@ -12,11 +12,15 @@ public class ModifierContainer : MonoBehaviour {
     protected List<Modifier> buffed_mods;
 
     [SerializeField] Battlecry _battlecry_info;
+    [SerializeField] Deathrattle _deathrattle_info;
     [SerializeField] protected int _overload_cost;
     [SerializeField] protected int _spellpower_amount;
 
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
+    }
+    public Deathrattle deathrattle_info {
+        get { return _deathrattle_info; }
     }
     public int overload_cost {
         get { return _overload_cost; }
@@ -102,6 +106,22 @@ public class Battlecry : IStackEffect, ITargets {
         for (int i = 0; i < targeted_effects.Count; i++) {
             if (targeted_effects[i].has_target) targeted_effects[i].Resolve(source);
         }
+        for (int i = 0; i < untargeted_effects.Count; i++) {
+            untargeted_effects[i].Resolve(source);
+        }
+    }
+}
+
+[System.Serializable]
+public class Deathrattle : IStackEffect {
+    [SerializeField] List<UntargetedEffect> untargeted_effects;
+    Card source;
+
+    public void SetSource(Card source) {
+        this.source = source;
+    }
+
+    public void Resolve() {
         for (int i = 0; i < untargeted_effects.Count; i++) {
             untargeted_effects[i].Resolve(source);
         }
