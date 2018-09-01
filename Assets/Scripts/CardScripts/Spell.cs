@@ -46,7 +46,7 @@ public class Spell : Card, ITargets {
     }
 
     public override int DealDamage(IDamageable target, int damage) {
-        return base.DealDamage(target, mods.HasMod(Modifier.spellpower) ? damage + mods.spellpower_amount : damage);
+        return base.DealDamage(target, damage + controller.TotalSpellPower());
     }
 
     bool NeedsTarget() {
