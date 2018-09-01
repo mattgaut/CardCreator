@@ -7,7 +7,7 @@ public class DamageTarget : TargetedEffect {
     protected override void Resolve(Card source, IEntity target) {
         IDamageable damageable = target as IDamageable;
         if (damageable != null) {
-            source.controller.DealDamage(damageable, damage);
+            source.DealDamage(damageable, damage);
         }
     }
 }

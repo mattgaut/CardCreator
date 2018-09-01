@@ -9,7 +9,7 @@ public class DamageOpponents : UntargetedEffect {
         players.Remove(source.controller);
 
         foreach (IDamageable d in players) {
-            source.controller.DealDamage(d, damage);
+            source.DealDamage(d, damage);
         }
     }
 }
