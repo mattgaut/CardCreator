@@ -212,4 +212,14 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public CardContainer GetContainer(Zone z) {
         return card_containers[z];
     }
+
+    public int TotalSpellPower() {
+        int spell_power = 0;
+        foreach (Card card in field.cards) {
+            if (card.mods.HasMod(Modifier.spellpower)) {
+                spell_power += card.mods.spellpower_amount;
+            }
+        }
+        return spell_power;
+    }
 }
