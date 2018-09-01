@@ -12,12 +12,16 @@ public class ModifierContainer : MonoBehaviour {
     protected List<Modifier> buffed_mods;
 
     [SerializeField] Battlecry _battlecry_info;
+    [SerializeField] Combo _combo_info;
     [SerializeField] Deathrattle _deathrattle_info;
     [SerializeField] protected int _overload_cost;
     [SerializeField] protected int _spellpower_amount;
 
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
+    }
+    public Combo combo_info {
+        get { return combo_info; }
     }
     public Deathrattle deathrattle_info {
         get { return _deathrattle_info; }
@@ -125,5 +129,14 @@ public class Deathrattle : IStackEffect {
         for (int i = 0; i < untargeted_effects.Count; i++) {
             untargeted_effects[i].Resolve(source);
         }
+    }
+}
+
+[System.Serializable]
+public class Combo : Battlecry {
+    [SerializeField] bool _replaces_other_effects;
+
+    public bool replaces_other_effecs {
+        get { return _replaces_other_effects; }
     }
 }
