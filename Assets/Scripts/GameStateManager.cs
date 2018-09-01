@@ -82,11 +82,22 @@ public class GameStateManager : MonoBehaviour {
 
     public void PlayCreatureFromHand(Creature c, int position) {
         // Make sure creature can be played without target
-        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target) {
+        bool combo_active = c.controller.combo_active && c.mods.HasMod(Modifier.combo);
+        if (combo_active && c.mods.combo_info.needs_target) {
+            // Check if target is set successfully
+            if (TargetExists(c, c.mods.combo_info)) {
+                return;
+            }
+        }
+        // Battlecry only relevant if not replaced by combo
+        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target &&
+            (!combo_active || !c.mods.combo_info.replaces_other_effects)) {
+            // Check if target is set Successfully
             if (TargetExists(c, c.mods.battlecry_info)) {
                 return;
             }
         }
+
         if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
             if (c.mods.HasMod(Modifier.overload)) {
                 c.controller.LockManaCrystals(c.mods.overload_cost);
@@ -97,26 +108,23 @@ public class GameStateManager : MonoBehaviour {
 
     public void PlayCreatureWithTargetFromHand(Creature c, int position, IEntity target) {
         // Make sure creature needs a target and can target the intended target
-        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target) {
-            if (!target.CanBeTargeted(c)) {
-                return;
-            }
+        if (!target.CanBeTargeted(c)) {
+            return;
+        }
+        bool combo_active = c.controller.combo_active && c.mods.HasMod(Modifier.combo);
+        if (combo_active && c.mods.combo_info.needs_target) {
+            // Check if target is set successfully
             if (!c.mods.battlecry_info.SetTarget(target)) {
                 return;
             }
-        } else {
-            return;
         }
-
-        if (c.mods.HasMod(Modifier.combo) && c.mods.combo_info.needs_target) {
-            if (!target.CanBeTargeted(c)) {
+        // Battlecry only relevant if not replaced by combo
+        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target && 
+            (!combo_active || !c.mods.combo_info.replaces_other_effects)) {
+            // Check if target is set Successfully
+            if (!c.mods.battlecry_info.SetTarget(target)) {
                 return;
             }
-            if (!c.mods.combo_info.SetTarget(target)) {
-                return;
-            }            
-        } else {
-            return;
         }
 
         if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
