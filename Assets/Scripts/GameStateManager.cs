@@ -80,6 +80,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void PlayCreatureFromHand(Creature c, int position) {
+        // Make sure creature can be played without target
         if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target) {
             if (TargetExists(c, c.mods.battlecry_info)) {
                 return;
@@ -89,23 +90,12 @@ public class GameStateManager : MonoBehaviour {
             if (c.mods.HasMod(Modifier.overload)) {
                 c.controller.LockManaCrystals(c.mods.overload_cost);
             }
-            MoveCard(c, c.controller.stack);
-            AddToStack(c);
-            if (c.mods.HasMod(Modifier.battlecry)) {
-                AddToStack(c.mods.battlecry_info);
-            }
-            ResolveStack();
-            MoveCard(c, c.controller.field, position);
-        
-            c.NoteSummon();
-            foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
-                AddToStack(ta);
-            }
-            ResolveStack();
+            ResolveCreature(c, position);
         }
     }
 
     public void PlayCreatureWithTargetFromHand(Creature c, int position, IEntity target) {
+        // Make sure creature needs a target and can target the intended target
         if (c.mods.battlecry_info.needs_target) {
             if (!target.CanBeTargeted(c)) {
                 return;
@@ -121,19 +111,7 @@ public class GameStateManager : MonoBehaviour {
             if (c.mods.HasMod(Modifier.overload)) {
                 c.controller.LockManaCrystals(c.mods.overload_cost);
             }
-            MoveCard(c, c.controller.stack);
-            AddToStack(c);
-            if (c.mods.HasMod(Modifier.battlecry)) {
-                AddToStack(c.mods.battlecry_info);
-            }
-            ResolveStack();
-            MoveCard(c, c.controller.field, position);
-
-            c.NoteSummon();
-            foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
-                AddToStack(ta);
-            }
-            ResolveStack();
+            ResolveCreature(c, position);
         }
     }
 
@@ -204,6 +182,11 @@ public class GameStateManager : MonoBehaviour {
             if (dead_creatures.Count > 0) {
                 for (int i = 0; i < dead_creatures.Count; i++) {
                     MoveCard(dead_creatures[i], dead_creatures[i].controller.graveyard);
+
+                    // After Creature is move to Graveyard Add Deathrattle effects to stack
+                    if (dead_creatures[i].mods.HasMod(Modifier.deathrattle)) {
+                        AddToStack(dead_creatures[i].mods.deathrattle_info);
+                    }
                 }
                 change_made = true;
             }
@@ -235,6 +218,28 @@ public class GameStateManager : MonoBehaviour {
             static_ability_manager.SubscribeStaticAbility(sa);
         }
         static_ability_manager.AddCardToAbilities(c);
+    }
+
+    void ResolveCreature(Creature c, int position) {
+        MoveCard(c, c.controller.stack);
+        AddToStack(c);
+        // If there are battlecry effects Add them to stack 
+        if (c.mods.HasMod(Modifier.battlecry)) {
+            // Lock position in field to save space for creature
+            c.controller.field.AddLock();
+
+            AddToStack(c.mods.battlecry_info);
+
+            c.controller.field.RemoveLock();
+        }
+        ResolveStack();
+        MoveCard(c, c.controller.field, position);
+
+        c.NoteSummon();
+        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
+            AddToStack(ta);
+        }
+        ResolveStack();
     }
 
     public void MoveCard(Card c, CardContainer to) {
