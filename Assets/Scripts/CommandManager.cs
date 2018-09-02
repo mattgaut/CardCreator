@@ -97,7 +97,7 @@ public class PlayTagetedCreatureCommand : PlayCreatureCommand {
     }
 
     public override bool ValidateCommand() {
-        return base.ValidateCommand() && to_play.mods.battlecry_info.CanTarget(target) && target.CanBeTargeted(to_play);
+        return base.ValidateCommand() && to_play.mods.CanTarget(target) && target.CanBeTargeted(to_play);
     }
 }
 
@@ -115,6 +115,38 @@ public class PlayTargetedSpellCommand : PlaySpellCommand {
 
     public override bool ValidateCommand() {
         return base.ValidateCommand() && to_play.CanTarget(target) && target.CanBeTargeted(to_play);
+    }
+}
+
+public class PlayWeaponCommand : Command {
+    protected Weapon weapon;
+
+    public PlayWeaponCommand(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.PlayWeaponFromHand(weapon);
+    }
+
+    public override bool ValidateCommand() {
+        return weapon.controller.current_mana >= weapon.mana_cost;
+    }
+}
+
+public class PlayWeaponWithTargetCommand : PlayWeaponCommand {
+    IEntity target;
+
+    public PlayWeaponWithTargetCommand(Weapon weapon, IEntity target) : base(weapon) {
+        this.target = target;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.PlayWeaponWithTargetFromHand(weapon, target);
+    }
+
+    public override bool ValidateCommand() {
+        return base.ValidateCommand() && weapon.mods.CanTarget(target) && target.CanBeTargeted(weapon);
     }
 }
 
