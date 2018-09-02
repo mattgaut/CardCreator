@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Card), typeof(Collider), typeof(CardDisplay))]
-public class CardController : MonoBehaviour, IClickable {
+public abstract class CardController : MonoBehaviour, IClickable {
 
 
     [SerializeField] protected Collider box;
@@ -33,9 +33,7 @@ public class CardController : MonoBehaviour, IClickable {
         }
     }
 
-    public virtual void OnClick() {
-        card.controller.command_manager.AddCommand(new PlayCardCommand(card));
-    }
+    public abstract void OnClick();
 
     protected virtual void HideCard() {
         display.HideCard();

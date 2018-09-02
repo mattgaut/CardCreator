@@ -54,23 +54,8 @@ public abstract class Command {
     public virtual void DisplayInvalid() { }
 }
 
-public class PlayCardCommand : Command {
-    Card to_play;
-    public PlayCardCommand(Card c) {
-        to_play = c;
-    }
-
-    public override void ResolveCommand() {
-        GameStateManager.instance.PlayCardFromHand(to_play);
-    }
-
-    public override bool ValidateCommand() {
-        return to_play.controller.current_mana >= to_play.mana_cost;
-    }
-}
-
 public class PlaySpellCommand : Command {
-    Spell to_play;
+    protected Spell to_play;
     public PlaySpellCommand(Spell c) {
         to_play = c;
     }
@@ -121,8 +106,7 @@ public class PlayTagetedCreatureCommand : Command {
     }
 }
 
-public class PlayTargetedSpellCommand : PlayCardCommand {
-    Spell to_play;
+public class PlayTargetedSpellCommand : PlaySpellCommand {
     IEntity target;
     public PlayTargetedSpellCommand(Spell to_play, IEntity target) : base(to_play) {
         this.to_play = to_play;

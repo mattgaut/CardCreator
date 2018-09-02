@@ -56,83 +56,75 @@ public class GameStateManager : MonoBehaviour {
         timed_effect_manager.EndEffects(TimePoint.end_of_turn);
     }
 
-    public void PlayCardFromHand(Card c) {
-        if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
-            MoveCard(c, c.controller.stack);
-            AddToStack(c);
-            ResolveStack();
-            MoveCard(c, c.controller.graveyard);
-        }
-    }
-
     public void PlaySpellFromHand(Spell spell) {
-        if (spell.controller.hand.ContainsCard(spell) && spell.controller.SpendMana(spell.mana_cost)) {
-            if (spell.mods.HasMod(Modifier.overload)) {
-                spell.controller.LockManaCrystals(spell.mods.overload_cost);
-            }
-            MoveCard(spell, spell.controller.stack);
-            AddTriggersToStack(trigger_manager.GetTriggers(new AfterSpellTriggerInfo(spell)));
-            AddToStack(spell);
-            AddTriggersToStack(trigger_manager.GetTriggers(new BeforeSpellTriggerInfo(spell)));
-            ResolveStack();
-            spell.controller.NotePlayedCard();
-            MoveCard(spell, spell.controller.graveyard);
-        }
-    }
-
-    public void PlayCreatureFromHand(Creature c, int position) {
-        // Make sure creature can be played without target
-        bool combo_active = c.controller.combo_active && c.mods.HasMod(Modifier.combo);
-        if (combo_active && c.mods.combo_info.needs_target) {
-            // Check if target is set successfully
-            if (TargetExists(c, c.mods.combo_info)) {
-                return;
-            }
-        }
-        // Battlecry only relevant if not replaced by combo
-        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target &&
-            (!combo_active || !c.mods.combo_info.replaces_other_effects)) {
-            // Check if target is set Successfully
-            if (TargetExists(c, c.mods.battlecry_info)) {
-                return;
-            }
-        }
-
-        if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
-            if (c.mods.HasMod(Modifier.overload)) {
-                c.controller.LockManaCrystals(c.mods.overload_cost);
-            }
-            ResolveCreature(c, position);
-        }
-    }
-
-    public void PlayCreatureWithTargetFromHand(Creature c, int position, IEntity target) {
-        // Make sure creature needs a target and can target the intended target
-        if (!target.CanBeTargeted(c)) {
+        if (!TryPlayCard(spell)) {
             return;
         }
-        bool combo_active = c.controller.combo_active && c.mods.HasMod(Modifier.combo);
-        if (combo_active && c.mods.combo_info.needs_target) {
-            // Check if target is set successfully
-            if (!c.mods.battlecry_info.SetTarget(target)) {
-                return;
-            }
+        MoveCard(spell, spell.controller.stack);
+
+        AddTriggersToStack(trigger_manager.GetTriggers(new AfterSpellTriggerInfo(spell)));
+
+        AddToStack(spell);
+
+        AddTriggersToStack(trigger_manager.GetTriggers(new BeforeSpellTriggerInfo(spell)));
+
+        ResolveStack();
+
+        spell.controller.NotePlayedCard();
+
+        MoveCard(spell, spell.controller.graveyard);
+
+        ResolveStack();
+    }
+
+    public void PlayWeaponFromHand(Weapon weapon) {
+        if (TargetNecessary(weapon)) {
+            return;
         }
-        // Battlecry only relevant if not replaced by combo
-        if (c.mods.HasMod(Modifier.battlecry) && c.mods.battlecry_info.needs_target && 
-            (!combo_active || !c.mods.combo_info.replaces_other_effects)) {
-            // Check if target is set Successfully
-            if (!c.mods.battlecry_info.SetTarget(target)) {
-                return;
-            }
+        if (!TryPlayCard(weapon)) {
+            return;
         }
 
-        if (c.controller.hand.ContainsCard(c) && c.controller.SpendMana(c.mana_cost)) {
-            if (c.mods.HasMod(Modifier.overload)) {
-                c.controller.LockManaCrystals(c.mods.overload_cost);
-            }
-            ResolveCreature(c, position);
+        ResolveWeapon(weapon);
+    }
+
+    public void PlayWeaponWithTargetFromHand(Weapon weapon, IEntity target) {
+        // Make sure creature needs a target and can target the intended target
+        if (!TrySetTarget(weapon, target)) {
+            return;
         }
+
+        if (!TryPlayCard(weapon)) {
+            return;
+        }
+
+        ResolveWeapon(weapon);
+    }
+
+    public void PlayCreatureFromHand(Creature creature, int position) {
+        // Make sure creature can be played without target
+        if (TargetNecessary(creature)) {
+            return;
+        }
+        
+        if (!TryPlayCard(creature)) {
+            return;
+        }
+
+        ResolveCreature(creature, position);
+    }
+
+    public void PlayCreatureWithTargetFromHand(Creature creature, int position, IEntity target) {
+        // Make sure creature needs a target and can target the intended target
+        if (!TrySetTarget(creature, target)) {
+            return;
+        }
+
+        if (!TryPlayCard(creature)) {
+            return;
+        }
+
+        ResolveCreature(creature, position);        
     }
 
     public Card CreateToken(CardContainer initial_container, Card card_to_create, int position = -1) {
@@ -240,39 +232,111 @@ public class GameStateManager : MonoBehaviour {
         static_ability_manager.AddCardToAbilities(c);
     }
 
-    void ResolveCreature(Creature c, int position) {
-        MoveCard(c, c.controller.stack);
-        AddToStack(c);
-        bool has_combo = c.mods.HasMod(Modifier.combo) && c.controller.combo_active;
-        bool has_battlecry = c.mods.HasMod(Modifier.battlecry);
-        // If there are battlecry or combo effects Add them to stack 
-        if (has_combo && has_battlecry) {
-            // Dont add Battlecry if it is replaced
-            if (!c.mods.combo_info.replaces_other_effects) {
-                AddToStack(c.mods.battlecry_info);
+    bool TryPlayCard(Card card) {
+        if (card.controller.hand.ContainsCard(card) && card.controller.SpendMana(card.mana_cost)) {
+            if (card.mods.HasMod(Modifier.overload)) {
+                card.controller.LockManaCrystals(card.mods.overload_cost);
             }
-            AddToStack(c.mods.combo_info);
-        } else if (has_combo) {
-            AddToStack(c.mods.combo_info);
-        } else if (has_battlecry) {
-            AddToStack(c.mods.battlecry_info);
+            return true;
         }
+        return false;
+    }
+
+    void ResolveCreature(Creature creature, int position) {
+        MoveCard(creature, creature.controller.stack);
+
+        AddToStack(creature);
+
+        AddBattlecryAndComboEffectsToStack(creature);
 
         // Lock a position in field to save space for creature
-        c.controller.field.AddLock();
+        creature.controller.field.AddLock();
 
         ResolveStack();
 
-        c.controller.field.RemoveLock();
+        creature.controller.field.RemoveLock();
 
-        MoveCard(c, c.controller.field, position);
+        MoveCard(creature, creature.controller.field, position);
 
-        c.NoteSummon();
-        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(c))) {
+        creature.NoteSummon();
+        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(creature))) {
             AddToStack(ta);
         }
         ResolveStack();
-        c.controller.NotePlayedCard();
+        creature.controller.NotePlayedCard();
+    }
+
+    void ResolveWeapon(Weapon weapon) {
+        MoveCard(weapon, weapon.controller.stack);
+        AddToStack(weapon);
+
+        AddBattlecryAndComboEffectsToStack(weapon);
+
+        ResolveStack();
+        
+        MoveCard(weapon, weapon.controller.weapon);
+
+        ResolveStack();
+        weapon.controller.NotePlayedCard();
+    }
+
+    void AddBattlecryAndComboEffectsToStack(Card card) {
+        bool has_combo = card.mods.HasMod(Modifier.combo) && card.controller.combo_active;
+        bool has_battlecry = card.mods.HasMod(Modifier.battlecry);
+        // If there are battlecry or combo effects Add them to stack 
+        if (has_combo && has_battlecry) {
+            // Dont add Battlecry if it is replaced
+            if (!card.mods.combo_info.replaces_other_effects) {
+                AddToStack(card.mods.battlecry_info);
+            }
+            AddToStack(card.mods.combo_info);
+        } else if (has_combo) {
+            AddToStack(card.mods.combo_info);
+        } else if (has_battlecry) {
+            AddToStack(card.mods.battlecry_info);
+        }
+    }
+
+    bool TargetNecessary(Card card) {
+        bool combo_active = card.controller.combo_active && card.mods.HasMod(Modifier.combo);
+        if (combo_active && card.mods.combo_info.needs_target) {
+            // Check if target exists
+            if (TargetExists(card, card.mods.combo_info)) {
+                return true;
+            }
+        }
+        // Battlecry only relevant if not replaced by combo
+        if (card.mods.HasMod(Modifier.battlecry) && card.mods.battlecry_info.needs_target &&
+            (!combo_active || !card.mods.combo_info.replaces_other_effects)) {
+            // Check if target Exists
+            if (TargetExists(card, card.mods.battlecry_info)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool TrySetTarget(Card card, IEntity target) {
+        if (!target.CanBeTargeted(card)) {
+            return false;
+        }
+        bool combo_active = card.controller.combo_active && card.mods.HasMod(Modifier.combo);
+        if (combo_active && card.mods.combo_info.needs_target) {
+            // Check if target is set successfully
+            if (!card.mods.battlecry_info.SetTarget(target)) {
+                return false;
+            }
+        }
+        // Battlecry only relevant if not replaced by combo
+        if (card.mods.HasMod(Modifier.battlecry) && card.mods.battlecry_info.needs_target &&
+            (!combo_active || !card.mods.combo_info.replaces_other_effects)) {
+            // Check if target is set Successfully
+            if (!card.mods.battlecry_info.SetTarget(target)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void MoveCard(Card c, CardContainer to) {
