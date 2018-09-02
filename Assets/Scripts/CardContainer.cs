@@ -134,4 +134,4 @@ public class CardContainer : MonoBehaviour {
     }
 }
 
-public enum Zone { field = 1, hand = 2, discard = 4, graveyard = 8, deck = 16, secrets = 32, stack = 64 }
+public enum Zone { field = 1, hand = 2, discard = 4, graveyard = 8, deck = 16, secrets = 32, stack = 64, weapon = 128 }
