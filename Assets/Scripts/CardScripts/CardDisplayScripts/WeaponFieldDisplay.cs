@@ -10,7 +10,7 @@ public class WeaponFieldDisplay : CardDisplay {
     [SerializeField] Text attack, durability;
 
     public override void UpdateDisplay() {
-        attack.text = "" + weapon.attack;
+        attack.text = "" + weapon.attack.value;
         durability.text = "" + weapon.durability.current_value;
     }
 

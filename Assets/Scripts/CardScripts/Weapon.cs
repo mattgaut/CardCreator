@@ -19,6 +19,6 @@ public class Weapon : Card {
     }
 
     public override void Resolve() {
-        
+        durability.current_value = durability;
     }
 }

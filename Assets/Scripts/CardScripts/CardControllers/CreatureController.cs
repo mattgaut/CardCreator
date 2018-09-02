@@ -59,7 +59,7 @@ public class CreatureController : CardController {
             }
         } else if (card.container == card.controller.hand) {
             if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {
-                if (creature.mods.HasMod(Modifier.battlecry) && creature.mods.battlecry_info.needs_target && GameStateManager.instance.TargetExists(creature, creature.mods.battlecry_info)) {
+                if (creature.mods.NeedsTarget() && GameStateManager.instance.TargetExists(creature, creature.mods)) {
                     StartCoroutine(TargetingCoroutine(FindPositionInField(position_dragged_to)));
                 } else {
                     card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));

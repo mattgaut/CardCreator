@@ -56,7 +56,7 @@ public class ModifierContainerEditor : Editor {
         }
 
         if (needs_targeting_comparer) {
-            SerializedProperty comparer = serializedObject.FindProperty("targeting_comparer");
+            SerializedProperty comparer = serializedObject.FindProperty("_targeting_comparer");
             EditorGUILayout.PropertyField(comparer, new GUIContent("Targeting Comparer"));
         }
 

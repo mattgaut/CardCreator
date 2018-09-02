@@ -5,7 +5,7 @@ using UnityEngine;
 public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload, spellpower, deathrattle, combo }
 
 [RequireComponent(typeof(Card))]
-public class ModifierContainer : MonoBehaviour {
+public class ModifierContainer : MonoBehaviour, ITargets {
 
     [SerializeField] protected List<Modifier> base_mods;
     protected List<Modifier> unavailable_mods;
@@ -17,7 +17,7 @@ public class ModifierContainer : MonoBehaviour {
     [SerializeField] protected int _overload_cost;
     [SerializeField] protected int _spellpower_amount;
 
-    [SerializeField] CompareEntity targeting_comparer;
+    [SerializeField] CompareEntity _targeting_comparer;
 
     Card source;
 
@@ -25,7 +25,7 @@ public class ModifierContainer : MonoBehaviour {
         get { return _battlecry_info; }
     }
     public Combo combo_info {
-        get { return combo_info; }
+        get { return _combo_info; }
     }
     public Deathrattle deathrattle_info {
         get { return _deathrattle_info; }
@@ -35,6 +35,12 @@ public class ModifierContainer : MonoBehaviour {
     }
     public int spellpower_amount {
         get { return _spellpower_amount; }
+    }
+
+    public CompareEntity targeting_comparer {
+        get {
+            return _targeting_comparer;
+        }
     }
 
     public bool HasMod(Modifier mod) {
@@ -56,6 +62,17 @@ public class ModifierContainer : MonoBehaviour {
     public void RemoveAllMods() {
         buffed_mods.Clear();
         base_mods.Clear();
+    }
+
+    public bool NeedsTarget() {
+        if (HasMod(Modifier.battlecry) && battlecry_info.needs_target) {
+            return true;
+        }
+
+        if (HasMod(Modifier.combo) && combo_info.needs_target && source.controller.combo_active) {
+            return true;
+        }
+        return false;
     }
 
     public bool CanTarget(IEntity target) {
