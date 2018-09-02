@@ -143,7 +143,9 @@ public class Battlecry : IStackEffect, ITargets {
 
     public void Resolve() {
         for (int i = 0; i < targeted_effects.Count; i++) {
-            if (targeted_effects[i].has_target) targeted_effects[i].Resolve(source);
+            if (targeted_effects[i].has_target) {
+                targeted_effects[i].Resolve(source);
+            }
         }
         for (int i = 0; i < untargeted_effects.Count; i++) {
             untargeted_effects[i].Resolve(source);

@@ -298,6 +298,7 @@ public class GameStateManager : MonoBehaviour {
             }
             AddToStack(card.mods.combo_info);
         } else if (has_combo) {
+            Debug.Log("Combo");
             AddToStack(card.mods.combo_info);
         } else if (has_battlecry) {
             AddToStack(card.mods.battlecry_info);
@@ -330,7 +331,7 @@ public class GameStateManager : MonoBehaviour {
         bool combo_active = card.controller.combo_active && card.mods.HasMod(Modifier.combo);
         if (combo_active && card.mods.combo_info.needs_target) {
             // Check if target is set successfully
-            if (!card.mods.battlecry_info.SetTarget(target)) {
+            if (!card.mods.combo_info.SetTarget(target)) {
                 return false;
             }
         }
