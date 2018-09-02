@@ -46,10 +46,9 @@ public class CardContainer : MonoBehaviour {
         }
     }
 
-    public Card GetNext() {
-        Card c = contained_cards[0];
-        contained_cards.RemoveAt(0);
-        return c;
+    public Card TopCard() {
+        if (contained_cards.Count < 1) { return null; }
+        return contained_cards[0];
     }
 
     public bool RemoveCard(Card c) {
