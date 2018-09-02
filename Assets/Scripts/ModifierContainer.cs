@@ -19,6 +19,8 @@ public class ModifierContainer : MonoBehaviour {
 
     [SerializeField] CompareEntity targeting_comparer;
 
+    Card source;
+
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
     }
@@ -56,17 +58,23 @@ public class ModifierContainer : MonoBehaviour {
         base_mods.Clear();
     }
 
+    public bool CanTarget(IEntity target) {
+        return targeting_comparer.CompareTo(target, source);
+    }
+
     private void Awake() {
+        source = GetComponent<Card>();
         buffed_mods = new List<Modifier>();
         unavailable_mods = new List<Modifier>();
         foreach (Modifier mod in unavailable_mods) {
             RemoveMod(mod);
         }
         if (battlecry_info != null) {
-            battlecry_info.SetSource(GetComponent<Card>());
+            battlecry_info.SetSource(source);
             battlecry_info.SetTargetingComparer(targeting_comparer);
         }
         if (combo_info != null) {
+            combo_info.SetSource(source);
             combo_info.SetTargetingComparer(targeting_comparer);
         }
     }
