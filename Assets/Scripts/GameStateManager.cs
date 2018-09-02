@@ -42,7 +42,7 @@ public class GameStateManager : MonoBehaviour {
 
     public void DrawCard(Player p) {
         if (!p.hand.full) {
-            MoveCard(p.deck.GetNext(), p.hand);
+            MoveCard(p.deck.TopCard(), p.hand);
         }
     }
 
@@ -267,13 +267,20 @@ public class GameStateManager : MonoBehaviour {
     }
 
     void ResolveWeapon(Weapon weapon) {
+
         MoveCard(weapon, weapon.controller.stack);
+
         AddToStack(weapon);
 
         AddBattlecryAndComboEffectsToStack(weapon);
 
         ResolveStack();
         
+        // If A weapon is already equipped move it to the graveyard
+        if (weapon.controller.weapon.TopCard() != null) {
+            MoveCard(weapon.controller.weapon.TopCard(), weapon.controller.graveyard);
+        }
+
         MoveCard(weapon, weapon.controller.weapon);
 
         ResolveStack();
