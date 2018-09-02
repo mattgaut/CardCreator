@@ -70,8 +70,8 @@ public class PlaySpellCommand : Command {
 }
 
 public class PlayCreatureCommand : Command {
-    Creature to_play;
-    int position;
+    protected Creature to_play;
+    protected int position;
     public PlayCreatureCommand(Creature c, int position) {
         to_play = c;
         this.position = position;
@@ -86,13 +86,9 @@ public class PlayCreatureCommand : Command {
     }
 }
 
-public class PlayTagetedCreatureCommand : Command {
-    Creature to_play;
-    int position;
+public class PlayTagetedCreatureCommand : PlayCreatureCommand {
     IEntity target;
-    public PlayTagetedCreatureCommand(Creature c, int position, IEntity target) {
-        to_play = c;
-        this.position = position;
+    public PlayTagetedCreatureCommand(Creature c, int position, IEntity target) : base(c, position) {
         this.target = target;
     }
 
@@ -101,8 +97,7 @@ public class PlayTagetedCreatureCommand : Command {
     }
 
     public override bool ValidateCommand() {
-        return to_play.controller.current_mana >= to_play.mana_cost && !to_play.controller.field.full 
-            && to_play.mods.battlecry_info.CanTarget(target) && target.CanBeTargeted(to_play);
+        return base.ValidateCommand() && to_play.mods.battlecry_info.CanTarget(target) && target.CanBeTargeted(to_play);
     }
 }
 
