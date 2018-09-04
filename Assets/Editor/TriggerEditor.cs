@@ -11,6 +11,13 @@ public class TriggerEditor : PropertyDrawer {
         SerializedProperty global = property.FindPropertyRelative("_is_global");
         global.boolValue = EditorGUILayout.Toggle("Global?", global.boolValue);
 
+        // Active On Which Turns
+        SerializedProperty their_turn = property.FindPropertyRelative("_their_turn");
+        their_turn.boolValue = EditorGUILayout.Toggle("Their Turn", their_turn.boolValue);
+
+        SerializedProperty your_turn = property.FindPropertyRelative("_your_turn");
+        your_turn.boolValue = EditorGUILayout.Toggle("Their Turn", your_turn.boolValue);
+
         // Subscribed Zones
         SerializedProperty zones_property = property.FindPropertyRelative("active_zones");
         Zone zoneMask = SetZoneMask(zones_property);
