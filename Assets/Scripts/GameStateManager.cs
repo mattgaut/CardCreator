@@ -203,6 +203,28 @@ public class GameStateManager : MonoBehaviour {
                 change_made = true;
             }
 
+            List<Weapon> dead_weapons = new List<Weapon>();
+            foreach (Player p in GameManager.players) {
+                foreach (Weapon weapon in p.equip.cards) {
+                    if (weapon.durability.current_value <= 0) {
+                        dead_weapons.Add(weapon);
+                    }
+                }
+            }
+
+            if (dead_weapons.Count > 0) {
+                for (int i = 0; i < dead_weapons.Count; i++) {
+                    MoveCard(dead_weapons[i], dead_weapons[i].controller.graveyard);
+                    dead_weapons[i].controller.SetWeapon(null);
+
+                    // After Creature is move to Graveyard Add Deathrattle effects to stack
+                    if (dead_weapons[i].mods.HasMod(Modifier.deathrattle)) {
+                        AddToStack(dead_weapons[i].mods.deathrattle_info);
+                    }
+                }
+                change_made = true;
+            }
+
             // ToDo: Add Section to check static abilities are still valid
         } while (change_made);
     }
@@ -275,10 +297,11 @@ public class GameStateManager : MonoBehaviour {
         AddBattlecryAndComboEffectsToStack(weapon);
 
         ResolveStack();
-        
-        // If A weapon is already equipped move it to the graveyard
+
+        // If A weapon is already equipped move it to the graveyard       
         if (weapon.controller.equip.TopCard() != null) {
             MoveCard(weapon.controller.equip.TopCard(), weapon.controller.graveyard);
+            weapon.controller.SetWeapon(null);
         }
 
         MoveCard(weapon, weapon.controller.equip);
