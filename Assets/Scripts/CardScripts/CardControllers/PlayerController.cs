@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour, IClickable {
 
     Player player;
+
+    void Awake() {
+        player = GetComponent<Player>();
+    }
 
     public void OnClick() {
     }
