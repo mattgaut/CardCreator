@@ -24,6 +24,12 @@ public class TriggerManager : MonoBehaviour {
     public List<TriggeredAbility> GetTriggers(TriggerInfo info) {
         List<TriggeredAbility> to_return = new List<TriggeredAbility>();
         foreach (TriggeredAbility trigger in subscribed_triggers[info.type]) {
+            if (trigger.source.controller == GameManager.current_player && !trigger.on_your_turn) {
+                continue;
+            }
+            if (trigger.source.controller != GameManager.current_player && trigger.on_their_turn) {
+                continue;
+            }
             if (trigger.CheckTrigger(info)) {
                 to_return.Add(trigger);
             }
