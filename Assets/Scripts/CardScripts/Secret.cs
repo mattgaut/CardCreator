@@ -11,10 +11,10 @@ public class Secret : Card {
     }
 
     public override void Resolve() {
+
     }
 
     public override int DealDamage(IDamageable target, int damage) {
         return base.DealDamage(target, damage + controller.TotalSpellPower());
     }
-
 }

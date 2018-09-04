@@ -55,10 +55,6 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
         get { return this; }
     }
 
-    protected void Awake() {
-        abilities = GetComponent<AbilityHolder>();
-    }
-
     public abstract void Resolve();
 
     public void SetContainer(CardContainer container) {
@@ -75,6 +71,10 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
             controller.Heal(controller, damage_dealt);
         }
         return damage_dealt;
+    }
+
+    protected virtual void Awake() {
+        abilities = GetComponent<AbilityHolder>();
     }
 }
 
