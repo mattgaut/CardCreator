@@ -37,7 +37,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public CardContainer field { get { return _field; } }
     public CardContainer discard { get { return _discard; } }
     public CardContainer graveyard { get { return _graveyard; } }
-    public CardContainer weapon { get { return _weapon; } }
+    public CardContainer equip { get { return _equip; } }
 
     public Player controller { get { return this; } }
     public EntityType entity_type { get { return EntityType.player; } }
@@ -60,10 +60,14 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         get { return this; }
     }
 
+    public Weapon weapon {
+        get; private set;    
+    }
+
     Stat _attack;
 
     [SerializeField] ResourceStat _health;
-    [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets, _weapon;
+    [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets, _equip;
 
     Dictionary<Zone, CardContainer> card_containers;
 
@@ -75,7 +79,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         graveyard.SetController(this);
         stack.SetController(this);
         secrets.SetController(this);
-        weapon.SetController(this);
+        equip.SetController(this);
 
         command_manager = GetComponent<CommandManager>();
         current_health = health;
@@ -90,7 +94,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         card_containers.Add(Zone.graveyard, graveyard);
         card_containers.Add(Zone.secrets, secrets);
         card_containers.Add(Zone.stack, stack);
-        card_containers.Add(Zone.weapon, weapon);
+        card_containers.Add(Zone.equipment, equip);
     }
 
     public void NoteBeginTurn() {
@@ -184,6 +188,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public void NoteAttack() {
         attacks_taken += 1;
+        if (equip.TopCard() != null) {
+            
+        }
     }
     public void ResetAttacksTaken() {
         attacks_taken = 0;
@@ -234,5 +241,15 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public void NotePlayedCard() {
         cards_played_this_turn++;
+    }
+
+    public void SetWeapon(Weapon new_weapon) {
+        if (weapon != null) {
+            attack.RemoveBuff(weapon.attack);
+        }
+        weapon = new_weapon;
+        if (weapon != null) {
+            attack.ApplyBuff(weapon.attack);
+        }
     }
 }

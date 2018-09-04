@@ -19,7 +19,7 @@ public class WeaponController : CardController {
         if (last_container != card.container) {
             last_container = card.container;
             if (last_container != null && last_container.visible) {
-                SetFieldDisplay(last_container == card.controller.weapon);
+                SetFieldDisplay(last_container == card.controller.equip);
             } else {
                 HideCard();
             }

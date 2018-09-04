@@ -277,11 +277,12 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
         
         // If A weapon is already equipped move it to the graveyard
-        if (weapon.controller.weapon.TopCard() != null) {
-            MoveCard(weapon.controller.weapon.TopCard(), weapon.controller.graveyard);
+        if (weapon.controller.equip.TopCard() != null) {
+            MoveCard(weapon.controller.equip.TopCard(), weapon.controller.graveyard);
         }
 
-        MoveCard(weapon, weapon.controller.weapon);
+        MoveCard(weapon, weapon.controller.equip);
+        weapon.controller.SetWeapon(weapon);
 
         ResolveStack();
         weapon.controller.NotePlayedCard();
