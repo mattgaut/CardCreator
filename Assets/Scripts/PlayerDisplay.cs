@@ -8,7 +8,7 @@ public class PlayerDisplay : MonoBehaviour {
 
     Player to_display;
 
-    [SerializeField] Text health, mana;
+    [SerializeField] Text health, mana, attack;
 
 	// Use this for initialization
 	void Awake () {
@@ -19,5 +19,11 @@ public class PlayerDisplay : MonoBehaviour {
 	void Update () {
         health.text = "" + to_display.current_health;
         mana.text = "" + to_display.current_mana + " / " + to_display.max_mana;
+        if (to_display.attack > 0) {
+            attack.enabled = true;
+            attack.text = "" + to_display.attack.value;
+        } else {
+            attack.enabled = false;
+        }
     }
 }
