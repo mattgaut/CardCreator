@@ -6,9 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public abstract class TriggeredAbility : IStackEffect {
 
-
-    protected Card source;
-
     [SerializeField] bool _on_their_turn, _on_your_turn;
     [SerializeField] List<UntargetedEffect> effects;
     [SerializeField] List<Zone> active_zones;
@@ -20,6 +17,8 @@ public abstract class TriggeredAbility : IStackEffect {
     public bool is_local { get { return !_is_global; } }
     public bool on_their_turn { get { return _on_their_turn; } }
     public bool on_your_turn { get { return on_your_turn; } }
+
+    public Card source { get; protected set; }
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
