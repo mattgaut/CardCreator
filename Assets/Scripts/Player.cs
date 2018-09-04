@@ -46,6 +46,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public int attacks_per_turn { get { return 1; } }
 
+    public bool can_attack { get { return attacks_taken < attacks_per_turn && !frozen && attack > 0; } }
+
     public bool retaliate { get { return false; } }
 
     public Stat attack { get { return _attack; } }
