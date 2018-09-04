@@ -322,7 +322,6 @@ public class GameStateManager : MonoBehaviour {
             }
             AddToStack(card.mods.combo_info);
         } else if (has_combo) {
-            Debug.Log("Combo");
             AddToStack(card.mods.combo_info);
         } else if (has_battlecry) {
             AddToStack(card.mods.battlecry_info);
