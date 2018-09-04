@@ -78,4 +78,4 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     }
 }
 
-public enum CardType { Spell = 1, Creature, Weapon }
+public enum CardType { Spell = 1, Creature = 2, Weapon = 4 }
