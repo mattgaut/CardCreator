@@ -190,8 +190,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public void NoteAttack() {
         attacks_taken += 1;
-        if (equip.TopCard() != null) {
-            
+        if (weapon != null) {
+            weapon.durability.current_value -= 1;
         }
     }
     public void ResetAttacksTaken() {
