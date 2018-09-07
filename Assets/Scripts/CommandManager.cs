@@ -134,6 +134,22 @@ public class PlayWeaponCommand : Command {
     }
 }
 
+public class PlaySecretCommand : Command {
+    protected Secret secret;
+
+    public PlaySecretCommand(Secret secret) {
+        this.secret = secret;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.PlaySecretFromHand(secret);
+    }
+
+    public override bool ValidateCommand() {
+        return secret.controller.current_mana >= secret.mana_cost;
+    }
+}
+
 public class PlayWeaponWithTargetCommand : PlayWeaponCommand {
     IEntity target;
 
@@ -165,3 +181,5 @@ public class AttackCommand : Command {
         return GameStateManager.instance.CanAttack(attacker, target);
     }
 }
+
+

@@ -77,6 +77,10 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
     }
 
+    public void PlaySecretFromHand(Secret secret) {
+
+    }
+
     public void PlayWeaponFromHand(Weapon weapon) {
         if (TargetNecessary(weapon)) {
             return;
