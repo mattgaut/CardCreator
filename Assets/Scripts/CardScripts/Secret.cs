@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Secret : Card {
 
+    [SerializeField] List<UntargetedEffect> on_trigger_effects;
+    [SerializeField] TriggeredAbility trigger;
+
     public override CardType type {
         get {
             return CardType.Spell;
