@@ -57,12 +57,16 @@ public class CardCreationWindow : EditorWindow {
 
     Dictionary<Effect, bool> effect_foldouts;
     Dictionary<StaticAbility, bool> statics_foldouts;
+    Dictionary<TriggeredAbility, bool> triggered_foldouts;
+
 
     private void OnEnable() {
         resizer_style = new GUIStyle();
         resizer_style.normal.background = EditorGUIUtility.Load("icons/d_AvatarBlendBackground.png") as Texture2D;
         effect_foldouts = new Dictionary<Effect, bool>();
         statics_foldouts = new Dictionary<StaticAbility, bool>();
+        triggered_foldouts = new Dictionary<TriggeredAbility, bool>();
+
     }
 
     void OnGUI() {
@@ -182,7 +186,7 @@ public class CardCreationWindow : EditorWindow {
         bool triggered = GUILayout.Button("Triggered Ability");
 
         // Search
-        if (targeted || untargeted || _static) {
+        if (targeted || untargeted || _static || triggered) {
             EffectPopupWindow window = null;
 
             if (targeted) {
@@ -209,11 +213,15 @@ public class CardCreationWindow : EditorWindow {
         if (Event.current.type == EventType.Repaint) popup_rect = GUILayoutUtility.GetLastRect();
         EditorGUILayout.EndHorizontal();
 
+        bool foldout = EditorGUILayout.Foldout(foldout, "Effects");
         foreach (Effect e in loaded_card.GetComponents<Effect>()) {
             EffectFoldout(e);
         }
         foreach (StaticAbility sa in loaded_card.GetComponents<StaticAbility>()) {
             StaticsFoldout(sa);
+        }
+        foreach (TriggeredAbility ta in loaded_card.GetComponents<TriggeredAbility>()) {
+            TriggersFoldout(ta);
         }
 
         GUILayout.EndArea();
@@ -294,6 +302,19 @@ public class CardCreationWindow : EditorWindow {
         if (statics_foldouts[sa]) {
             EditorGUI.indentLevel += 1;
             Editor editor = Editor.CreateEditor(sa);
+            editor.OnInspectorGUI();
+            EditorGUI.indentLevel -= 1;
+        }
+    }
+
+    void TriggersFoldout(TriggeredAbility ta) {
+        if (!triggered_foldouts.ContainsKey(ta)) {
+            triggered_foldouts.Add(ta, false);
+        }
+        triggered_foldouts[ta] = EditorGUILayout.InspectorTitlebar(triggered_foldouts[ta], ta);
+        if (triggered_foldouts[ta]) {
+            EditorGUI.indentLevel += 1;
+            Editor editor = Editor.CreateEditor(ta);
             editor.OnInspectorGUI();
             EditorGUI.indentLevel -= 1;
         }
