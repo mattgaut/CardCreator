@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class AfterAttackTriggeredAbility : TriggeredAbility {
 
     [SerializeField] int damage_needed;
