@@ -12,8 +12,8 @@ public class CardCreationDisplayWindow : EditorWindow {
         card_frame = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Icons/BlankCreature.png", typeof(Texture2D));
     }
 
-    public void LoadFrame(CardType type) {
-        if (type == CardType.Creature) {
+    public void LoadFrame(CreationType type) {
+        if (type == CreationType.Creature) {
             card_frame = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Icons/BlankCreature.png", typeof(Texture2D));
         } else {
 

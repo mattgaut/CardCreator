@@ -6,6 +6,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+public enum CreationType { Creature, Spell, Weapon, Secret }
+
 public class CardCreationWindow : EditorWindow {
 
     [MenuItem("Window/Card Creator")]
@@ -14,10 +16,11 @@ public class CardCreationWindow : EditorWindow {
         CardCreationDisplayWindow ccdw = (GetWindow(typeof(CardCreationDisplayWindow)) as CardCreationDisplayWindow);
         ccw.ccdw = ccdw;
         ccdw.SetCreationWindow(ccw);
-        ccw.LoadCardType(CardType.Creature);
+        ccw.LoadCardType(CreationType.Creature);
     }
 
     public CardType card_type { get; private set; }
+    public CreationType creation_type { get; private set; }
 
     public string card_name { get; private set; }
     public Card.Class card_class { get; private set; }
@@ -36,6 +39,7 @@ public class CardCreationWindow : EditorWindow {
 
     GameObject loaded_card;
     SerializedObject card_object;
+    TriggeredAbility secret_trigger;
 
     public Rect windowRect = new Rect(100, 100, 200, 200);
 
@@ -94,15 +98,41 @@ public class CardCreationWindow : EditorWindow {
 
     }
 
-    void LoadCardType(CardType type) {
-        card_type = type;
-        if (type == CardType.Creature) {
+    void MakeWeapon() {
+        // Card Statline
+        card_attack = EditorGUILayout.IntField("Attack: ", card_attack);
+        card_health = EditorGUILayout.IntField("Durability: ", card_health);
+    }
+
+    void MakeSecret() {
+        secret_trigger = (TriggeredAbility)EditorGUILayout.ObjectField("Secret Trigger", secret_trigger, typeof(TriggeredAbility), true);
+    }
+
+    void LoadCardType(CreationType type) {
+        creation_type = type;
+        if (type == CreationType.Creature) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/CreatureTemplate.prefab", typeof(GameObject)));
             ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
             mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Creature>());
-        } else if (type == CardType.Spell) {
-
+        } else if (type == CreationType.Spell) {
+            loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/SpellTemplate.prefab", typeof(GameObject)));
+            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
+            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
+            card_object = new SerializedObject(loaded_card.GetComponent<Spell>());
+        } else if (type == CreationType.Secret) {
+            loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/SecretTemplate.prefab", typeof(GameObject)));
+            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
+            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
+            card_object = new SerializedObject(loaded_card.GetComponent<Secret>());
+        } else if (type == CreationType.Weapon) {
+            loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/WeaponTemplate.prefab", typeof(GameObject)));
+            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
+            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
+            card_object = new SerializedObject(loaded_card.GetComponent<Weapon>());
+        }
+        if (loaded_card != null) {
+            card_type = loaded_card.GetComponent<Card>().type;
         }
     }
 
@@ -122,10 +152,10 @@ public class CardCreationWindow : EditorWindow {
         EditorGUIUtility.labelWidth = 120;
 
         // Card Type
-        CardType new_type = (CardType)EditorGUILayout.EnumPopup("Card Type: ", card_type);
-        if (new_type != card_type) {
-            card_type = new_type;
-            ccdw.LoadFrame(new_type);
+        CreationType new_type = (CreationType)EditorGUILayout.EnumPopup("Card Type: ", creation_type);
+        if (new_type != creation_type) {
+            creation_type = new_type;
+            ccdw.LoadFrame(creation_type);
         }
 
         // Card Name
@@ -151,13 +181,19 @@ public class CardCreationWindow : EditorWindow {
         // Card Cost
         card_cost = EditorGUILayout.IntField("Card Cost: ", card_cost);
 
-        if (card_type == CardType.Creature) {
+        if (creation_type == CreationType.Creature) {
             MakeCreatue();
-        } else if (card_type == CardType.Spell) {
+        } else if (creation_type == CreationType.Spell) {
             MakeSpell();
+        } else if (creation_type == CreationType.Secret) {
+            MakeSecret();
+        } else if (creation_type == CreationType.Weapon) {
+            MakeWeapon();
         }
 
-        DisplayAbilities();
+        if (creation_type != CreationType.Secret) {
+            DisplayAbilities();
+        }
         DisplayMods();
 
         // Save Card
@@ -273,9 +309,14 @@ public class CardCreationWindow : EditorWindow {
         card_object.FindProperty("_card_text").stringValue = card_text;
         card_object.FindProperty("_mana_cost").FindPropertyRelative("_base_value").intValue = card_cost;
         card_object.FindProperty("_art").objectReferenceValue = card_art;
-        if (card_type == CardType.Creature) {
+        if (creation_type == CreationType.Creature) {
             card_object.FindProperty("_attack").FindPropertyRelative("_base_value").intValue = card_attack;
             card_object.FindProperty("_health").FindPropertyRelative("_base_value").intValue = card_health;
+        } else if (creation_type == CreationType.Weapon) {
+            card_object.FindProperty("_attack").FindPropertyRelative("_base_value").intValue = card_attack;
+            card_object.FindProperty("_durability").FindPropertyRelative("_base_value").intValue = card_health;
+        } else if (creation_type == CreationType.Secret) {
+            card_object.FindProperty("trigger").objectReferenceValue = secret_trigger;
         }
 
         card_object.ApplyModifiedProperties();
