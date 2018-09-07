@@ -109,6 +109,9 @@ public class CardCreationWindow : EditorWindow {
     }
 
     void LoadCardType(CreationType type) {
+        if (loaded_card != null) {
+            DestroyImmediate(loaded_card);
+        }
         creation_type = type;
         if (type == CreationType.Creature) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/CreatureTemplate.prefab", typeof(GameObject)));
@@ -156,6 +159,7 @@ public class CardCreationWindow : EditorWindow {
         if (new_type != creation_type) {
             creation_type = new_type;
             ccdw.LoadFrame(creation_type);
+            LoadCardType(creation_type);
         }
 
         // Card Name
