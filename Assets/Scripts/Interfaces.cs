@@ -88,4 +88,3 @@ public interface ICombatant : IDamageable, IDamages {
         get;
     }
 }
-

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class TriggeredAbility : IStackEffect {
+public abstract class TriggeredAbility : MonoBehaviour, IStackEffect {
 
     [SerializeField] bool _on_their_turn, _on_your_turn;
     [SerializeField] List<UntargetedEffect> effects;
