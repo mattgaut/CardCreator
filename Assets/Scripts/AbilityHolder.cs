@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[RequireComponent(typeof(Card))]
 public class AbilityHolder : MonoBehaviour {
 
     [SerializeField] List<StaticAbility> static_abilities;
