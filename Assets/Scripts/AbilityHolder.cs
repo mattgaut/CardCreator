@@ -9,10 +9,7 @@ public class AbilityHolder : MonoBehaviour {
     [SerializeField] List<StaticAbility> static_abilities;
 
     // Triggers
-    [SerializeField] List<ETBTriggeredAbility> etb_triggered_abilities;
-    [SerializeField] List<AfterAttackTriggeredAbility> after_attack_triggered_abilities;
-    [SerializeField] List<BeforeSpellTriggeredAbility> before_spell_triggered_abilities;
-    [SerializeField] List<AfterSpellTriggeredAbility> after_spell_triggered_abilities;
+    [SerializeField] List<TriggeredAbility> triggered_abilities;
 
     List<TriggeredAbility> global_triggered_abilities;
     List<TriggeredAbility> local_triggered_abilities;
@@ -27,10 +24,7 @@ public class AbilityHolder : MonoBehaviour {
         local_triggered_abilities = new List<TriggeredAbility>();
 
         // Add All trigger types to their proper lists
-        AddTriggeredAbilities(etb_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggeredAbilities(after_attack_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggeredAbilities(before_spell_triggered_abilities.OfType<TriggeredAbility>());
-        AddTriggeredAbilities(after_spell_triggered_abilities.OfType<TriggeredAbility>());
+        AddTriggeredAbilities(triggered_abilities);
     }
 
     public IEnumerable<TriggeredAbility> GetGlobalTriggersActiveInZone(Zone zone) {
