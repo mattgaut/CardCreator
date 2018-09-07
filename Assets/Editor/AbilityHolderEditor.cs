@@ -30,7 +30,4 @@ public class AbilityHolderEditor : Editor {
 
         GUILayout.Space(4);
     }
-
-    void DisplayStaticAbilities(SerializedProperty static_abilities) {
-    }
 }
