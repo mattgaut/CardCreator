@@ -213,7 +213,7 @@ public class CardCreationWindow : EditorWindow {
         if (Event.current.type == EventType.Repaint) popup_rect = GUILayoutUtility.GetLastRect();
         EditorGUILayout.EndHorizontal();
 
-        bool foldout = EditorGUILayout.Foldout(foldout, "Effects");
+
         foreach (Effect e in loaded_card.GetComponents<Effect>()) {
             EffectFoldout(e);
         }
