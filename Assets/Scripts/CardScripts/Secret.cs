@@ -67,7 +67,7 @@ public class SecretTriggeredAbility : ITriggeredAbility {
         if (secret.container.zone == Zone.secrets) {
             secret.secret_trigger.Resolve();
 
-
+            GameStateManager.instance.TriggerSecret(secret);
         }
     }
 
