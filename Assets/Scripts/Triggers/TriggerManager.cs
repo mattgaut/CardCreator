@@ -30,7 +30,7 @@ public class TriggerManager : MonoBehaviour {
             if (trigger.source.controller != GameManager.current_player && trigger.on_their_turn) {
                 continue;
             }
-            if (trigger.CheckTrigger(info)) {
+            if (trigger.TriggersFrom(info)) {
                 to_return.Add(trigger);
             }
         }
