@@ -29,9 +29,13 @@ public class AfterSpellTriggerInfo : TriggerInfo {
         }
     }
 
-    public Spell spell_cast { get; private set; }
+    public Card spell_cast { get; private set; }
     
     public AfterSpellTriggerInfo(Spell cast) {
+        spell_cast = cast;
+    }
+
+    public AfterSpellTriggerInfo(Secret cast) {
         spell_cast = cast;
     }
 
