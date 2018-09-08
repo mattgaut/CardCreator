@@ -21,10 +21,6 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
-    public bool CheckTrigger(TriggerInfo info) {
-        return TriggersFrom(info);
-    }
-
     public void Resolve() {
         for (int i = 0; i < effects.Count; i++) {
             effects[i].Resolve(source);
@@ -37,6 +33,10 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     public bool InZone(Zone z) {
         return active_zones.Contains(z);
+    }
+
+    protected bool CheckTrigger(TriggerInfo info) {
+        return TriggersFrom(info);
     }
 }
 
