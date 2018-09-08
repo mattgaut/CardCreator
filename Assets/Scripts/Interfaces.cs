@@ -88,3 +88,20 @@ public interface ICombatant : IDamageable, IDamages {
         get;
     }
 }
+
+public interface ITriggeredAbility : IStackEffect {
+    TriggerType type { get; }
+
+    bool is_global { get; }
+    bool is_local { get; }
+    bool on_their_turn { get; }
+    bool on_your_turn { get; }
+
+    Card source { get; }
+
+    bool TriggersFrom(TriggerInfo info);
+
+    bool CheckTrigger(TriggerInfo info);
+
+    bool InZone(Zone z);
+}
