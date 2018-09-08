@@ -29,9 +29,12 @@ public class BeforeSpellTriggerInfo : TriggerInfo {
         }
     }
 
-    public Spell spell_cast { get; private set; }
+    public Card spell_cast { get; private set; }
 
     public BeforeSpellTriggerInfo(Spell cast) {
+        spell_cast = cast;
+    }
+    public BeforeSpellTriggerInfo(Secret cast) {
         spell_cast = cast;
     }
 }
