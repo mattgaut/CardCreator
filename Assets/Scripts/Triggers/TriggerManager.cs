@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class TriggerManager : MonoBehaviour {
 
-    Dictionary<TriggerType, List<TriggeredAbility>> subscribed_triggers;
+    Dictionary<TriggerType, List<ITriggeredAbility>> subscribed_triggers;
 
     public void Awake() {
-        subscribed_triggers = new Dictionary<TriggerType, List<TriggeredAbility>>();
+        subscribed_triggers = new Dictionary<TriggerType, List<ITriggeredAbility>>();
         foreach (TriggerType t in System.Enum.GetValues(typeof(TriggerType))) {
-            subscribed_triggers.Add(t, new List<TriggeredAbility>());
+            subscribed_triggers.Add(t, new List<ITriggeredAbility>());
         }
     }
 
-    public void SubscribeTrigger(TriggeredAbility ability) {
+    public void SubscribeTrigger(ITriggeredAbility ability) {
         subscribed_triggers[ability.type].Add(ability);
     }
 
-    public void UnsubscribeTrigger(TriggeredAbility ability) {
+    public void UnsubscribeTrigger(ITriggeredAbility ability) {
         subscribed_triggers[ability.type].Remove(ability);
     }
 
-    public List<TriggeredAbility> GetTriggers(TriggerInfo info) {
-        List<TriggeredAbility> to_return = new List<TriggeredAbility>();
-        foreach (TriggeredAbility trigger in subscribed_triggers[info.type]) {
+    public List<ITriggeredAbility> GetTriggers(TriggerInfo info) {
+        List<ITriggeredAbility> to_return = new List<ITriggeredAbility>();
+        foreach (ITriggeredAbility trigger in subscribed_triggers[info.type]) {
             if (trigger.source.controller == GameManager.current_player && !trigger.on_your_turn) {
                 continue;
             }
