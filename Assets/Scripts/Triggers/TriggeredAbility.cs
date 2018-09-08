@@ -15,7 +15,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
     public bool is_global { get { return _is_global; } }
     public bool is_local { get { return !_is_global; } }
     public bool on_their_turn { get { return _on_their_turn; } }
-    public bool on_your_turn { get { return on_your_turn; } }
+    public bool on_your_turn { get { return _on_your_turn; } }
 
     public Card source { get; protected set; }
 
