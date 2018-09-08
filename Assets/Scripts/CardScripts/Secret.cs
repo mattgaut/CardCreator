@@ -6,6 +6,10 @@ public class Secret : Card {
 
     [SerializeField] TriggeredAbility trigger;
 
+    public TriggeredAbility secret_trigger {
+        get { return trigger; }
+    }
+
     public override CardType type {
         get {
             return CardType.Spell;
