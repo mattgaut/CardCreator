@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class TriggeredAbility : MonoBehaviour, IStackEffect {
+public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     [SerializeField] bool _on_their_turn, _on_your_turn;
     [SerializeField] List<UntargetedEffect> effects;
