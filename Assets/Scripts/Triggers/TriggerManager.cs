@@ -24,10 +24,10 @@ public class TriggerManager : MonoBehaviour {
     public List<ITriggeredAbility> GetTriggers(TriggerInfo info) {
         List<ITriggeredAbility> to_return = new List<ITriggeredAbility>();
         foreach (ITriggeredAbility trigger in subscribed_triggers[info.type]) {
-            if (trigger.source.controller == GameManager.current_player && trigger.on_your_turn) {
+            if (trigger.source.controller == GameManager.current_player && !trigger.on_your_turn) {
                 continue;
             }
-            if (trigger.source.controller != GameManager.current_player && trigger.on_their_turn) {
+            if (trigger.source.controller != GameManager.current_player && !trigger.on_their_turn) {
                 continue;
             }
             if (trigger.TriggersFrom(info)) {

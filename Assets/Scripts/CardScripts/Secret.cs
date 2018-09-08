@@ -58,8 +58,8 @@ public class SecretTriggeredAbility : ITriggeredAbility {
         this.to_wrap = to_wrap;
     }
 
-    public bool CheckTrigger(TriggerInfo info) {
-        return to_wrap.CheckTrigger(info);
+    public bool TriggersFrom(TriggerInfo info) {
+        return to_wrap.TriggersFrom(info);
     }
 
     public bool InZone(Zone z) {
@@ -72,9 +72,5 @@ public class SecretTriggeredAbility : ITriggeredAbility {
 
             GameStateManager.instance.TriggerSecret(secret);
         }
-    }
-
-    public bool TriggersFrom(TriggerInfo info) {
-        return to_wrap.TriggersFrom(info);
     }
 }
