@@ -78,7 +78,27 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void PlaySecretFromHand(Secret secret) {
+        if (!TryPlayCard(secret)) {
+            return;
+        }
 
+        MoveCard(secret, secret.controller.stack);
+
+        AddTriggersToStack(trigger_manager.GetTriggers(new AfterSpellTriggerInfo(secret)));
+
+        AddToStack(secret);
+
+        AddTriggersToStack(trigger_manager.GetTriggers(new BeforeSpellTriggerInfo(secret)));
+
+        ResolveStack();
+
+        secret.controller.NotePlayedCard();
+
+        MoveCard(secret, secret.controller.secrets);
+
+        trigger_manager.SubscribeTrigger(secret.secret_trigger);
+
+        ResolveStack();
     }
 
     public void PlayWeaponFromHand(Weapon weapon) {
@@ -129,6 +149,12 @@ public class GameStateManager : MonoBehaviour {
         }
 
         ResolveCreature(creature, position);        
+    }
+
+    public void TriggerSecret(Secret triggered) {
+        MoveCard(triggered, triggered.controller.graveyard);
+
+        trigger_manager.UnsubscribeTrigger(triggered.secret_trigger);
     }
 
     public Card CreateToken(CardContainer initial_container, Card card_to_create, int position = -1) {
@@ -235,6 +261,12 @@ public class GameStateManager : MonoBehaviour {
 
     void AddTriggersToStack(IEnumerable<TriggeredAbility> triggers) {
         foreach (TriggeredAbility trigger in triggers) {
+            AddToStack(trigger);
+        }
+    }
+
+    void AddTriggersToStack(IEnumerable<ITriggeredAbility> triggers) {
+        foreach (ITriggeredAbility trigger in triggers) {
             AddToStack(trigger);
         }
     }
