@@ -26,7 +26,8 @@ public class Secret : Card {
 
     protected override void Awake() {
         base.Awake();
-        secret_trigger = new SecretTriggeredAbility(this);
+        secret_trigger = new SecretTriggeredAbility(this, trigger);
+        trigger.SetSource(this);
     }
 }
 
@@ -34,44 +35,46 @@ public class Secret : Card {
 public class SecretTriggeredAbility : ITriggeredAbility {
 
     Secret secret;
+    TriggeredAbility to_wrap;
 
     public TriggerType type {
         get {
-            return secret.secret_trigger.type;
+            return to_wrap.type;
         }
     }
 
-    public bool is_global { get { return secret.secret_trigger.is_global; } }
+    public bool is_global { get { return to_wrap.is_global; } }
 
-    public bool is_local { get { return secret.secret_trigger.is_local; } }
+    public bool is_local { get { return to_wrap.is_local; } }
 
-    public bool on_their_turn { get { return secret.secret_trigger.on_their_turn; } }
+    public bool on_their_turn { get { return to_wrap.on_their_turn; } }
 
-    public bool on_your_turn { get { return secret.secret_trigger.on_your_turn; } }
+    public bool on_your_turn { get { return to_wrap.on_your_turn; } }
 
-    public Card source { get { return secret.secret_trigger.source; } }
+    public Card source { get { return to_wrap.source; } }
 
-    public SecretTriggeredAbility(Secret secret) {
+    public SecretTriggeredAbility(Secret secret, TriggeredAbility to_wrap) {
         this.secret = secret;
+        this.to_wrap = to_wrap;
     }
 
     public bool CheckTrigger(TriggerInfo info) {
-        return secret.secret_trigger.CheckTrigger(info);
+        return to_wrap.CheckTrigger(info);
     }
 
     public bool InZone(Zone z) {
-        return secret.secret_trigger.InZone(z);
+        return to_wrap.InZone(z);
     }
 
     public void Resolve() {
         if (secret.container.zone == Zone.secrets) {
-            secret.secret_trigger.Resolve();
+            to_wrap.Resolve();
 
             GameStateManager.instance.TriggerSecret(secret);
         }
     }
 
     public bool TriggersFrom(TriggerInfo info) {
-        return secret.secret_trigger.TriggersFrom(info);
+        return to_wrap.TriggersFrom(info);
     }
 }
