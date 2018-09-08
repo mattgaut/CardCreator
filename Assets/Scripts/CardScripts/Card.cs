@@ -74,7 +74,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     }
 
     protected virtual void Awake() {
-        abilities = GetComponent<AbilityHolder>();
+        abilities = GetComponent<AbilityHolder>();        
     }
 }
 
