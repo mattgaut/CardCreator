@@ -101,7 +101,5 @@ public interface ITriggeredAbility : IStackEffect {
 
     bool TriggersFrom(TriggerInfo info);
 
-    bool CheckTrigger(TriggerInfo info);
-
     bool InZone(Zone z);
 }
