@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EntityType { card = 1, player, hero_power }
-public interface IEntity {
+public interface IEntity : IDamages {
     bool CanBeTargeted(IEntity source);
     Player controller { get; }
     EntityType entity_type { get; }
@@ -42,12 +42,10 @@ public interface IHealth {
 }
 
 public interface IDamageable : IHealth {
-    int TakeDamage(IDamages source, int damage);
+    int TakeDamage(IEntity source, int damage);
 }
 
-
-
-public interface IDamages : IEntity {
+public interface IDamages {
     int DealDamage(IDamageable target, int damage);
 }
 
@@ -59,7 +57,7 @@ public interface IClickable {
     void OnEndClick();
 }
 
-public interface ICombatant : IDamageable, IDamages {
+public interface ICombatant : IDamageable, IEntity {
     bool CanAttack(ICombatant target);
     bool CanBeAttacked(ICombatant attacker);
     void Freeze();

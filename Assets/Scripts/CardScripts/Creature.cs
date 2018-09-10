@@ -101,7 +101,7 @@ public class Creature : Card, ICombatant {
         current_health = health;
     }
 
-    public int TakeDamage(IDamages source, int damage) {
+    public int TakeDamage(IEntity source, int damage) {
         if (mods.HasMod(Modifier.immune)) {
             return 0;
         }

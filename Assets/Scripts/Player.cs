@@ -214,7 +214,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         frozen = true;
     }
 
-    public int TakeDamage(IDamages source, int damage) {
+    public int TakeDamage(IEntity source, int damage) {
         current_health -= damage;
         return damage;
     }
