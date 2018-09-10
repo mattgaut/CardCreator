@@ -51,11 +51,12 @@ public class SecretTriggeredAbility : ITriggeredAbility {
 
     public bool on_your_turn { get { return to_wrap.on_your_turn; } }
 
-    public Card source { get { return to_wrap.source; } }
+    public IEntity source { get { return to_wrap.source; } }
 
     public SecretTriggeredAbility(Secret secret, TriggeredAbility to_wrap) {
         this.secret = secret;
         this.to_wrap = to_wrap;
+        this.to_wrap.SetSource(secret);
     }
 
     public bool TriggersFrom(TriggerInfo info) {

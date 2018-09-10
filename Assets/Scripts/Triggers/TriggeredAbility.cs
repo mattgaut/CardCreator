@@ -17,7 +17,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
     public bool on_their_turn { get { return _on_their_turn; } }
     public bool on_your_turn { get { return _on_your_turn; } }
 
-    public Card source { get; protected set; }
+    public IEntity source { get; protected set; }
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
@@ -27,7 +27,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
         }
     }
 
-    public void SetSource(Card source) {
+    public void SetSource(IEntity source) {
         this.source = source;
     }
 

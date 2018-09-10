@@ -95,7 +95,7 @@ public interface ITriggeredAbility : IStackEffect {
     bool on_their_turn { get; }
     bool on_your_turn { get; }
 
-    Card source { get; }
+    IEntity source { get; }
 
     bool TriggersFrom(TriggerInfo info);
 
