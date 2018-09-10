@@ -7,7 +7,7 @@ public class DamageAllCreatures : UntargetedEffect {
     [SerializeField] bool friendly, enemy;
     [SerializeField] int damage;
 
-    public override void Resolve(Card source) {
+    public override void Resolve(IEntity source) {
         List<Creature> creatures_to_affect = new List<Creature>();
         if (friendly) {
             creatures_to_affect.AddRange(source.controller.field.cards.OfType<Creature>());

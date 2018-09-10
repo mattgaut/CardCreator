@@ -6,7 +6,7 @@ public class RestoreHealthToHero : UntargetedEffect {
 
     [SerializeField] int amount;
 
-    public override void Resolve(Card source) {
+    public override void Resolve(IEntity source) {
         source.controller.Heal(source, amount);
     }
 }

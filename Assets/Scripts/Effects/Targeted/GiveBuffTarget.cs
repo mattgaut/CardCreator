@@ -7,7 +7,7 @@ public class GiveBuffTarget : TargetedEffect {
     [SerializeField] int health_buff_amount;
     [SerializeField] int attack_buff_amount;
 
-    protected override void Resolve(Card source, IEntity target) {
+    protected override void Resolve(IEntity source, IEntity target) {
         Creature creature = target as Creature;
         if (creature != null) {
             creature.attack.ApplyBuff(attack_buff_amount);

@@ -7,11 +7,11 @@ public enum TimePoint { end_of_turn, end_of_opponents_turn, beginning_of_your_tu
 public class TimedEffectManager {
 
     Dictionary<TimePoint, List<ITimedEffect>> effects_waiting_to_end;
-    Dictionary<ITimedEffect, Card> sources;
+    Dictionary<ITimedEffect, IEntity> sources;
     Dictionary<ITimedEffect, IEntity> targets;
 
     public TimedEffectManager() {
-        sources = new Dictionary<ITimedEffect, Card>();
+        sources = new Dictionary<ITimedEffect, IEntity>();
         targets = new Dictionary<ITimedEffect, IEntity>();
         effects_waiting_to_end = new Dictionary<TimePoint, List<ITimedEffect>>();
         foreach (TimePoint tp in (TimePoint[])System.Enum.GetValues(typeof(TimePoint))) {
@@ -19,12 +19,12 @@ public class TimedEffectManager {
         }
     }
 
-    public void AddTimedEffect(ITimedEffect te, Card source) {
+    public void AddTimedEffect(ITimedEffect te, IEntity source) {
         effects_waiting_to_end[te.time_point].Add(te);
         sources.Add(te, source);
     }
 
-    public void AddTimedEffect(ITimedEffect te, Card source, IEntity target) {
+    public void AddTimedEffect(ITimedEffect te, IEntity source, IEntity target) {
         effects_waiting_to_end[te.time_point].Add(te);
         sources.Add(te, source);
         targets.Add(te, target);

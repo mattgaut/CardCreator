@@ -7,7 +7,7 @@ public class HealAllCombatants : UntargetedEffect {
     [SerializeField] bool friendly, enemy;
     [SerializeField] int heal;
 
-    public override void Resolve(Card source) {
+    public override void Resolve(IEntity source) {
         List<ICombatant> to_affect = new List<ICombatant>();
         if (friendly) {
             to_affect.Add(source.controller);

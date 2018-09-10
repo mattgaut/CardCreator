@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroPower : MonoBehaviour, IDamages, IStackEffect {
+public class HeroPower : MonoBehaviour, IEntity, IStackEffect {
 
     [SerializeField] Stat _mana_cost;
 

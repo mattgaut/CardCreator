@@ -12,11 +12,11 @@ public abstract class TargetedEffect : Effect {
     public void SetTarget(IEntity new_target) {
         target = new_target;
     }
-    public override void Resolve(Card source) {
+    public override void Resolve(IEntity source) {
         if (has_target) {
             Resolve(source, target);
         }
         target = null;
     }
-    protected abstract void Resolve(Card source, IEntity target);
+    protected abstract void Resolve(IEntity source, IEntity target);
 }

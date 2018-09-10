@@ -13,7 +13,7 @@ public class GiveTimedBuffTarget : TargetedEffect, ITimedEffect {
         get { return _time_point; }
     }
 
-    public void EndEffect(Card source, IEntity target = null) {
+    public void EndEffect(IEntity source, IEntity target = null) {
         if (target == null) {
             return;
         }
@@ -25,7 +25,7 @@ public class GiveTimedBuffTarget : TargetedEffect, ITimedEffect {
         }
     }
 
-    protected override void Resolve(Card source, IEntity target) {
+    protected override void Resolve(IEntity source, IEntity target) {
         Creature creature = (target as Creature);
 
         if (creature != null) {

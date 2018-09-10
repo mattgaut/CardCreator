@@ -6,7 +6,7 @@ public class AddRandomTokenToField : UntargetedEffect {
 
     [SerializeField] List<Creature> possible_cards;
 
-    public override void Resolve(Card source) {
+    public override void Resolve(IEntity source) {
         GameStateManager.instance.CreateToken(source.controller.field, possible_cards[Random.Range(0, possible_cards.Count)]);
     }
 }

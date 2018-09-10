@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class Effect : MonoBehaviour {
 
-    public abstract void Resolve(Card source);
+    public abstract void Resolve(IEntity source);
 }

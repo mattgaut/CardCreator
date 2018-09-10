@@ -430,10 +430,10 @@ public class GameStateManager : MonoBehaviour {
         return false;
     }
 
-    public void TrackTimedEffect(ITimedEffect effect, Card source) {
+    public void TrackTimedEffect(ITimedEffect effect, IEntity source) {
         timed_effect_manager.AddTimedEffect(effect, source);
     }
-    public void TrackTimedEffect(ITimedEffect effect, Card source, IEntity target) {
+    public void TrackTimedEffect(ITimedEffect effect, IEntity source, IEntity target) {
         timed_effect_manager.AddTimedEffect(effect, source, target);
     }
 }

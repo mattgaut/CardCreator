@@ -28,7 +28,7 @@ public interface IStackEffect {
 
 public interface ITimedEffect {
     TimePoint time_point { get; }
-    void EndEffect(Card source, IEntity target = null);
+    void EndEffect(IEntity source, IEntity target = null);
 }
 
 public interface IHealth {
