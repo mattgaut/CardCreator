@@ -27,11 +27,11 @@ public class AbilityHolder : MonoBehaviour {
     }
 
     public IEnumerable<TriggeredAbility> GetGlobalTriggersActiveInZone(Zone zone) {
-        return global_triggered_abilities.Where(a => a.InZone(zone));
+        return global_triggered_abilities.Where(a => a.ActiveInZone(zone));
     }
 
     public IEnumerable<TriggeredAbility> GetLocalTriggers(TriggerInfo info) {
-        return local_triggered_abilities.Where(a => a.InZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info));
+        return local_triggered_abilities.Where(a => a.ActiveInZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info));
     }
 
     public IEnumerable<StaticAbility> GetStaticAbilitiesActiveInZone(Zone zone) {

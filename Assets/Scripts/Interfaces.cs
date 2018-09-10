@@ -99,5 +99,5 @@ public interface ITriggeredAbility : IStackEffect {
 
     bool TriggersFrom(TriggerInfo info);
 
-    bool InZone(Zone z);
+    bool ActiveInZone(Zone z);
 }

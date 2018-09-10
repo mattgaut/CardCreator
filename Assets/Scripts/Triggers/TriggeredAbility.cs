@@ -31,7 +31,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
         this.source = source;
     }
 
-    public bool InZone(Zone z) {
+    public bool ActiveInZone(Zone z) {
         return active_zones.Contains(z);
     }
 

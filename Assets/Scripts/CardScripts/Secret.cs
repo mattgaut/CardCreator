@@ -62,8 +62,8 @@ public class SecretTriggeredAbility : ITriggeredAbility {
         return to_wrap.TriggersFrom(info);
     }
 
-    public bool InZone(Zone z) {
-        return to_wrap.InZone(z);
+    public bool ActiveInZone(Zone z) {
+        return to_wrap.ActiveInZone(z);
     }
 
     public void Resolve() {
