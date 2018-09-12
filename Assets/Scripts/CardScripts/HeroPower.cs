@@ -29,6 +29,10 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
 
     public bool has_trigger { get { return trigger != null; } }
 
+    public bool has_targeted_effects { get { return targeted_effects.Count > 0; } }
+
+    public bool is_useable { get { return untargeted_effects.Count > 0 || targeted_effects.Count > 0; } }
+
     public CompareEntity targeting_comparer {
         get { return _targeting_comparer; }
     }
@@ -39,6 +43,15 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
 
     public bool CanTarget(IEntity target) {
         return targeting_comparer.CompareTo(target, this);
+    }
+
+    public bool SetTarget(IEntity target) {
+        if (!targeting_comparer.CompareTo(target, this)) return false;
+
+        foreach (TargetedEffect effect in targeted_effects) {
+            effect.SetTarget(target);
+        }
+        return true;
     }
 
     public int DealDamage(IDamageable target, int damage) {
