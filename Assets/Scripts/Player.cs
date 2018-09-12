@@ -8,6 +8,10 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         get; private set;
     }
 
+    public HeroPower hero_power {
+        get { return _hero_power; }
+    }
+
     public ResourceStat health {
         get { return _health; }
     }
@@ -70,6 +74,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     [SerializeField] ResourceStat _health;
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets, _equip;
+
+    [SerializeField] HeroPower _hero_power;
 
     Dictionary<Zone, CardContainer> card_containers;
 
