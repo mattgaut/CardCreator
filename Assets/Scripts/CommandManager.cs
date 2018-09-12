@@ -182,4 +182,34 @@ public class AttackCommand : Command {
     }
 }
 
+public class UseHeroPowerCommand : Command {
+    protected Player to_use;
 
+    public UseHeroPowerCommand(Player to_use) {
+        this.to_use = to_use;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.UseHeroPower(to_use);
+    }
+
+    public override bool ValidateCommand() {
+        return to_use.can_use_hero_power;
+    }
+}
+
+public class UseTargetedHeroPowerCommand : UseHeroPowerCommand {
+    IEntity target;
+
+    public UseTargetedHeroPowerCommand(Player to_use, IEntity target) : base(to_use) {
+        this.target = target;
+    }
+
+    public override void ResolveCommand() {
+        GameStateManager.instance.UseTargetedHeroPower(to_use, target);
+    }
+
+    public override bool ValidateCommand() {
+        return base.ValidateCommand() && to_use.hero_power.CanTarget(target) && target.CanBeTargeted(to_use.hero_power);
+    }
+}
