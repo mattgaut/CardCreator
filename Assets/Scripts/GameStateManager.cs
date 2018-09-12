@@ -29,6 +29,14 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void BeginGame() {
+        foreach (Player p in GameManager.players) {
+            if (p.hero_power.has_trigger) {
+                trigger_manager.SubscribeTrigger(p.hero_power.trigger);
+            }
+        }
+    }
+
     public void BeginTurn(Player p) {
         p.NoteBeginTurn();
 
@@ -54,6 +62,18 @@ public class GameStateManager : MonoBehaviour {
 
     public void EndTurn(Player p) {
         timed_effect_manager.EndEffects(TimePoint.end_of_turn);
+    }
+
+    public void UseHeroPower(Player p) {
+        if (!TryUseHeroPower(p.hero_power)) {
+            return;
+        }
+
+        AddToStack(p.hero_power);
+
+        ResolveStack();
+
+        p.NoteUsedHeroPower();
     }
 
     public void PlaySpellFromHand(Spell spell) {
@@ -295,6 +315,13 @@ public class GameStateManager : MonoBehaviour {
             if (card.mods.HasMod(Modifier.overload)) {
                 card.controller.LockManaCrystals(card.mods.overload_cost);
             }
+            return true;
+        }
+        return false;
+    }
+
+    bool TryUseHeroPower(HeroPower power) {
+        if (power.controller.can_use_hero_power && power.controller.SpendMana(power.mana_cost)) {
             return true;
         }
         return false;
