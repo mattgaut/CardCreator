@@ -46,6 +46,12 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public Player controller { get { return this; } }
     public EntityType entity_type { get { return EntityType.player; } }
 
+    public int times_hero_power_used { get; private set; }
+
+    public int hero_power_uses_per_turn { get { return 1; } }
+
+    public bool can_use_hero_power { get { return times_hero_power_used < hero_power_uses_per_turn && current_mana >= hero_power.mana_cost; } }
+
     public int attacks_taken { get; private set; }
 
     public int attacks_per_turn { get { return 1; } }
@@ -111,9 +117,14 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         AddOneMaxMana();
         FillMana();
 
+        times_hero_power_used = 0;
         cards_played_this_turn = 0;
 
         frozen = false;
+    }
+
+    public void NoteUsedHeroPower() {
+        times_hero_power_used++;
     }
 
     public void AdvanceLockedMana() {
@@ -169,12 +180,6 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         current_mana = max_mana - current_overloaded_mana;
         if (current_mana < 0) {
             current_mana = 0;
-        }
-    }
-
-    public void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            command_manager.EndTurn();
         }
     }
 
@@ -258,6 +263,12 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         weapon = new_weapon;
         if (weapon != null) {
             attack.ApplyBuff(weapon.attack);
+        }
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            command_manager.EndTurn();
         }
     }
 }
