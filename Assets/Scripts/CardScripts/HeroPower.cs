@@ -19,11 +19,15 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
 
     public Player controller { get { return _controller; } }
 
+    public Stat mana_cost { get { return _mana_cost; } }
+
     public EntityType entity_type {
         get { return EntityType.hero_power; }
     }
 
     public HeroPowerTriggeredAbility trigger { get; private set; }
+
+    public bool has_trigger { get { return trigger != null; } }
 
     public CompareEntity targeting_comparer {
         get { return _targeting_comparer; }
