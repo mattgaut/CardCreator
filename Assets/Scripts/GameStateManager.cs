@@ -76,6 +76,21 @@ public class GameStateManager : MonoBehaviour {
         p.NoteUsedHeroPower();
     }
 
+    public void UseTargetedHeroPower(Player p, IEntity target) {
+        if (!TrySetTarget(p.hero_power, target)) {
+            return;
+        }
+        if (!TryUseHeroPower(p.hero_power)) {
+            return;
+        }
+
+        AddToStack(p.hero_power);
+
+        ResolveStack();
+
+        p.NoteUsedHeroPower();
+    }
+
     public void PlaySpellFromHand(Spell spell) {
         if (!TryPlayCard(spell)) {
             return;
@@ -431,6 +446,13 @@ public class GameStateManager : MonoBehaviour {
         }
 
         return true;
+    }
+
+    bool TrySetTarget(HeroPower hero_power, IEntity target) {
+        if (!target.CanBeTargeted(hero_power)) {
+            return false;
+        }
+        return hero_power.SetTarget(target);
     }
 
     public void MoveCard(Card c, CardContainer to) {
