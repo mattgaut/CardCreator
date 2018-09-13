@@ -192,6 +192,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     }
 
     public int Heal(IEntity source, int to_heal) {
+        if (to_heal <= 0) {
+            return 0;
+        }
         int old = current_health;
         current_health += to_heal;
 
@@ -200,6 +203,16 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         }
 
         return current_health - old;
+    }
+
+    public int GainArmor(IEntity source, int to_gain) {
+        if (to_gain <= 0) {
+            return 0;
+        }
+        int old = armor.current_value;
+        armor.current_value += to_gain;
+
+        return armor.current_value - old;
     }
 
     public void NoteAttack() {
