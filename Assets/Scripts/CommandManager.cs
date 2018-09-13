@@ -51,7 +51,7 @@ public abstract class Command {
     }
     public abstract bool ValidateCommand();
     public abstract void ResolveCommand();
-    public virtual void DisplayInvalid() { }
+    public virtual void DisplayInvalid() { Debug.Log("Invalid Command: " + this); }
 }
 
 public class PlaySpellCommand : Command {
