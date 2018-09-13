@@ -204,9 +204,6 @@ public class GameStateManager : MonoBehaviour {
             initial_container.AddCard(card);
         }
         SubscribeEffects(card);
-        if (initial_container.zone == Zone.field) {
-            (card as Creature).NoteSummon();
-        }
         return card;
     }
 
