@@ -66,10 +66,15 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
         for (int i = 0; i < untargeted_effects.Count; i++) {
             untargeted_effects[i].Resolve(this);
         }
+        for (int i = 0; i < targeted_effects.Count; i++) {
+            if (targeted_effects[i].has_target) targeted_effects[i].Resolve(this);
+        }
     }
 
     void Awake() {
-        trigger = new HeroPowerTriggeredAbility(this, triggered_ability);
+        if (triggered_ability != null) {
+            trigger = new HeroPowerTriggeredAbility(this, triggered_ability);
+        }
     }
 }
 
