@@ -15,6 +15,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public ResourceStat health {
         get { return _health; }
     }
+    public ResourceStat armor {
+        get { return _armor; }
+    }
     public int current_health {
         get { return health.current_value; }
         private set { health.current_value = value; }
@@ -78,7 +81,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     Stat _attack;
 
-    [SerializeField] ResourceStat _health;
+    [SerializeField] ResourceStat _health, _armor;
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets, _equip;
 
     [SerializeField] HeroPower _hero_power;
@@ -226,7 +229,14 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     }
 
     public int TakeDamage(IEntity source, int damage) {
-        current_health -= damage;
+        int damage_to_deal = damage;        
+        if (armor.current_value < damage_to_deal) {
+            damage_to_deal -= armor.current_value;
+            armor.current_value = 0;
+            current_health -= damage;
+        } else {
+            armor.current_value -= damage;
+        }        
         return damage;
     }
 
