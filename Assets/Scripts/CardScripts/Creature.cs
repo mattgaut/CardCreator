@@ -42,6 +42,7 @@ public class Creature : Card, ICombatant {
         poisioned = false;
         destroyed = false;
         frozen = false;
+        current_health = health;
     }
     public void NoteBeginTurn() {
         ResetAttacksTaken();
@@ -98,7 +99,6 @@ public class Creature : Card, ICombatant {
     }
 
     public override void Resolve() {
-        current_health = health;
     }
 
     public int TakeDamage(IEntity source, int damage) {
