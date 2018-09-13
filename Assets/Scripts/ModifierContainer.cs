@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum Modifier { lifesteal = 1, charge, rush, divine_shield, immune, windfury, mega_windfury, poisonous, stealth, taunt, battlecry, overload, spellpower, deathrattle, combo, secret }
 
-[RequireComponent(typeof(Card))]
+[RequireComponent(typeof(IEntity))]
 public class ModifierContainer : MonoBehaviour, ITargets {
 
     [SerializeField] protected List<Modifier> base_mods;
@@ -19,7 +19,7 @@ public class ModifierContainer : MonoBehaviour, ITargets {
 
     [SerializeField] CompareEntity _targeting_comparer;
 
-    Card source;
+    IEntity source;
 
     public Battlecry battlecry_info {
         get { return _battlecry_info; }
@@ -80,7 +80,7 @@ public class ModifierContainer : MonoBehaviour, ITargets {
     }
 
     private void Awake() {
-        source = GetComponent<Card>();
+        source = GetComponent<IEntity>();
         buffed_mods = new List<Modifier>();
         unavailable_mods = new List<Modifier>();
         foreach (Modifier mod in unavailable_mods) {
@@ -102,7 +102,7 @@ public class Battlecry : IStackEffect, ITargets {
     [SerializeField] List<UntargetedEffect> untargeted_effects;
     [SerializeField] List<TargetedEffect> targeted_effects;
     CompareEntity _targeting_comparer;
-    Card source;
+    IEntity source;
 
     public CompareEntity targeting_comparer {
         get { return _targeting_comparer; }
@@ -120,7 +120,7 @@ public class Battlecry : IStackEffect, ITargets {
         return false;
     }
 
-    public void SetSource(Card source) {
+    public void SetSource(IEntity source) {
         this.source = source;
     }
 
