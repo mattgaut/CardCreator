@@ -55,7 +55,6 @@ public class CardCreationWindow : EditorWindow {
 
     Editor ability_holder_editor;
     Editor mod_editor;
-    string search_string;
 
     Dictionary<Effect, bool> effect_foldouts;
     Dictionary<StaticAbility, bool> statics_foldouts;

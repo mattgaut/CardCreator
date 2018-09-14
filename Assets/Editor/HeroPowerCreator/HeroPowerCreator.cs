@@ -131,15 +131,15 @@ public class HeroPowerCreator : EditorWindow {
             if (targeted) {
                 window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
                     "Assets/Scripts/Effects/Targeted",
-                    AddComponentToLoadedCard);
+                    AddComponentToLoadedHeroPower);
             } else if (untargeted) {
                 window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
                     "Assets/Scripts/Effects/Untargeted",
-                    AddComponentToLoadedCard);
+                    AddComponentToLoadedHeroPower);
             } else if (triggered) {
                 window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
                     "Assets/Scripts/Triggers/Triggers",
-                    AddComponentToLoadedCard);
+                    AddComponentToLoadedHeroPower);
             }
             //else if (_static) {
             //    window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
@@ -167,7 +167,7 @@ public class HeroPowerCreator : EditorWindow {
         GUILayout.EndArea();
     }
 
-    void AddComponentToLoadedCard(System.Type type) {
+    void AddComponentToLoadedHeroPower(System.Type type) {
         loaded_hero_power.AddComponent(type);
     }
 
