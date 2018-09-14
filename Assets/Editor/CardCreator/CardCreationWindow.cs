@@ -41,8 +41,6 @@ public class CardCreationWindow : EditorWindow {
     SerializedObject card_object;
     TriggeredAbility secret_trigger;
 
-    public Rect windowRect = new Rect(100, 100, 200, 200);
-
     private Rect card_panel;
     private Rect effects_panel;
     private Rect resizer;
