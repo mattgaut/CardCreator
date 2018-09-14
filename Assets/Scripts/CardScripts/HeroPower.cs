@@ -17,9 +17,14 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
 
     [SerializeField] CompareEntity _targeting_comparer;
 
+    [SerializeField] string _description, _hero_power_name;
+
     public Player controller { get { return _controller; } }
 
     public Stat mana_cost { get { return _mana_cost; } }
+
+    public string hero_power_name { get { return _hero_power_name; } }
+    public string description { get { return _description; } }
 
     public EntityType entity_type {
         get { return EntityType.hero_power; }
