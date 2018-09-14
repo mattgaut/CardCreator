@@ -29,7 +29,7 @@ public class EffectPopupWindow : PopupWindowContent {
 
     public override void OnGUI(Rect rect) {
         search_string = EditorGUILayout.TextField("Search: ", search_string);
-        string[] assets = AssetDatabase.FindAssets(search_string + "t:Script", new string[] { folder_path });
+        string[] assets = AssetDatabase.FindAssets(search_string + " t:Script", new string[] { folder_path });
         for (int i = 0; i < assets.Length; i++) {
             string path_name = AssetDatabase.GUIDToAssetPath(assets[i]);
             string[] path_name_split = path_name.Split('.', '/');
