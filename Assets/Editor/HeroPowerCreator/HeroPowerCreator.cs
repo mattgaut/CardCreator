@@ -121,11 +121,11 @@ public class HeroPowerCreator : EditorWindow {
         EditorGUILayout.BeginHorizontal();
         bool untargeted = GUILayout.Button("Untargeted Effect");
         bool targeted = GUILayout.Button("Targeted Effect");
-        bool _static = GUILayout.Button("Static Effect");
+        //bool _static = GUILayout.Button("Static Effect");
         bool triggered = GUILayout.Button("Triggered Ability");
 
         // Search
-        if (targeted || untargeted || _static || triggered) {
+        if (targeted || untargeted || triggered) {
             EffectPopupWindow window = null;
 
             if (targeted) {
@@ -136,15 +136,16 @@ public class HeroPowerCreator : EditorWindow {
                 window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
                     "Assets/Scripts/Effects/Untargeted",
                     AddComponentToLoadedCard);
-            } else if (_static) {
-                window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
-                    "Assets/Scripts/Statics/Statics",
-                    AddComponentToLoadedCard);
             } else if (triggered) {
                 window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
                     "Assets/Scripts/Triggers/Triggers",
                     AddComponentToLoadedCard);
             }
+            //else if (_static) {
+            //    window = new EffectPopupWindow(new Vector2(effects_panel.width, (300 < effects_panel.height / 2f ? 300 : effects_panel.height / 2f)),
+            //        "Assets/Scripts/Statics/Statics",
+            //        AddComponentToLoadedCard);
+            //}
 
             popup_rect.x = 0;
             PopupWindow.Show(popup_rect, window);
