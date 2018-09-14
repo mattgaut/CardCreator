@@ -37,7 +37,6 @@ public class HeroPowerCreator : EditorWindow {
     GUIStyle resizer_style;
 
     Editor mod_editor;
-    string search_string;
 
     Dictionary<Effect, bool> effect_foldouts;
     //Dictionary<StaticAbility, bool> statics_foldouts;
