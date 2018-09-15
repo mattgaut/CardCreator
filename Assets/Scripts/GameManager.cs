@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(GameLoop());
     }
 
-    IEnumerator GameLoop() {
+    IEnumerator GameLoop() {        
+        gsm.BeginGame();
         while (!game_over) {
             active_player = _players[current_position];
             active_player.GetComponent<Renderer>().material.color = Color.blue;
