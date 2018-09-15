@@ -274,7 +274,7 @@ public class GameStateManager : MonoBehaviour {
             List<Weapon> dead_weapons = new List<Weapon>();
             foreach (Player p in GameManager.players) {
                 foreach (Weapon weapon in p.equip.cards) {
-                    if (weapon.durability.current_value <= 0) {
+                    if (weapon.dead) {
                         dead_weapons.Add(weapon);
                     }
                 }
@@ -386,6 +386,8 @@ public class GameStateManager : MonoBehaviour {
         }
 
         MoveCard(weapon, weapon.controller.equip);
+        weapon.NoteSummon();
+
         weapon.controller.SetWeapon(weapon);
 
         ResolveStack();
