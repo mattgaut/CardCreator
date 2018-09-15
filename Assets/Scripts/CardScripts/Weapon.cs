@@ -6,6 +6,7 @@ public class Weapon : Card {
 
     [SerializeField] Stat _attack;
     [SerializeField] ResourceStat _durability;
+    private bool destroyed;
 
     public override CardType type {
         get { return CardType.Weapon; }
@@ -17,8 +18,17 @@ public class Weapon : Card {
     public ResourceStat durability {
         get { return _durability; }
     }
+    public bool dead { get { return durability.current_value <= 0 || destroyed; } }
+    
+    public void NoteSummon() {
+        durability.current_value = durability;
+        destroyed = false;
+    }
 
     public override void Resolve() {
-        durability.current_value = durability;
+    }
+
+    public void Destroy() {
+        destroyed = true;
     }
 }
