@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 
     public enum Class { neutral, druid, hunter, mage, palladin, priest, rouge, shaman, warlock, warrior }
+    public enum Rarity { basic, common, rare, epic, legendary }
 
     [SerializeField] Stat _mana_cost;
     [SerializeField] string _card_name, _card_text;
