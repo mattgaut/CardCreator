@@ -13,6 +13,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     [SerializeField] string _card_name, _card_text;
     [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
+    [SerializeField] Rarity _rarity;
     [SerializeField] ModifierContainer _mods;
 
     public Stat mana_cost {
@@ -29,6 +30,9 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     }
     public Sprite art {
         get { return _art; }
+    }
+    public Rarity rarity {
+        get { return _rarity; }
     }
 
     public ModifierContainer mods {
