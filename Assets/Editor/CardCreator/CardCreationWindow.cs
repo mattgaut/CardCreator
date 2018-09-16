@@ -24,6 +24,7 @@ public class CardCreationWindow : EditorWindow {
 
     public string card_name { get; private set; }
     public Card.Class card_class { get; private set; }
+    public Card.Rarity card_rarity { get; private set; }
     public Creature.CreatureType card_creature_type { get; private set; }
     public string card_text { get; private set; }
     public int card_cost { get; private set; }
@@ -164,6 +165,9 @@ public class CardCreationWindow : EditorWindow {
 
         // Card Class
         card_class = (Card.Class)EditorGUILayout.EnumPopup("Class: ", card_class);
+
+        // Card Rarity
+        card_rarity = (Card.Rarity)EditorGUILayout.EnumPopup("Rarity: ", card_rarity);
 
         // Card Description
         if (GUILayout.Button(enable_rich_text ? "Disable Rich Text" : "Enable Rich Text")) {
@@ -310,6 +314,7 @@ public class CardCreationWindow : EditorWindow {
         card_object.FindProperty("_card_text").stringValue = card_text;
         card_object.FindProperty("_mana_cost").FindPropertyRelative("_base_value").intValue = card_cost;
         card_object.FindProperty("_art").objectReferenceValue = card_art;
+        card_object.FindProperty("_rarity").enumValueIndex = (int)card_rarity;
         if (creation_type == CreationType.Creature) {
             card_object.FindProperty("_attack").FindPropertyRelative("_base_value").intValue = card_attack;
             card_object.FindProperty("_health").FindPropertyRelative("_base_value").intValue = card_health;
