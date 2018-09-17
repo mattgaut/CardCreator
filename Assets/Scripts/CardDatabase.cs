@@ -23,6 +23,10 @@ public class CardDatabase : ScriptableObject {
     }
 
     public void AddCard(Card card, int id) {
+        if (cards_by_id.ContainsKey(id)) {
+            return;
+        }
+
         cards_by_id.Add(id, card);
         card.SetID(id);
 
