@@ -53,7 +53,7 @@ public class CardCreationWindow : EditorWindow {
     float size_ratio = 0.5f;
     float offset = 5f;
 
-    bool is_resizing;
+    bool is_resizing = false;
 
     GUIStyle resizer_style;
 
@@ -71,7 +71,7 @@ public class CardCreationWindow : EditorWindow {
         effect_foldouts = new Dictionary<Effect, bool>();
         statics_foldouts = new Dictionary<StaticAbility, bool>();
         triggered_foldouts = new Dictionary<TriggeredAbility, bool>();
-        card_id = database.GetNextId();
+        card_id = database.GetNextId();     
     }
 
     void OnGUI() {

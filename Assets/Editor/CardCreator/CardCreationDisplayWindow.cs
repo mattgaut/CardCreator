@@ -17,7 +17,6 @@ public class CardCreationDisplayWindow : EditorWindow {
         if (type == CreationType.Creature) {
             card_frame = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Icons/CreatureTemplate.png", typeof(Texture2D));
         } else if (type == CreationType.Weapon) {
-            Debug.Log("LoadWeapon");
             card_frame = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Icons/WeaponTemplate.png", typeof(Texture2D));
         } else if (type == CreationType.Secret || type == CreationType.Spell) {
             card_frame = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Icons/SpellTemplate.png", typeof(Texture2D));
