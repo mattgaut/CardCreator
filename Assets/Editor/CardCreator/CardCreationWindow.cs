@@ -70,8 +70,7 @@ public class CardCreationWindow : EditorWindow {
         resizer_style.normal.background = EditorGUIUtility.Load("icons/d_AvatarBlendBackground.png") as Texture2D;
         effect_foldouts = new Dictionary<Effect, bool>();
         statics_foldouts = new Dictionary<StaticAbility, bool>();
-        triggered_foldouts = new Dictionary<TriggeredAbility, bool>();
-        card_id = database.GetNextId();     
+        triggered_foldouts = new Dictionary<TriggeredAbility, bool>();    
     }
 
     void OnGUI() {
@@ -112,6 +111,7 @@ public class CardCreationWindow : EditorWindow {
     }
 
     void LoadCardType(CreationType type) {
+        card_id = database.GetNextId();
         if (loaded_card != null) {
             DestroyImmediate(loaded_card);
         }
@@ -219,6 +219,8 @@ public class CardCreationWindow : EditorWindow {
             if (save_path.Length != 0) {
                 GameObject new_card = PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
                 database.AddCard(new_card.GetComponent<Card>(), card_id);
+
+                LoadCardType(creation_type);
             }
         }
         GUI.enabled = true;

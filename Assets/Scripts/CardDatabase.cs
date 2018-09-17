@@ -30,16 +30,14 @@ public class CardDatabase : ScriptableObject {
         cards_by_id.Add(id, card);
         card.SetID(id);
 
-        cards.Add(card);
-        ids.Add(id);
+        int insert = ~ids.BinarySearch(id);
+
+        ids.Insert(insert, id);
+        cards.Insert(insert, card);
+
     }
 
-    public void Refresh() {
-        OnDisable();
-        OnEnable();
-    }
-
-    private void OnEnable() {
+    public void ReloadDictionary() {
         cards_by_id = new Dictionary<int, Card>();
         if (ids == null || cards == null) {
             ids = new List<int>();
@@ -50,13 +48,19 @@ public class CardDatabase : ScriptableObject {
                 continue;
             }
             cards_by_id.Add(ids[i], cards[i]);
-        }    
+        }
+    }
+
+    private void OnEnable() {
+        ReloadDictionary();   
     }
 
     private void OnDisable() {
         ids = new List<int>();
         cards = new List<Card>();
-        foreach(int id in cards_by_id.Keys) {
+        List<int> sorted_ids = new List<int>(cards_by_id.Keys);
+        sorted_ids.Sort();
+        foreach(int id in sorted_ids) {
             if (cards_by_id[id] == null) {
                 continue;
             }
