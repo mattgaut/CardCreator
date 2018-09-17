@@ -25,6 +25,9 @@ public class CardDatabase : ScriptableObject {
     public void AddCard(Card card, int id) {
         cards_by_id.Add(id, card);
         card.SetID(id);
+
+        cards.Add(card);
+        ids.Add(id);
     }
 
     private void OnEnable() {
@@ -34,6 +37,9 @@ public class CardDatabase : ScriptableObject {
             cards = new List<Card>();
         }
         for (int i = 0; i < ids.Count && i < cards.Count; i++) {
+            if (cards[i] == null) {
+                continue;
+            }
             cards_by_id.Add(ids[i], cards[i]);
         }    
     }
@@ -42,6 +48,9 @@ public class CardDatabase : ScriptableObject {
         ids = new List<int>();
         cards = new List<Card>();
         foreach(int id in cards_by_id.Keys) {
+            if (cards_by_id[id] == null) {
+                continue;
+            }
             ids.Add(id);
             cards.Add(cards_by_id[id]);
         }
