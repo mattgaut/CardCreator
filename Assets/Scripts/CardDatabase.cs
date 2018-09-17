@@ -34,6 +34,11 @@ public class CardDatabase : ScriptableObject {
         ids.Add(id);
     }
 
+    public void Refresh() {
+        OnDisable();
+        OnEnable();
+    }
+
     private void OnEnable() {
         cards_by_id = new Dictionary<int, Card>();
         if (ids == null || cards == null) {
