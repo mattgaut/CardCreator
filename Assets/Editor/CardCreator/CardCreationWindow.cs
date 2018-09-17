@@ -32,6 +32,7 @@ public class CardCreationWindow : EditorWindow {
     public int card_cost { get; private set; }
     public int card_attack { get; private set; }
     public int card_health { get; private set; }
+    public int card_id { get; private set; }
 
     public bool enable_rich_text { get; private set; }
     public Sprite card_art { get; private set; }
@@ -70,7 +71,7 @@ public class CardCreationWindow : EditorWindow {
         effect_foldouts = new Dictionary<Effect, bool>();
         statics_foldouts = new Dictionary<StaticAbility, bool>();
         triggered_foldouts = new Dictionary<TriggeredAbility, bool>();
-
+        card_id = database.GetNextId();
     }
 
     void OnGUI() {
@@ -159,6 +160,15 @@ public class CardCreationWindow : EditorWindow {
         // Card Name
         card_name = EditorGUILayout.TextField("Name: ", card_name);
 
+        // Card ID
+        card_id = EditorGUILayout.IntField("ID: ", card_id);
+        if (database.IsIdTaken(card_id) || card_id == 0) {
+            Color color = EditorStyles.label.normal.textColor;
+            EditorStyles.label.normal.textColor = Color.red;
+            EditorGUILayout.LabelField(card_id == 0 ? "ID invalid" : "ID is already in use.");
+            EditorStyles.label.normal.textColor = color;
+        }
+
         // Card Class
         card_class = (Card.Class)EditorGUILayout.EnumPopup("Class: ", card_class);
 
@@ -199,14 +209,17 @@ public class CardCreationWindow : EditorWindow {
 
         // Save Card
 
+        GUI.enabled = !database.IsIdTaken(card_id) && card_id != 0;
         if (GUILayout.Button("Save To Prefab")) {
             SaveCard();
 
             string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", card_name + ".prefab", "prefab", "Save Card File to Prefab", "Assets/Cards");
             if (save_path.Length != 0) {
-                PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
+                GameObject new_card = PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
+                database.AddCard(new_card.GetComponent<Card>(), card_id);
             }
         }
+        GUI.enabled = true;
 
         GUILayout.EndArea();
     }
