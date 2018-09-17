@@ -10,6 +10,8 @@ public enum CreationType { Creature, Spell, Weapon, Secret }
 
 public class CardCreationWindow : EditorWindow {
 
+    [SerializeField] CardDatabase database;
+
     [MenuItem("Window/Card Creator")]
     public static void ShowWindow() {
         CardCreationWindow ccw = (CardCreationWindow)GetWindow(typeof(CardCreationWindow));
@@ -113,26 +115,20 @@ public class CardCreationWindow : EditorWindow {
         creation_type = type;
         if (type == CreationType.Creature) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/CreatureTemplate.prefab", typeof(GameObject)));
-            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
-            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Creature>());
         } else if (type == CreationType.Spell) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/SpellTemplate.prefab", typeof(GameObject)));
-            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
-            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Spell>());
         } else if (type == CreationType.Secret) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/SecretTemplate.prefab", typeof(GameObject)));
-            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
-            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Secret>());
         } else if (type == CreationType.Weapon) {
             loaded_card = (GameObject)Instantiate(AssetDatabase.LoadAssetAtPath("Assets/Cards/WeaponTemplate.prefab", typeof(GameObject)));
-            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
-            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_object = new SerializedObject(loaded_card.GetComponent<Weapon>());
         }
         if (loaded_card != null) {
+            ability_holder_editor = Editor.CreateEditor(loaded_card.GetComponent<AbilityHolder>());
+            mod_editor = Editor.CreateEditor(loaded_card.GetComponent<ModifierContainer>());
             card_type = loaded_card.GetComponent<Card>().type;
         }
     }
