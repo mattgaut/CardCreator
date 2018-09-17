@@ -11,6 +11,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 
     [SerializeField] Stat _mana_cost;
     [SerializeField] string _card_name, _card_text;
+    [SerializeField] int _id;
     [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
     [SerializeField] Rarity _rarity;
@@ -27,6 +28,9 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     }
     public string card_text {
         get { return _card_text; }
+    }
+    public int id {
+        get { return _id; }
     }
     public Sprite art {
         get { return _art; }
@@ -76,6 +80,10 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
             controller.Heal(controller, damage_dealt);
         }
         return damage_dealt;
+    }
+
+    public void SetID(int id) {
+        _id = id;
     }
 
     protected virtual void Awake() {
