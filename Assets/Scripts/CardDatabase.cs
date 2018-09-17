@@ -49,6 +49,21 @@ public class CardDatabase : ScriptableObject {
             }
             cards_by_id.Add(ids[i], cards[i]);
         }
+        ReloadLists();
+    }
+
+    void ReloadLists() {
+        ids = new List<int>();
+        cards = new List<Card>();
+        List<int> sorted_ids = new List<int>(cards_by_id.Keys);
+        sorted_ids.Sort();
+        foreach (int id in sorted_ids) {
+            if (cards_by_id[id] == null) {
+                continue;
+            }
+            ids.Add(id);
+            cards.Add(cards_by_id[id]);
+        }
     }
 
     private void OnEnable() {
@@ -56,16 +71,6 @@ public class CardDatabase : ScriptableObject {
     }
 
     private void OnDisable() {
-        ids = new List<int>();
-        cards = new List<Card>();
-        List<int> sorted_ids = new List<int>(cards_by_id.Keys);
-        sorted_ids.Sort();
-        foreach(int id in sorted_ids) {
-            if (cards_by_id[id] == null) {
-                continue;
-            }
-            ids.Add(id);
-            cards.Add(cards_by_id[id]);
-        }
+        ReloadLists();
     }
 }
