@@ -96,7 +96,9 @@ public class CardCreationWindow : EditorWindow {
     }
 
     void MakeSpell() {
-
+        EditorGUILayout.PropertyField(card_object.FindProperty("spell_effects"), true);
+        EditorGUILayout.PropertyField(card_object.FindProperty("targeted_effects"), true);
+        if (card_object.FindProperty("targeted_effects").arraySize > 0) EditorGUILayout.PropertyField(card_object.FindProperty("_targeting_comparer"), true);
     }
 
     void MakeWeapon() {
