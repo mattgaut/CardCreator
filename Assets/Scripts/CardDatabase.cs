@@ -24,6 +24,7 @@ public class CardDatabase : ScriptableObject {
 
     public void AddCard(Card card, int id) {
         cards_by_id.Add(id, card);
+        card.SetID(id);
     }
 
     private void OnEnable() {
