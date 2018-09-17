@@ -50,6 +50,8 @@ public class CardDatabaseEditor : Editor {
             card_list.InsertArrayElementAtIndex(card_list.arraySize);
             card_list.GetArrayElementAtIndex(card_list.arraySize - 1).objectReferenceValue = add_card;
 
+            add_card.SetID(add_id);
+
             add_id = 0;
             add_card = null;
 

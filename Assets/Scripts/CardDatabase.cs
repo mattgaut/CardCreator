@@ -34,7 +34,6 @@ public class CardDatabase : ScriptableObject {
 
         ids.Insert(insert, id);
         cards.Insert(insert, card);
-
     }
 
     public void ReloadDictionary() {
