@@ -10,7 +10,7 @@ public class GiveCreaturesBuffStatic : StaticAbility {
     [SerializeField] bool other;
 
     public override bool AppliesTo(IEntity entity) {
-        if (ReferenceEquals(entity, source) && !other) {
+        if (ReferenceEquals(entity, source) && other) {
             return false;
         }
         return (entity as Creature != null) && base.AppliesTo(entity);
