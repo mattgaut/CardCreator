@@ -7,7 +7,12 @@ public class GiveCreaturesBuffStatic : StaticAbility {
     [SerializeField] int attack_buff;
     [SerializeField] int health_buff;
 
+    [SerializeField] bool other;
+
     public override bool AppliesTo(IEntity entity) {
+        if (ReferenceEquals(entity, source) && !other) {
+            return false;
+        }
         return (entity as Creature != null) && base.AppliesTo(entity);
     }
 
