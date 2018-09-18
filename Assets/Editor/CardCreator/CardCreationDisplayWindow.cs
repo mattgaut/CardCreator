@@ -76,9 +76,7 @@ public class CardCreationDisplayWindow : EditorWindow {
     void DrawDescription(int x, int y, int width, int height) {
         style.fontSize = 17;
 
-        DrawOffset(x, y, width, height, 2, creator.card_text + "");
-
-        EditorGUI.LabelField(new Rect(x, y, width, height), "<color=white>" + creator.card_text + "</color>", style);
+        EditorGUI.LabelField(new Rect(x, y, width, height), creator.card_text, style);
     }
 
     void DrawName(int x, int y, int width, int height) {

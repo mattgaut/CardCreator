@@ -111,6 +111,7 @@ public class CardCreationWindow : EditorWindow {
     }
 
     void LoadCardType(CreationType type) {
+        Reset();
         card_id = database.GetNextId();
         if (loaded_card != null) {
             DestroyImmediate(loaded_card);
@@ -378,6 +379,18 @@ public class CardCreationWindow : EditorWindow {
             editor.OnInspectorGUI();
             EditorGUI.indentLevel -= 1;
         }
+    }
+
+    void Reset() {
+        card_art = null;
+        card_attack = 0;
+        card_class = Card.Class.neutral;
+        card_cost = 0;
+        card_creature_type = Creature.CreatureType.none;
+        card_health = 0;
+        card_name = "";
+        card_rarity = Card.Rarity.basic;
+        card_text = "";
     }
 
     private void OnDestroy() {
