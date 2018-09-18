@@ -9,6 +9,8 @@ public abstract class StaticAbility : MonoBehaviour {
     [SerializeField] List<Zone> affected_zones;
     [SerializeField] bool affects_players;
 
+    [SerializeField] bool friendly, enemy;
+
     HashSet<IEntity> entities_applied_to;
 
     public Card source { get; private set; }
@@ -26,6 +28,15 @@ public abstract class StaticAbility : MonoBehaviour {
     }
 
     public virtual bool AppliesTo(IEntity entity) {
+        if (!affects_players && entity.entity_type == EntityType.player) {
+            return false;
+        }
+        if (!friendly && entity.controller == source.controller) {
+            return false;
+        }
+        if (!enemy && entity.controller != source.controller) {
+            return false;
+        }
         return true;
     }
 
