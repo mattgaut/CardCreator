@@ -24,6 +24,11 @@ public class AbilityHolder : MonoBehaviour {
 
         // Add All trigger types to their proper lists
         AddTriggeredAbilities(triggered_abilities);
+
+        // Set the source for the triggered abilities
+        foreach (StaticAbility ability in static_abilities) {
+            ability.SetSource(card);
+        }
     }
 
     public IEnumerable<TriggeredAbility> GetGlobalTriggersActiveInZone(Zone zone) {
