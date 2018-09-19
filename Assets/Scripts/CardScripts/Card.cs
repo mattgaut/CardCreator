@@ -111,7 +111,9 @@ public class CastingRestrictions {
                 if (player == to_cast.controller) {
                     continue;
                 }
-                count++;
+                foreach (Card c in player.field.cards) {
+                    count++;
+                }
             }
             if (count < enemy_minions_required) {
                 return false;
