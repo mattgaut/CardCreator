@@ -26,8 +26,8 @@ public class CastingRestrictionsEditor : PropertyDrawer {
             }
 
             // Require Equipped Weapon
-            child_property = property.FindPropertyRelative("require_equipped_weapon");
-            child_property.boolValue = EditorGUILayout.Toggle(new GUIContent("Weapon Equipped?"), child_property.boolValue);
+            child_property = property.FindPropertyRelative("require_equiped_weapon");
+            child_property.boolValue = EditorGUILayout.Toggle(new GUIContent("Weapon Equiped?"), child_property.boolValue);
 
             EditorGUI.indentLevel -= 1;
         }
