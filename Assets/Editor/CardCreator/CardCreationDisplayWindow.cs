@@ -68,7 +68,7 @@ public class CardCreationDisplayWindow : EditorWindow {
         // Card Cost
         style.fontSize = 60;
 
-        DrawOffset(x, y, 80, 60, 3, creator.card_health + "");
+        DrawOffset(x, y, 80, 60, 3, creator.card_cost + "");
 
         EditorGUI.LabelField(new Rect(x, y, 80, 60), "<color=white>" + creator.card_cost + "</color>", style);
     }
