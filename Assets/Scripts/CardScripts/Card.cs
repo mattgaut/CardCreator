@@ -100,7 +100,7 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 public enum CardType { Spell = 1, Creature = 2, Weapon = 4 }
 
 [Serializable]
-class CastingRestrictions {
+public class CastingRestrictions {
     [SerializeField] bool require_enemy_minions;
     [SerializeField] int enemy_minions_required;
 

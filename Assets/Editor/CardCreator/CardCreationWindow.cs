@@ -195,6 +195,9 @@ public class CardCreationWindow : EditorWindow {
         // Card Cost
         card_cost = EditorGUILayout.IntField("Card Cost: ", card_cost);
 
+        // Card Casting Restriction
+        EditorGUILayout.PropertyField(card_object.FindProperty("restrictions"), true);
+
         if (creation_type == CreationType.Creature) {
             MakeCreatue();
         } else if (creation_type == CreationType.Spell) {
