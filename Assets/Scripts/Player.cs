@@ -15,8 +15,9 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public ResourceStat health {
         get { return _health; }
     }
-    public ResourceStat armor {
+    public int armor {
         get { return _armor; }
+        private set { _armor = value; }
     }
     public int current_health {
         get { return health.current_value; }
@@ -81,7 +82,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     Stat _attack;
 
-    [SerializeField] ResourceStat _health, _armor;
+    [SerializeField] ResourceStat _health;
+    [SerializeField] int _armor;
     [SerializeField] CardContainer _deck, _hand, _field, _discard, _graveyard, _stack, _secrets, _equip;
 
     [SerializeField] HeroPower _hero_power;
@@ -187,11 +189,6 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         }
     }
 
-    public int TakeDamage(int dmg) {
-        current_health -= dmg;
-        return dmg;
-    }
-
     public int Heal(IEntity source, int to_heal) {
         if (to_heal <= 0) {
             return 0;
@@ -210,10 +207,10 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         if (to_gain <= 0) {
             return 0;
         }
-        int old = armor.current_value;
-        armor.current_value += to_gain;
+        int old = armor;
+        armor += to_gain;
 
-        return armor.current_value - old;
+        return armor - old;
     }
 
     public void NoteAttack() {
@@ -259,12 +256,12 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public int TakeDamage(IEntity source, int damage) {
         int damage_to_deal = damage;        
-        if (armor.current_value < damage_to_deal) {
-            damage_to_deal -= armor.current_value;
-            armor.current_value = 0;
+        if (armor < damage_to_deal) {
+            damage_to_deal -= armor;
+            armor = 0;
             current_health -= damage;
         } else {
-            armor.current_value -= damage;
+            armor -= damage;
         }        
         return damage;
     }
