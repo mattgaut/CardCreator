@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,6 +61,8 @@ public interface IClickable {
 public interface ICombatant : IDamageable, IEntity {
     bool CanAttack(ICombatant target);
     bool CanBeAttacked(ICombatant attacker);
+    int AddAttackRestriction(AttackRestriction attackRestriction);
+    bool RemoveAttackRestriction(int id);
     void Freeze();
     void NoteAttack();
 

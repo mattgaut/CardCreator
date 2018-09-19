@@ -28,6 +28,9 @@ public class Creature : Card, ICombatant {
 
     public bool frozen { get; private set; }
 
+    Dictionary<int, AttackRestriction> attack_restrictions;
+    int next_restriction;
+
     public void NoteAttack() {
         attacks_taken += 1;
         if (mods.HasMod(Modifier.stealth)) {
@@ -53,10 +56,23 @@ public class Creature : Card, ICombatant {
         frozen = true;
     }
 
+    public int AddAttackRestriction(AttackRestriction attack_restriction) {
+        attack_restrictions.Add(next_restriction, attack_restriction);
+        return next_restriction++;
+    }
+
+    public bool RemoveAttackRestriction(int id) {
+        return attack_restrictions.Remove(id);
+    }
 
     public bool CanAttack(ICombatant target) {
         if (!can_attack) {
             return false;
+        }
+        foreach (AttackRestriction restriction in attack_restrictions.Values) {
+            if (!restriction.CanAttack(target)) {
+                return false;
+            }
         }
         if (summoned_this_turn && !mods.HasMod(Modifier.charge)) {
             if (mods.HasMod(Modifier.rush)) {
@@ -135,6 +151,13 @@ public class Creature : Card, ICombatant {
 
     public void Destroy() {
         destroyed = true;
+    }
+
+    protected override void Awake() {
+        base.Awake();
+
+        attack_restrictions = new Dictionary<int, AttackRestriction>();
+        next_restriction = 0;
     }
 
     int NumberOfAttacksPerTurn() {

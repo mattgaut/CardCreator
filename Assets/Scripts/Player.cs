@@ -88,20 +88,17 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     Dictionary<Zone, CardContainer> card_containers;
 
-    public void Awake() {
-        deck.SetController(this);
-        hand.SetController(this);
-        field.SetController(this);
-        discard.SetController(this);
-        graveyard.SetController(this);
-        stack.SetController(this);
-        secrets.SetController(this);
-        equip.SetController(this);
+    Dictionary<int, AttackRestriction> attack_restrictions;
+    int next_restriction;
 
+    public void Awake() {
         command_manager = GetComponent<CommandManager>();
         current_health = health;
 
         _attack = new Stat(0);
+
+        attack_restrictions = new Dictionary<int, AttackRestriction>();
+        next_restriction = 0;
 
         card_containers = new Dictionary<Zone, CardContainer>();
         card_containers.Add(Zone.deck, deck);
@@ -112,6 +109,10 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         card_containers.Add(Zone.secrets, secrets);
         card_containers.Add(Zone.stack, stack);
         card_containers.Add(Zone.equipment, equip);
+
+        foreach (CardContainer container in card_containers.Values) {
+            container.SetController(this); 
+        }
     }
 
     public void NoteBeginTurn() {
@@ -224,7 +225,22 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public void ResetAttacksTaken() {
         attacks_taken = 0;
     }
+
+    public int AddAttackRestriction(AttackRestriction attack_restriction) {
+        attack_restrictions.Add(next_restriction, attack_restriction);
+        return next_restriction++;
+    }
+
+    public bool RemoveAttackRestriction(int id) {
+        return attack_restrictions.Remove(id);
+    }
+
     public bool CanAttack(ICombatant target) {
+        foreach (AttackRestriction restriction in attack_restrictions.Values) {
+            if (!restriction.CanAttack(target)) {
+                return false;
+            }
+        }
         return attack > 0 && attacks_taken < attacks_per_turn;
     }
 
