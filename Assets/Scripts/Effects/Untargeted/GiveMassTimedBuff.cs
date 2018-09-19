@@ -33,6 +33,8 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
             foreach (Creature creature in source.controller.field.cards.OfType<Creature>()) {
                 if (attack_buff > 0) creature.attack.ApplyBuff(attack_buff);
                 if (health_buff > 0) creature.health.ApplyBuff(health_buff);
+
+                GameStateManager.instance.TrackTimedEffect(this, source, creature);
             }
         }
         if (enemy) {
@@ -43,6 +45,8 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
                 foreach (Creature creature in player.field.cards.OfType<Creature>()) {
                     if (attack_buff > 0) creature.attack.ApplyBuff(attack_buff);
                     if (health_buff > 0) creature.health.ApplyBuff(health_buff);
+
+                    GameStateManager.instance.TrackTimedEffect(this, source, creature);
                 }
             }            
         }
