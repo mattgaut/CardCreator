@@ -18,6 +18,8 @@ public class CompareEntity {
     [SerializeField] Range health_range;
     [SerializeField] int health;
 
+    [SerializeField] bool undamaged;
+
     // Card Comparisons
     [SerializeField] bool match_card_type;
     [SerializeField] List<CardType> card_types;
@@ -49,6 +51,9 @@ public class CompareEntity {
         if (check_health && !NumberInRange(entity.player.current_health, health, health_range)) {
             return false;
         }
+        if (undamaged && entity.player.current_health != entity.player.health) {
+            return false;
+        }
         return true;
     }
 
@@ -67,6 +72,9 @@ public class CompareEntity {
             return false;
         }
         if (check_health && (creature == null || !NumberInRange(creature.current_health, health, health_range))) {
+            return false;
+        }
+        if (undamaged && (creature == null || creature.current_health != creature.health)) {
             return false;
         }
         return true;
