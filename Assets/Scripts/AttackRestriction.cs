@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackRestriction : MonoBehaviour {
+public class AttackRestriction {
 
     Func<ICombatant, bool> function;
 
