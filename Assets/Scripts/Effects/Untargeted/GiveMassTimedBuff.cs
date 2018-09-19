@@ -24,15 +24,15 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
             return;
         }
 
-        creature.attack.RemoveBuff(attack_buff);
-        creature.health.RemoveBuff(health_buff);
+        if (attack_buff > 0) creature.attack.RemoveBuff(attack_buff);
+        if (health_buff > 0) creature.health.RemoveBuff(health_buff);
     }
 
     public override void Resolve(IEntity source) {
         if (friendly) {
             foreach (Creature creature in source.controller.field.cards.OfType<Creature>()) {
-                creature.attack.ApplyBuff(attack_buff);
-                creature.health.ApplyBuff(health_buff);
+                if (attack_buff > 0) creature.attack.ApplyBuff(attack_buff);
+                if (health_buff > 0) creature.health.ApplyBuff(health_buff);
             }
         }
         if (enemy) {
@@ -41,8 +41,8 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
                     continue;
                 }
                 foreach (Creature creature in player.field.cards.OfType<Creature>()) {
-                    creature.attack.ApplyBuff(attack_buff);
-                    creature.health.ApplyBuff(health_buff);
+                    if (attack_buff > 0) creature.attack.ApplyBuff(attack_buff);
+                    if (health_buff > 0) creature.health.ApplyBuff(health_buff);
                 }
             }            
         }
