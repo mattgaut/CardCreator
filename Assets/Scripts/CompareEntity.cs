@@ -19,6 +19,7 @@ public class CompareEntity {
     [SerializeField] int health;
 
     [SerializeField] bool undamaged;
+    [SerializeField] bool damaged;
 
     // Card Comparisons
     [SerializeField] bool match_card_type;
@@ -75,6 +76,9 @@ public class CompareEntity {
             return false;
         }
         if (undamaged && (creature == null || creature.current_health != creature.health)) {
+            return false;
+        }
+        if (damaged && (creature == null || creature.current_health == creature.health)) {
             return false;
         }
         return true;
