@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Card Database", fileName = "Card Database")]
 public class CardDatabase : ScriptableObject {
 
-    [SerializeField] List<int> ids;
-    [SerializeField] List<Card> cards;
+    [SerializeField] List<CardInfo> cards;
 
     Dictionary<int, Card> cards_by_id;
 
@@ -30,46 +29,36 @@ public class CardDatabase : ScriptableObject {
         cards_by_id.Add(id, card);
         card.SetID(id);
 
-        int insert = ~ids.BinarySearch(id);
-
-        ids.Insert(insert, id);
-        cards.Insert(insert, card);
+        cards.Add(new CardInfo(card, id));
+        cards.Sort((a, b) => a.id - b.id);
     }
 
     public void ReloadDictionary() {
         cards_by_id = new Dictionary<int, Card>();
-        if (ids == null || cards == null) {
-            ids = new List<int>();
-            cards = new List<Card>();
+        if (cards == null) {
+            cards = new List<CardInfo>();
         }
-        for (int i = 0; i < ids.Count && i < cards.Count; i++) {
-            if (cards[i] == null) {
+        for (int i = 0; i < cards.Count; i++) {
+            if (cards[i] == null || cards[i].card == null) {
                 continue;
             }
-            cards_by_id.Add(ids[i], cards[i]);
+            cards_by_id.Add(cards[i].id, cards[i].card);
         }
-        ReloadLists();
-    }
-
-    void ReloadLists() {
-        ids = new List<int>();
-        cards = new List<Card>();
-        List<int> sorted_ids = new List<int>(cards_by_id.Keys);
-        sorted_ids.Sort();
-        foreach (int id in sorted_ids) {
-            if (cards_by_id[id] == null) {
-                continue;
-            }
-            ids.Add(id);
-            cards.Add(cards_by_id[id]);
-        }
+        cards.Sort((a, b) => a.id - b.id);
     }
 
     private void OnEnable() {
-        ReloadDictionary();   
+        ReloadDictionary();
     }
 
-    private void OnDisable() {
-        ReloadLists();
+    [System.Serializable]
+    public class CardInfo {
+        public int id;
+        public Card card;
+
+        public CardInfo(Card card, int id) {
+            this.card = card;
+            this.id = id;
+        }
     }
 }
