@@ -6,54 +6,66 @@ public enum TimePoint { end_of_turn, end_of_opponents_turn, beginning_of_your_tu
 
 public class TimedEffectManager {
 
-    Dictionary<TimePoint, List<ITimedEffect>> effects_waiting_to_end;
-    Dictionary<ITimedEffect, IEntity> sources;
-    Dictionary<ITimedEffect, IEntity> targets;
+    Dictionary<TimePoint, List<int>> effects_waiting_to_end;
+
+    Dictionary<int, IEntity> sources;
+    Dictionary<int, IEntity> targets;
+    Dictionary<int, ITimedEffect> effects;
+
+    int next_id;
 
     public TimedEffectManager() {
-        sources = new Dictionary<ITimedEffect, IEntity>();
-        targets = new Dictionary<ITimedEffect, IEntity>();
-        effects_waiting_to_end = new Dictionary<TimePoint, List<ITimedEffect>>();
+        sources = new Dictionary<int, IEntity>();
+        targets = new Dictionary<int, IEntity>();
+        effects = new Dictionary<int, ITimedEffect>();
+        effects_waiting_to_end = new Dictionary<TimePoint, List<int>>();
+        next_id = 0;
         foreach (TimePoint tp in (TimePoint[])System.Enum.GetValues(typeof(TimePoint))) {
-            effects_waiting_to_end.Add(tp, new List<ITimedEffect>());
+            effects_waiting_to_end.Add(tp, new List<int>());
         }
     }
 
     public void AddTimedEffect(ITimedEffect te, IEntity source) {
-        effects_waiting_to_end[te.time_point].Add(te);
-        sources.Add(te, source);
+        int id = next_id++;
+        effects_waiting_to_end[te.time_point].Add(id);
+        sources.Add(id, source);
+        effects.Add(id, te);
     }
 
     public void AddTimedEffect(ITimedEffect te, IEntity source, IEntity target) {
-        effects_waiting_to_end[te.time_point].Add(te);
-        sources.Add(te, source);
-        targets.Add(te, target);
+        int id = next_id++;
+        effects_waiting_to_end[te.time_point].Add(id);
+        sources.Add(id, source);
+        targets.Add(id, target);
+        effects.Add(id, te);
     }
 
     public void EndEffects(TimePoint time_point) {
         for (int i = effects_waiting_to_end[time_point].Count - 1; i >= 0; i--) {
-            ITimedEffect effect = effects_waiting_to_end[time_point][i];
-            EndEffect(effect, time_point);
+            int id = effects_waiting_to_end[time_point][i];
+            EndEffect(id);
         }
     }
 
     public void EndEffects(TimePoint time_point, Player player) {
         for (int i = effects_waiting_to_end[time_point].Count - 1; i >= 0; i--) {
-            ITimedEffect effect = effects_waiting_to_end[time_point][i];
-            if (sources[effect].controller == player) {
-                EndEffect(effect, time_point);
+            int id = effects_waiting_to_end[time_point][i];
+            ITimedEffect effect = effects[id];
+            if (sources[id].controller == player) {
+                EndEffect(id);
             }
         }
     }
 
-    void EndEffect(ITimedEffect effect, TimePoint time_point) {
-        if (targets.ContainsKey(effect)) {
-            effect.EndEffect(sources[effect], targets[effect]);
-            targets.Remove(effect);
+    void EndEffect(int id) {
+        ITimedEffect effect = effects[id];
+        if (targets.ContainsKey(id)) {
+            effect.EndEffect(sources[id], targets[id]);
+            targets.Remove(id);
         } else {
-            effect.EndEffect(sources[effect]);
+            effect.EndEffect(sources[id]);
         }
-        effects_waiting_to_end[time_point].Remove(effect);
-        sources.Remove(effect);
+        effects_waiting_to_end[effect.time_point].Remove(id);
+        sources.Remove(id);
     }
 }
