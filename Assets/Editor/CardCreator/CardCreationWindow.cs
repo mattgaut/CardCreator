@@ -219,7 +219,9 @@ public class CardCreationWindow : EditorWindow {
             string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", card_name + ".prefab", "prefab", "Save Card File to Prefab", "Assets/Cards/" + CreationTypeToString(creation_type));
             if (save_path.Length != 0) {
                 GameObject new_card = PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
+
                 database.AddCard(new_card.GetComponent<Card>(), card_id);
+                EditorUtility.SetDirty(database);
 
                 LoadCardType(creation_type);
             }
