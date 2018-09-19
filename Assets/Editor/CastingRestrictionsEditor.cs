@@ -24,6 +24,11 @@ public class CastingRestrictionsEditor : PropertyDrawer {
                 child_property = property.FindPropertyRelative("enemy_minions_required");
                 child_property.intValue = EditorGUILayout.IntField(new GUIContent("Number"), child_property.intValue);
             }
+
+            // Require Equipped Weapon
+            child_property = property.FindPropertyRelative("require_equipped_weapon");
+            child_property.boolValue = EditorGUILayout.Toggle(new GUIContent("Weapon Equipped?"), child_property.boolValue);
+
             EditorGUI.indentLevel -= 1;
         }
         EditorGUI.EndProperty();

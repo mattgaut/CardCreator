@@ -104,6 +104,8 @@ public class CastingRestrictions {
     [SerializeField] bool require_enemy_minions;
     [SerializeField] int enemy_minions_required;
 
+    [SerializeField] bool require_equiped_weapon;
+
     public bool CanPlay(Card to_cast) {
         if (require_enemy_minions) {
             int count = 0;
@@ -118,6 +120,9 @@ public class CastingRestrictions {
             if (count < enemy_minions_required) {
                 return false;
             }
+        }
+        if (require_equiped_weapon && to_cast.controller.weapon == null) {
+            return false;
         }
         return true;
     }
