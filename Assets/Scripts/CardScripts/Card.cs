@@ -17,6 +17,8 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     [SerializeField] Rarity _rarity;
     [SerializeField] ModifierContainer _mods;
 
+    [SerializeField] CastingRestrictions restrictions;
+
     public Stat mana_cost {
         get { return _mana_cost; }
     }
@@ -64,6 +66,10 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
         get { return this; }
     }
 
+    public bool CanPlay() {
+        return restrictions.CanPlay(this);
+    }
+
     public abstract void Resolve();
 
     public void SetContainer(CardContainer container) {
@@ -92,3 +98,25 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
 }
 
 public enum CardType { Spell = 1, Creature = 2, Weapon = 4 }
+
+[Serializable]
+class CastingRestrictions {
+    [SerializeField] bool require_enemy_minions;
+    [SerializeField] int enemy_minions_required;
+
+    public bool CanPlay(Card to_cast) {
+        if (require_enemy_minions) {
+            int count = 0;
+            foreach (Player player in GameManager.players) {
+                if (player == to_cast.controller) {
+                    continue;
+                }
+                count++;
+            }
+            if (count < enemy_minions_required) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

@@ -329,6 +329,9 @@ public class GameStateManager : MonoBehaviour {
     }
 
     bool TryPlayCard(Card card) {
+        if (!card.CanPlay()) {
+            return false;
+        }
         if (card.controller.hand.ContainsCard(card) && card.controller.SpendMana(card.mana_cost)) {
             if (card.mods.HasMod(Modifier.overload)) {
                 card.controller.LockManaCrystals(card.mods.overload_cost);
