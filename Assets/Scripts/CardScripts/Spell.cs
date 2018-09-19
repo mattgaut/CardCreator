@@ -59,6 +59,10 @@ public class Spell : Card, ITargets {
         return base.DealDamage(target, damage + controller.TotalSpellPower());
     }
 
+    public int DealDamageWithoutSpellpower(IDamageable target, int damage) {
+        return base.DealDamage(target, damage);
+    }
+
     bool NeedsTarget() {
         foreach (TargetedEffect te in targeted_effects) {
             if (!te.has_target) {
