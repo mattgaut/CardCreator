@@ -66,6 +66,9 @@ public class CompareEntityEditor : PropertyDrawer {
                     SetHealth(property);
                     // Check Attack
                     SetAttack(property);
+                    // Undamaged
+                    child_property = property.FindPropertyRelative("undamaged");
+                    child_property.boolValue = EditorGUILayout.Toggle(new GUIContent("Undamaged: "), child_property.boolValue);                   
                 } else {
                     ClearAttack(property);
                     ClearHealth(property);
