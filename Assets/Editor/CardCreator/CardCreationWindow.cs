@@ -216,7 +216,7 @@ public class CardCreationWindow : EditorWindow {
         if (GUILayout.Button("Save To Prefab")) {
             SaveCard();
 
-            string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", card_name + ".prefab", "prefab", "Save Card File to Prefab", "Assets/Cards");
+            string save_path = EditorUtility.SaveFilePanelInProject("Save Card Prefab", card_name + ".prefab", "prefab", "Save Card File to Prefab", "Assets/Cards/" + CreationTypeToString(creation_type));
             if (save_path.Length != 0) {
                 GameObject new_card = PrefabUtility.ReplacePrefab(loaded_card, PrefabUtility.CreateEmptyPrefab(save_path));
                 database.AddCard(new_card.GetComponent<Card>(), card_id);
@@ -391,6 +391,19 @@ public class CardCreationWindow : EditorWindow {
         card_name = "";
         card_rarity = Card.Rarity.basic;
         card_text = "";
+    }
+
+    string CreationTypeToString(CreationType ct) {
+        if (creation_type == CreationType.Creature) {
+            return "Minion";
+        } else if (creation_type == CreationType.Spell) {
+            return "Spell";
+        } else if (creation_type == CreationType.Secret) {
+            return "Secret";
+        } else if (creation_type == CreationType.Weapon) {
+            return "Weapon";
+        }
+        return "";
     }
 
     private void OnDestroy() {
