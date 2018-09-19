@@ -259,7 +259,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         if (armor < damage_to_deal) {
             damage_to_deal -= armor;
             armor = 0;
-            current_health -= damage;
+            current_health -= damage_to_deal;
         } else {
             armor -= damage;
         }        
