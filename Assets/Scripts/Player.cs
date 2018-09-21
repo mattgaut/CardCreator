@@ -262,7 +262,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
             current_health -= damage_to_deal;
         } else {
             armor -= damage;
-        }        
+        }
+        GameStateManager.instance.ProcessDamageEvent(source, this, damage);
         return damage;
     }
 

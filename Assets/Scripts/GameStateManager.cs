@@ -233,7 +233,23 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
     }
 
-    public void AddToStack(IStackEffect stack_effect) {
+    public void ProcessDamageEvent(IEntity damager, ICombatant damaged, int damage) {
+        bool resolve_after = stack.Count == 0;
+
+        AfterDamageTakenTriggerInfo info = new AfterDamageTakenTriggerInfo(damager, damaged, damage);
+
+        Creature creature = damaged as Creature;
+        if (creature != null) {
+            AddTriggersToStack(creature.abilities.GetLocalTriggers(info));
+        }
+        AddTriggersToStack(trigger_manager.GetTriggers(info));
+        
+        if (resolve_after) {
+            ResolveStack();
+        }
+    }
+
+    void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
     }
 
