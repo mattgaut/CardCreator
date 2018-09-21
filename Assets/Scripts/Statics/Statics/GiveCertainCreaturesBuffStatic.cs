@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class GiveCertainCreaturesBuffStatic : GiveCreaturesBuffStatic {
 
-    [SerializeField] CompareEntity type_to_buff;
-
+    [SerializeField] bool other;
+    [SerializeField] Creature.CreatureType to_buff;
     public override bool AppliesTo(IEntity entity) {
+        if (ReferenceEquals(entity, source)) {
+            return false;
+        }
 
-        if (!type_to_buff.CompareTo(entity, source)) {
+        Creature creature = entity as Creature;
+
+        if (creature == null || creature.creature_type != to_buff) {
             return false;
         }
 
