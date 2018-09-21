@@ -238,6 +238,14 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
     }
 
+    public void TransformCreature(Creature to_transform, Creature to_copy) {
+        int position = to_transform.container.CardPosition(to_transform);
+        CardContainer initial_container = to_transform.container;
+
+        RemoveCardFromPlay(to_transform);
+        CreateToken(initial_container, to_copy, position);
+    }
+
     public void ProcessDamageEvent(IEntity damager, ICombatant damaged, int damage) {
         bool resolve_after = !resolving_stack && !attack_happening;
 
@@ -488,6 +496,14 @@ public class GameStateManager : MonoBehaviour {
             return false;
         }
         return hero_power.SetTarget(target);
+    }
+
+    void RemoveCardFromPlay(Card c) {
+        UnsubscribeEffects(c);
+
+        c.container.RemoveCard(c);
+
+        Destroy(c.gameObject);
     }
 
     public void MoveCard(Card c, CardContainer to) {
