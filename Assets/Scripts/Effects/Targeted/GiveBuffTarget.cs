@@ -10,8 +10,8 @@ public class GiveBuffTarget : TargetedEffect {
     protected override void Resolve(IEntity source, IEntity target) {
         Creature creature = target as Creature;
         if (creature != null) {
-            creature.attack.ApplyBuff(attack_buff_amount);
-            creature.health.ApplyBuff(health_buff_amount);
+            creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, attack_buff_amount));
+            creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, health_buff_amount));
         }
     }
 }

@@ -295,11 +295,11 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public void SetWeapon(Weapon new_weapon) {
         if (weapon != null) {
-            attack.RemoveBuff(weapon.attack);
+            attack.RemoveBuff(new StatBuff(weapon, StatBuff.Type.aura, weapon.attack));
         }
         weapon = new_weapon;
         if (weapon != null) {
-            attack.ApplyBuff(weapon.attack);
+            attack.ApplyBuff(new StatBuff(weapon, StatBuff.Type.aura, weapon.attack));
         }
     }
 

@@ -8,7 +8,7 @@ public class ReduceManaCostInHand : UntargetedEffect {
 
     public override void Resolve(IEntity source) {
         foreach (Card c in source.controller.hand.cards) {
-            c.mana_cost.ApplyBuff(to_reduce);
+            c.mana_cost.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, to_reduce));
         }
     }
 }

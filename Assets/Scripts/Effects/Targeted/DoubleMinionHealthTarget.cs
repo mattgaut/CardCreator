@@ -10,6 +10,6 @@ public class DoubleMinionHealthTarget : TargetedEffect {
             return;
         }
 
-        creature.health.ApplyBuff(creature.current_health);
+        creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, creature.health.current_value));
     }
 }

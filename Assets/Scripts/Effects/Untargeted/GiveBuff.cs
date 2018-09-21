@@ -9,7 +9,7 @@ public class GiveBuff : UntargetedEffect {
     public override void Resolve(IEntity source) {
         Creature c = source as Creature;
 
-        if (attack_buff_amount != 0) c.attack.ApplyBuff(attack_buff_amount);
-        if (health_buff_amount != 0) c.health.ApplyBuff(health_buff_amount);
+        if (attack_buff_amount != 0) c.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, attack_buff_amount));
+        if (health_buff_amount != 0) c.health.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, health_buff_amount));
     }
 }

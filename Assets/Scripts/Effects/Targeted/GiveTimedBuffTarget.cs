@@ -20,8 +20,8 @@ public class GiveTimedBuffTarget : TargetedEffect, ITimedEffect {
         Creature creature = (target as Creature);
 
         if (creature != null) {
-            creature.attack.RemoveBuff(attack_buff);
-            creature.health.RemoveBuff(health_buff);
+            creature.attack.RemoveBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
+            creature.health.RemoveBuff(new StatBuff(source, StatBuff.Type.timed, health_buff));
         }
     }
 
@@ -29,8 +29,8 @@ public class GiveTimedBuffTarget : TargetedEffect, ITimedEffect {
         Creature creature = (target as Creature);
 
         if (creature != null) {
-            creature.attack.ApplyBuff(attack_buff);
-            creature.health.ApplyBuff(health_buff);
+            creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
+            creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, health_buff));
 
             GameStateManager.instance.TrackTimedEffect(this, source, target);
         }
