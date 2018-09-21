@@ -10,7 +10,8 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     public enum Rarity { basic, common, rare, epic, legendary }
 
     [SerializeField] Stat _mana_cost;
-    [SerializeField] string _card_name, _card_text;
+    [SerializeField] string _card_name;
+    [TextArea][SerializeField] string _card_text;
     [SerializeField] int _id;
     [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
