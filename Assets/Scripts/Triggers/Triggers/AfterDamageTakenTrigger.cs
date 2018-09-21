@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterDamageTrigger : TriggeredAbility {
+public class AfterDamageTakenTrigger : TriggeredAbility {
 
     [SerializeField] int damage_needed_to_trigger;
     [SerializeField] bool creatures, players;
@@ -18,7 +18,7 @@ public class AfterDamageTrigger : TriggeredAbility {
             return false;
         }
 
-        AfterDamageTriggerInfo damage_info = info as AfterDamageTriggerInfo;
+        AfterDamageTakenTriggerInfo damage_info = info as AfterDamageTakenTriggerInfo;
         if (damage_info == null) {
             return false;
         }
@@ -35,18 +35,20 @@ public class AfterDamageTrigger : TriggeredAbility {
     }
 }
 
-public class AfterDamageTriggerInfo : TriggerInfo {
+public class AfterDamageTakenTriggerInfo : TriggerInfo {
     public override TriggerType type {
         get {
             return TriggerType.damage_taken;
         }
     }
 
+    public IEntity damager { get; private set; }
     public ICombatant damaged { get; private set; }
     public int damage { get; private set; }
 
-    public AfterDamageTriggerInfo(ICombatant damaged, int damage) {
+    public AfterDamageTakenTriggerInfo(IEntity damager, ICombatant damaged, int damage) {
         this.damage = damage;
         this.damaged = damaged;
+        this.damager = damager;
     }
 }

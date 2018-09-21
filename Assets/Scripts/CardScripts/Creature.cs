@@ -136,9 +136,7 @@ public class Creature : Card, ICombatant {
             }
         }
         if (damage > 0) {
-            foreach (IStackEffect effect in abilities.GetLocalTriggers(new AfterDamageTriggerInfo(this, damage))) {
-                GameStateManager.instance.AddToStack(effect);
-            }
+            GameStateManager.instance.ProcessDamageEvent(source, this, damage);
         }
         return damage;
     }
