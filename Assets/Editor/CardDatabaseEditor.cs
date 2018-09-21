@@ -22,7 +22,7 @@ public class CardDatabaseEditor : Editor {
         SerializedProperty card_list = serializedObject.FindProperty("cards");
 
         search_string = EditorGUILayout.TextField(search_string);
-        if (search_string != "") {
+        if (search_string != null && search_string != "") {
             use_int_search = int.TryParse(search_string, out search_int);
             search = true;
         }  else {
