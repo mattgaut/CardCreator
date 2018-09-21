@@ -25,6 +25,9 @@ public class CompareEntity {
     [SerializeField] bool match_card_type;
     [SerializeField] List<CardType> card_types;
 
+    [SerializeField] bool match_creature_type;
+    [SerializeField] List<Creature.CreatureType> creature_types;
+
     [SerializeField] bool check_mana_cost;
     [SerializeField] Range mana_cost_range;
     [SerializeField] int mana_cost;
@@ -79,6 +82,9 @@ public class CompareEntity {
             return false;
         }
         if (damaged && (creature == null || creature.current_health == creature.health)) {
+            return false;
+        }
+        if (match_creature_type && !creature_types.Contains(creature.creature_type)) {
             return false;
         }
         return true;
