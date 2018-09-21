@@ -9,8 +9,8 @@ public class Stat {
     [SerializeField] int _base_value;
     [SerializeField] bool is_zero_minimum;
 
-    protected List<StatBuff> buffs;
-    protected List<StatBuff> sets_stack;
+    [SerializeField] protected List<StatBuff> buffs;
+    [SerializeField] protected List<StatBuff> sets_stack;
 
     public int value {
         get {
@@ -27,8 +27,8 @@ public class Stat {
 
     public Stat(int base_value) {
         buffs = new List<StatBuff>();
-        _base_value = base_value;
         sets_stack = new List<StatBuff>();
+        _base_value = base_value;
     }
 
     public virtual void ApplyBuff(StatBuff buff) {
