@@ -84,6 +84,15 @@ public class CardContainer : MonoBehaviour {
         return contained_cards.Contains(c);
     }
 
+    public int CardPosition(Card c) {
+        for (int i = 0; i < contained_cards.Count; i++) {
+            if (c == contained_cards[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void Shuffle() {
         for (int i = contained_cards.Count - 1; i > 0; i--) {
             int j = Random.Range(0, i);
