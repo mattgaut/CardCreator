@@ -233,7 +233,7 @@ public class GameStateManager : MonoBehaviour {
         ResolveStack();
     }
 
-    void AddToStack(IStackEffect stack_effect) {
+    public void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
     }
 
