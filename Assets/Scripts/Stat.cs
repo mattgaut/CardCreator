@@ -120,7 +120,7 @@ public class ResourceStat : Stat {
     }
 }
 
-
+[Serializable]
 public class StatBuff : IEqualityComparer<StatBuff>, IEquatable<StatBuff> {
     public enum Type { basic, aura, timed }
 
