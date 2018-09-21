@@ -33,6 +33,10 @@ public class CreatureDisplay : FullCardDisplay {
                 return "Beast";
             case Creature.CreatureType.murloc:
                 return "Murloc";
+            case Creature.CreatureType.elemental:
+                return "Elemental";
+            case Creature.CreatureType.totem:
+                return "Totem";
             default:
                 return "";
         }

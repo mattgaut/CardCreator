@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GiveCreaturesBuffStatic : StaticAbility {
 
-    [SerializeField] int attack_buff;
-    [SerializeField] int health_buff;
+    [SerializeField] protected int attack_buff;
+    [SerializeField] protected int health_buff;
 
-    [SerializeField] bool other;
+    [SerializeField] protected bool other;
 
     public override bool AppliesTo(IEntity entity) {
         if (ReferenceEquals(entity, source) && other) {

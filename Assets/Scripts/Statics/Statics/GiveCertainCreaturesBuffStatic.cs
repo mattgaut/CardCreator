@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class GiveCertainCreaturesBuffStatic : GiveCreaturesBuffStatic {
 
-    [SerializeField] bool other;
     [SerializeField] Creature.CreatureType to_buff;
     public override bool AppliesTo(IEntity entity) {
-        if (ReferenceEquals(entity, source)) {
+        if (!other && ReferenceEquals(entity, source)) {
             return false;
         }
 

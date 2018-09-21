@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Creature : Card, ICombatant {
 
-    public enum CreatureType { none, beast, mech, dragon, murloc, demon }
+    public enum CreatureType { none, beast, mech, dragon, murloc, demon, elemental, totem }
 
     [SerializeField] Stat _attack;
     [SerializeField] ResourceStat _health;
