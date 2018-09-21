@@ -12,6 +12,7 @@ public abstract class StaticAbility : MonoBehaviour {
     [SerializeField] bool friendly, enemy;
 
     HashSet<IEntity> entities_applied_to;
+    HashSet<IEntity> possible_entities;
 
     public Card source { get; private set; }
 
@@ -44,23 +45,33 @@ public abstract class StaticAbility : MonoBehaviour {
         return entities_applied_to.Contains(entity);
     }
 
-    public void Apply(IEntity apply_to) {
-        if (!entities_applied_to.Contains(apply_to)) {
-            entities_applied_to.Add(apply_to);
-            ApplyEffects(apply_to);
+    public void AddPossible(IEntity entity) {
+        if (!possible_entities.Contains(entity)) {
+            possible_entities.Add(entity);
+            Apply(entity);
         }
     }
-    public void Remove(IEntity remove_from) {
-        if (entities_applied_to.Contains(remove_from)) {
-            entities_applied_to.Remove(remove_from);
-            RemoveEffects(remove_from);
+    public void RemovePossible(IEntity entity) {
+        if (possible_entities.Contains(entity)) {
+            possible_entities.Remove(entity);
+            Remove(entity);
+        }
+    }
+
+    public void UpdateEffects() {
+        foreach (IEntity possible_entity in possible_entities) {
+            if (AppliesTo(possible_entity)) {
+                Apply(possible_entity);
+            } else {
+                Remove(possible_entity);
+            }
         }
     }
 
     public void RemoveAll() {
-        List<IEntity> to_remove = new List<IEntity>(entities_applied_to);
+        List<IEntity> to_remove = new List<IEntity>(possible_entities);
         foreach (IEntity entity in to_remove) {
-            Remove(entity);
+            RemovePossible(entity);
         }
     }
 
@@ -71,7 +82,22 @@ public abstract class StaticAbility : MonoBehaviour {
     protected abstract void ApplyEffects(IEntity apply_to);
     protected abstract void RemoveEffects(IEntity remove_from);
 
+    void Apply(IEntity apply_to) {
+        if (!entities_applied_to.Contains(apply_to)) {
+            entities_applied_to.Add(apply_to);
+            ApplyEffects(apply_to);
+        }
+    }
+    void Remove(IEntity remove_from) {
+        if (entities_applied_to.Contains(remove_from)) {
+            entities_applied_to.Remove(remove_from);
+            RemoveEffects(remove_from);
+        }
+    }
+
+
     private void Awake() {
         entities_applied_to = new HashSet<IEntity>();
+        possible_entities = new HashSet<IEntity>();
     }
 }
