@@ -15,6 +15,9 @@ public class GameStateManager : MonoBehaviour {
 
     List<IStackEffect> stack;
 
+    bool attack_happening;
+    bool resolving_stack;
+
     public void Awake() {
         trigger_manager = GetComponent<TriggerManager>();
         static_ability_manager = new StaticAbilityManager(this);
@@ -216,11 +219,13 @@ public class GameStateManager : MonoBehaviour {
 
     public void Attack(ICombatant attacker, ICombatant defender) {
         if (CanAttack(attacker, defender)) {
+            attack_happening = true;
             attacker.NoteAttack();
             int dealt = attacker.DealDamage(defender, attacker.attack);
             if (defender.retaliate) {
                 defender.DealDamage(attacker, defender.attack);
             }
+            attack_happening = false;
 
             AfterAttackTriggerInfo info = new AfterAttackTriggerInfo(attacker, defender, dealt);
 
@@ -234,7 +239,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void ProcessDamageEvent(IEntity damager, ICombatant damaged, int damage) {
-        bool resolve_after = stack.Count == 0;
+        bool resolve_after = !resolving_stack && !attack_happening;
 
         AfterDamageTakenTriggerInfo info = new AfterDamageTakenTriggerInfo(damager, damaged, damage);
 
@@ -243,7 +248,7 @@ public class GameStateManager : MonoBehaviour {
             AddTriggersToStack(creature.abilities.GetLocalTriggers(info));
         }
         AddTriggersToStack(trigger_manager.GetTriggers(info));
-        
+
         if (resolve_after) {
             ResolveStack();
         }
@@ -255,11 +260,17 @@ public class GameStateManager : MonoBehaviour {
 
     void ResolveStack() {
         CheckStateBasedEffects();
+
+        resolving_stack = true;
         while (stack.Count > 0) {
-            stack[stack.Count - 1].Resolve();
+
+            IStackEffect effect = stack[stack.Count - 1];
             stack.RemoveAt(stack.Count - 1);
-            CheckStateBasedEffects();
+            effect.Resolve();
+
+            CheckStateBasedEffects();            
         }
+        resolving_stack = false;
     }
 
     void CheckStateBasedEffects() {
