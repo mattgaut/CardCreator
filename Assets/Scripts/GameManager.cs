@@ -19,6 +19,13 @@ public class GameManager : MonoBehaviour {
     public static Player current_player {
         get { return instance.active_player; }
     }
+    public static List<Player> OtherPlayers(Player player) {
+        List<Player> to_return = players;
+        to_return.Remove(player);
+
+        return to_return;
+    }
+
 
 	// Use this for initialization
 	void Awake () {
