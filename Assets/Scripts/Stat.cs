@@ -109,6 +109,9 @@ public class ResourceStat : Stat {
         int difference = value - current_value;
         base.AddSetBuff(buff);
 
+        if (current_value > value) {
+            current_value = value;
+        }
         // If the difference between the new values are larger make the difference equal to the old difference
         if (value - current_value > difference) {
             current_value = value - difference;

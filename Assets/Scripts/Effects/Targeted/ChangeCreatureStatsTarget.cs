@@ -16,6 +16,6 @@ public class ChangeCreatureStatsTarget : TargetedEffect {
         }
 
         if (change_attack) creature.attack.AddSetBuff(new StatBuff(source, StatBuff.Type.basic, new_attack));
-        if (change_health) creature.attack.AddSetBuff(new StatBuff(source, StatBuff.Type.basic, new_health));
+        if (change_health) creature.health.AddSetBuff(new StatBuff(source, StatBuff.Type.basic, new_health));
     }
 }
