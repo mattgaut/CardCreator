@@ -249,6 +249,8 @@ public class GameStateManager : MonoBehaviour {
     void CheckStateBasedEffects() {
         bool change_made;
         do {
+            static_ability_manager.UpdateStaticAbilities();
+
             change_made = false;
             List<Creature> dead_creatures = new List<Creature>();
             foreach (Player p in GameManager.players) {
@@ -292,8 +294,6 @@ public class GameStateManager : MonoBehaviour {
                 }
                 change_made = true;
             }
-
-            // ToDo: Add Section to check static abilities are still valid
         } while (change_made);
     }
 

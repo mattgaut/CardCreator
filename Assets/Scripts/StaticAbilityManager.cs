@@ -30,10 +30,16 @@ public class StaticAbilityManager {
             // Check Zone For Card that will be affected
             foreach (Player player in GameManager.players) {
                 foreach (Card card in player.GetContainer(zone).cards) {
-                    if (ability.AppliesTo(card)) {
-                        ability.Apply(card);
-                    }
+                    ability.AddPossible(card);
                 }
+            }
+        }
+    }
+
+    public void UpdateStaticAbilities() {
+        foreach (Zone zone in affected_zones_to_abilities.Keys) {
+            foreach (StaticAbility ability in affected_zones_to_abilities[zone]) {
+                ability.UpdateEffects();
             }
         }
     }
@@ -47,13 +53,13 @@ public class StaticAbilityManager {
 
     public void RemoveCardFromAbilities(Card card) {
         foreach (StaticAbility ability in affected_zones_to_abilities[card.container.zone]) {
-            if (ability.IsAppliedTo(card)) ability.Remove(card);
+            ability.RemovePossible(card);
         }
     }
 
     public void AddCardToAbilities(Card card) {
         foreach (StaticAbility ability in affected_zones_to_abilities[card.container.zone]) {
-            if (ability.AppliesTo(card)) ability.Apply(card);
+            ability.AddPossible(card);
         }
     }
 }
