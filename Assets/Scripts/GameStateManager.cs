@@ -213,15 +213,20 @@ public class GameStateManager : MonoBehaviour {
         }
         Card card = Instantiate(card_to_create);
 
+        if (card.type == CardType.Creature && initial_container.zone == Zone.field) {
+            (card as Creature).NoteSummon();
+            foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(card as Creature))) {
+                AddToStack(ta);
+            }
+        }
+
         if (position >= 0) {
             initial_container.AddCard(card, position);
         } else {
             initial_container.AddCard(card);
         }
         SubscribeEffects(card);
-        if (card.type == CardType.Creature && initial_container.zone == Zone.field) {
-            (card as Creature).NoteSummon();
-        }
+
         return card;
     }
 
@@ -429,8 +434,15 @@ public class GameStateManager : MonoBehaviour {
 
         AddBattlecryAndComboEffectsToStack(creature);
 
+        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureMinionPlayedInfo(creature))) {
+            AddToStack(ta);
+        }
+        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(creature))) {
+            AddToStack(ta);
+        }
+
         // Lock a position in field to save space for creature
-        creature.controller.field.AddLock();
+        creature.controller.field.AddLock();        
 
         ResolveStack();
 
@@ -439,9 +451,7 @@ public class GameStateManager : MonoBehaviour {
         MoveCard(creature, creature.controller.field, position);
 
         creature.NoteSummon();
-        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new ETBTriggerInfo(creature))) {
-            AddToStack(ta);
-        }
+
         ResolveStack();
         creature.controller.NotePlayedCard();
     }

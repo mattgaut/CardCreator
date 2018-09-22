@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ETBTriggeredAbility : TriggeredAbility {
+public class WheneverMinionPlayedTrigger : TriggeredAbility {
 
     [SerializeField] CompareEntity compare;
 
     public override TriggerType type {
         get {
-            return TriggerType.enter_battlefield;
+            return TriggerType.after_minion_played;
         }
     }
 
     public override bool TriggersFrom(TriggerInfo info) {
-        ETBTriggerInfo etb_info = info as ETBTriggerInfo;
+        WheneverCreatureMinionPlayedInfo etb_info = info as WheneverCreatureMinionPlayedInfo;
         if (etb_info != null) {
             return compare.CompareTo(etb_info.entered, source);
         }
@@ -21,13 +21,13 @@ public class ETBTriggeredAbility : TriggeredAbility {
     }
 }
 
-public class ETBTriggerInfo : TriggerInfo {
+public class WheneverCreatureMinionPlayedInfo : TriggerInfo {
     public override TriggerType type {
-        get { return TriggerType.enter_battlefield; }
+        get { return TriggerType.after_minion_played; }
     }
 
     public Creature entered { get; private set; }
-    public ETBTriggerInfo(Creature entered) {
+    public WheneverCreatureMinionPlayedInfo(Creature entered) {
         this.entered = entered;
     }
 }
