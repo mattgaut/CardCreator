@@ -6,6 +6,7 @@ public class AfterAttackTriggeredAbility : TriggeredAbility {
 
     [SerializeField] int damage_needed;
     [SerializeField] bool need_to_kill_attacked;
+    [SerializeField] bool creature, hero;
 
     public override TriggerType type {
         get {
@@ -20,6 +21,12 @@ public class AfterAttackTriggeredAbility : TriggeredAbility {
         AfterAttackTriggerInfo attack_info = (AfterAttackTriggerInfo)info;
 
         if (need_to_kill_attacked && !attack_info.attacked.dead) {
+            return false;
+        }
+        if (!creature && (attack_info.attacker as Creature != null)) {
+            return false;
+        }
+        if (!hero && (attack_info.attacker.entity_type == EntityType.player)) {
             return false;
         }
         return damage_needed <= attack_info.damage_dealt;
