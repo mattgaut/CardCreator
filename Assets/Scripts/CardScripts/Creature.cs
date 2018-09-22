@@ -47,6 +47,9 @@ public class Creature : Card, ICombatant {
         frozen = false;
         current_health = health;
     }
+    public void NoteControlChange() {
+        summoned_this_turn = true;
+    }
     public void NoteBeginTurn() {
         ResetAttacksTaken();
         summoned_this_turn = false;

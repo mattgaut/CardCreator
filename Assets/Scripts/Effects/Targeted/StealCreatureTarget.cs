@@ -12,6 +12,7 @@ public class StealCreatureTarget : TargetedEffect {
 
         if (creature.controller != source.controller) {
             GameStateManager.instance.MoveCard(creature, source.controller.field);
+            creature.NoteControlChange();
         }
     }
 }
