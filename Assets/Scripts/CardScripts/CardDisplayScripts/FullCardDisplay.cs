@@ -9,7 +9,7 @@ public class FullCardDisplay : CardDisplay {
 
     public override void UpdateDisplay() {
         mana_cost.text = "" + card.mana_cost.value;
-        card_name.text = card.name;
+        card_name.text = card.card_name;
         description.text = card.card_text;
     }
 }
