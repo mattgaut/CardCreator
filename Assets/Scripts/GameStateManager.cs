@@ -52,7 +52,7 @@ public class GameStateManager : MonoBehaviour {
     }   
 
     public void DrawCard(Player p) {
-        if (!p.hand.full) {
+        if (!p.hand.full && p.deck.count > 0) {
             MoveCard(p.deck.TopCard(), p.hand);
         }
     }
