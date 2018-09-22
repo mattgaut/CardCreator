@@ -63,6 +63,18 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void DiscardRandomCard(Player p) {
+        if (p.hand.count > 0) {
+            MoveCard(p.hand.cards[Random.Range(0, p.hand.count)], p.discard);
+        }
+    }
+
+    public void DiscardRandomCard(Player p, int amount) {
+        for (int i = 0; i < amount; i++) {
+            DiscardRandomCard(p);
+        }
+    }
+
     public void EndTurn(Player p) {
         timed_effect_manager.EndEffects(TimePoint.end_of_turn);
     }
