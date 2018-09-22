@@ -162,7 +162,7 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public int GainMana(int mana, bool can_overfill = false) {
         int old = current_mana;
         current_mana += mana;
-        if (can_overfill) {
+        if (!can_overfill) {
             if (current_mana > max_mana - current_overloaded_mana) {
                 current_mana = max_mana - current_overloaded_mana;
             }
