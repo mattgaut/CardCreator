@@ -206,6 +206,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
             current_health = health;
         }
 
+        GameStateManager.instance.ProcessHealEvent(source, this, current_health - old);
+
         return current_health - old;
     }
 

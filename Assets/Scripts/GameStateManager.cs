@@ -261,6 +261,21 @@ public class GameStateManager : MonoBehaviour {
             ResolveStack();
         }
     }
+    public void ProcessHealEvent(IEntity source, ICombatant healed, int amount) {
+        bool resolve_after = !resolving_stack && !attack_happening;
+
+        AfterCharacterHealedTriggerInfo info = new AfterCharacterHealedTriggerInfo(healed, amount);
+
+        Creature creature = healed as Creature;
+        if (creature != null) {
+            AddTriggersToStack(creature.abilities.GetLocalTriggers(info));
+        }
+        AddTriggersToStack(trigger_manager.GetTriggers(info));
+
+        if (resolve_after) {
+            ResolveStack();
+        }
+    }
 
     void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
