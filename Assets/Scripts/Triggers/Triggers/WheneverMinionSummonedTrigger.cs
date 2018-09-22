@@ -9,6 +9,8 @@ public class WheneverMinionSummonedTrigger : TriggeredAbility {
         }
     }
 
+    [SerializeField] bool yours, thiers;
+
     [SerializeField] bool match_creature_type;
     [SerializeField] Creature.CreatureType creature_type;
 
@@ -18,6 +20,13 @@ public class WheneverMinionSummonedTrigger : TriggeredAbility {
         }
 
         WheneverCreatureSummonedInfo new_info = info as WheneverCreatureSummonedInfo;
+        if (!yours && source.controller == new_info.creature.controller) {
+            return false;
+        }
+        if (!thiers && source.controller != new_info.creature.controller) {
+            return false;
+        }
+
         if (match_creature_type && creature_type != new_info.creature.creature_type) {
             return false;
         }
