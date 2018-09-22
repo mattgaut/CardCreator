@@ -159,11 +159,17 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
             return false;
         }
     }
-    public int GainMana(int mana) {
+    public int GainMana(int mana, bool can_overfill = false) {
         int old = current_mana;
         current_mana += mana;
-        if (current_mana > max_mana - current_overloaded_mana) {
-            current_mana = max_mana - current_overloaded_mana;
+        if (can_overfill) {
+            if (current_mana > max_mana - current_overloaded_mana) {
+                current_mana = max_mana - current_overloaded_mana;
+            }
+        } else {
+            if (current_mana > 10 - current_overloaded_mana) {
+                current_mana = 10 - current_overloaded_mana;
+            }
         }
         return current_mana - old;
     }
