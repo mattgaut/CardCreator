@@ -277,6 +277,18 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void TryReturnCreatureToHand(Creature c) {
+        if (c.container.zone != Zone.field) {
+            return;
+        }
+
+        if (c.controller.hand.full) {
+            Destroy(c);
+        } else {
+            MoveCard(c, c.controller.hand);
+        }
+    }
+
     void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
     }
