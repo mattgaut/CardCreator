@@ -8,14 +8,23 @@ public abstract class CardController : MonoBehaviour, IClickable {
 
     [SerializeField] protected Collider box;
     protected CardContainer last_container;
-    [SerializeField] protected CardDisplay display;
+    [SerializeField] protected CardDisplay display_prefab;
+    protected CardDisplay display;
+
 
     public Card card {
         get; protected set;
     }
 
+    public CardDisplay GetDisplayPrefab() {
+        return display_prefab;
+    }
+
     protected virtual void Awake() {
         card = GetComponent<Card>();
+
+        display = Instantiate(display_prefab, transform);
+        display.SetCard(card);
     }
 
     protected virtual void Update() {

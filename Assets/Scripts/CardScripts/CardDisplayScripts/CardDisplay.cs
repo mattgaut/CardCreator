@@ -10,7 +10,6 @@ public abstract class CardDisplay : MonoBehaviour {
     protected Card card;
 
     protected virtual void Awake() {
-        card = GetComponent<Card>();
     }
     
     protected virtual void Update() {

@@ -5,9 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Creature))]
 public class CreatureController : CardController {
     Creature creature;
-    [SerializeField] CreatureFieldDisplay creature_field_display;
+    [SerializeField] CreatureFieldDisplay creature_field_display_prefab;
     [SerializeField] Collider field_box;
     FieldViewer field_viewer;
+
+    CreatureFieldDisplay creature_field_display;
 
     float field_height;
 
@@ -17,6 +19,9 @@ public class CreatureController : CardController {
     protected override void Awake() {
         base.Awake();
         creature = GetComponent<Creature>();
+
+        creature_field_display = Instantiate(creature_field_display_prefab, transform);
+        creature_field_display.SetCard(creature);
     }
 
     protected override void Update() {

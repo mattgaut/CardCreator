@@ -5,14 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(Weapon))]
 public class WeaponController : CardController {
     
-    [SerializeField] WeaponFieldDisplay weapon_field_display;
+    [SerializeField] WeaponFieldDisplay weapon_field_display_prefab;
     [SerializeField] Collider field_box;
+
+    WeaponFieldDisplay weapon_field_display;
 
     Weapon weapon;
 
     protected override void Awake() {
         base.Awake();
         weapon = GetComponent<Weapon>();
+
+        weapon_field_display = Instantiate(weapon_field_display_prefab, transform);
+        weapon_field_display.SetCard(weapon);
     }
 
     protected override void UpdateContainer() {

@@ -15,7 +15,11 @@ public class CreatureFieldDisplay : CardDisplay {
     protected override void Awake() {
         base.Awake();
         current_mods = new HashSet<Modifier>();
-        creature = GetComponent<Creature>();
+    }
+
+    public override void SetCard(Card card) {
+        base.SetCard(card);
+        creature = card as Creature;
     }
 
     public override void UpdateDisplay() {

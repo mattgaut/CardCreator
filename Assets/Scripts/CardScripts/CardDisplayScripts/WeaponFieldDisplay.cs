@@ -20,6 +20,5 @@ public class WeaponFieldDisplay : CardDisplay {
 
     protected override void Awake() {
         base.Awake();
-        weapon = GetComponent<Weapon>();
     }
 }

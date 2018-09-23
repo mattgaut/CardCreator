@@ -10,7 +10,6 @@ public class CreatureDisplay : FullCardDisplay {
 
     protected override void Awake() {
         base.Awake();
-        creature = GetComponent<Creature>();
     }
 
     public override void UpdateDisplay() {

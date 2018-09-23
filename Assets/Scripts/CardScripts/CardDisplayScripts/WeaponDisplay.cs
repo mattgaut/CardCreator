@@ -9,7 +9,7 @@ public class WeaponDisplay : FullCardDisplay {
     Weapon weapon;
 
     protected override void Awake() {
-        card = weapon = GetComponent<Weapon>();
+        base.Awake();
     }
 
     public override void UpdateDisplay() {
