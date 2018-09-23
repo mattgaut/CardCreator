@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Card))]
 public abstract class CardDisplay : MonoBehaviour {
 
     [SerializeField] protected Canvas face;
@@ -31,5 +30,9 @@ public abstract class CardDisplay : MonoBehaviour {
 
     public void ShowCard() {
         face.enabled = true;
+    }
+
+    public virtual void SetCard(Card card) {
+        this.card = card;
     }
 }

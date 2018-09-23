@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Creature))]
 public class CreatureDisplay : FullCardDisplay {
 
     [SerializeField] Text attack, health, creature_type;
@@ -40,5 +39,10 @@ public class CreatureDisplay : FullCardDisplay {
             default:
                 return "";
         }
+    }
+
+    public override void SetCard(Card card) {
+        base.SetCard(card);
+        creature = card as Creature;
     }
 }

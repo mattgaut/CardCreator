@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Weapon))]
 public class WeaponDisplay : FullCardDisplay {
 
     [SerializeField] Text attack, health;
@@ -17,5 +16,10 @@ public class WeaponDisplay : FullCardDisplay {
         base.UpdateDisplay();
         attack.text = "" + weapon.attack.value;
         health.text = "" + weapon.durability.value;
+    }
+
+    public override void SetCard(Card card) {
+        base.SetCard(card);
+        weapon = card as Weapon;
     }
 }
