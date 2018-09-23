@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Creature))]
 public class CreatureFieldDisplay : CardDisplay {
 
     [SerializeField] Text attack, health;

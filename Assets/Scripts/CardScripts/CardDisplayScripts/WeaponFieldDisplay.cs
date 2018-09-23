@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Weapon))]
 public class WeaponFieldDisplay : CardDisplay {
     Weapon weapon;
 
@@ -12,6 +11,11 @@ public class WeaponFieldDisplay : CardDisplay {
     public override void UpdateDisplay() {
         attack.text = "" + weapon.attack.value;
         durability.text = "" + weapon.durability.current_value;
+    }
+
+    public override void SetCard(Card card) {
+        base.SetCard(card);
+        weapon = card as Weapon;
     }
 
     protected override void Awake() {

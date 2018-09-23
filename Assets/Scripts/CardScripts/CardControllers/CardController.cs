@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Card), typeof(Collider), typeof(CardDisplay))]
+[RequireComponent(typeof(Card), typeof(Collider))]
 public abstract class CardController : MonoBehaviour, IClickable {
 
 
