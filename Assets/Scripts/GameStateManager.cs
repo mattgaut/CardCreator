@@ -241,8 +241,8 @@ public class GameStateManager : MonoBehaviour {
 
         if (card.type == CardType.Creature && initial_container.zone == Zone.field) {
             (card as Creature).NoteSummon();
-            foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(card as Creature))) {
-                AddToStack(ta);
+            foreach (TriggerInstance ti in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(card as Creature))) {
+                AddToStack(ti);
             }
         }
 
@@ -439,14 +439,8 @@ public class GameStateManager : MonoBehaviour {
         } while (change_made);
     }
 
-    void AddTriggersToStack(IEnumerable<TriggeredAbility> triggers) {
-        foreach (TriggeredAbility trigger in triggers) {
-            AddToStack(trigger);
-        }
-    }
-
-    void AddTriggersToStack(IEnumerable<ITriggeredAbility> triggers) {
-        foreach (ITriggeredAbility trigger in triggers) {
+    void AddTriggersToStack(IEnumerable<TriggerInstance> triggers) {
+        foreach (TriggerInstance trigger in triggers) {
             AddToStack(trigger);
         }
     }
@@ -497,11 +491,11 @@ public class GameStateManager : MonoBehaviour {
 
         AddBattlecryAndComboEffectsToStack(creature);
 
-        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureMinionPlayedInfo(creature))) {
-            AddToStack(ta);
+        foreach (TriggerInstance ti in trigger_manager.GetTriggers(new WheneverCreatureMinionPlayedInfo(creature))) {
+            AddToStack(ti);
         }
-        foreach (TriggeredAbility ta in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(creature))) {
-            AddToStack(ta);
+        foreach (TriggerInstance ti in trigger_manager.GetTriggers(new WheneverCreatureSummonedInfo(creature))) {
+            AddToStack(ti);
         }
 
         // Lock a position in field to save space for creature

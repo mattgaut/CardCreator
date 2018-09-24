@@ -90,7 +90,7 @@ public interface ICombatant : IDamageable, IEntity {
     }
 }
 
-public interface ITriggeredAbility : IStackEffect {
+public interface ITriggeredAbility {
     TriggerType type { get; }
 
     bool is_global { get; }
@@ -101,6 +101,8 @@ public interface ITriggeredAbility : IStackEffect {
     IEntity source { get; }
 
     bool TriggersFrom(TriggerInfo info);
+
+    void Resolve(TriggerInfo info);
 
     bool ActiveInZone(Zone z);
 }

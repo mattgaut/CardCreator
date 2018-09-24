@@ -21,8 +21,8 @@ public class TriggerManager : MonoBehaviour {
         subscribed_triggers[ability.type].Remove(ability);
     }
 
-    public List<ITriggeredAbility> GetTriggers(TriggerInfo info) {
-        List<ITriggeredAbility> to_return = new List<ITriggeredAbility>();
+    public List<TriggerInstance> GetTriggers(TriggerInfo info) {
+        List<TriggerInstance> to_return = new List<TriggerInstance>();
         foreach (ITriggeredAbility trigger in subscribed_triggers[info.type]) {
             if (trigger.source.controller == GameManager.current_player && !trigger.on_your_turn) {
                 continue;
@@ -31,7 +31,7 @@ public class TriggerManager : MonoBehaviour {
                 continue;
             }
             if (trigger.TriggersFrom(info)) {
-                to_return.Add(trigger);
+                to_return.Add(new TriggerInstance(trigger, info));
             }
         }
         return to_return;

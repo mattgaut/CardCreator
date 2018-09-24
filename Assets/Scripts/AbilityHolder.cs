@@ -35,8 +35,13 @@ public class AbilityHolder : MonoBehaviour {
         return global_triggered_abilities.Where(a => a.ActiveInZone(zone));
     }
 
-    public IEnumerable<TriggeredAbility> GetLocalTriggers(TriggerInfo info) {
-        return local_triggered_abilities.Where(a => a.ActiveInZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info));
+    public IEnumerable<TriggerInstance> GetLocalTriggers(TriggerInfo info) {
+        List<TriggeredAbility> triggers = new List<TriggeredAbility>(local_triggered_abilities.Where(a => a.ActiveInZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info)));
+        List<TriggerInstance> trigger_instances = new List<TriggerInstance>();
+        foreach (TriggeredAbility ta in triggers) {
+            trigger_instances.Add(new TriggerInstance(ta, info));
+        }
+        return trigger_instances;
     }
 
     public IEnumerable<StaticAbility> GetStaticAbilitiesActiveInZone(Zone zone) {

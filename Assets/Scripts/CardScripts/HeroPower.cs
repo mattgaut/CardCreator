@@ -110,11 +110,11 @@ public class HeroPowerTriggeredAbility : ITriggeredAbility {
         return true;
     }
 
-    public void Resolve() {
-        to_wrap.Resolve();
-    }
-
     public bool TriggersFrom(TriggerInfo info) {
         return to_wrap.TriggersFrom(info);
+    }
+
+    public void Resolve(TriggerInfo info) {
+        to_wrap.Resolve(info);
     }
 }

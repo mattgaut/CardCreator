@@ -21,7 +21,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
-    public virtual void Resolve() {
+    public virtual void Resolve(TriggerInfo info) {
         for (int i = 0; i < effects.Count; i++) {
             effects[i].Resolve(source);
         }
@@ -37,6 +37,20 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     protected bool CheckTrigger(TriggerInfo info) {
         return TriggersFrom(info);
+    }
+}
+
+public class TriggerInstance : IStackEffect {
+    TriggerInfo info;
+    ITriggeredAbility ability;
+
+    public TriggerInstance(ITriggeredAbility ability, TriggerInfo info) {
+        this.info = info;
+        this.ability = ability;
+    }
+
+    public void Resolve() {
+        ability.Resolve(info);
     }
 }
 
