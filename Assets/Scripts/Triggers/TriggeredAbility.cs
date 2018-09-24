@@ -51,7 +51,6 @@ public class TriggerInstance : IStackEffect {
     }
 
     public void Resolve() {
-        Debug.Log(info);
         ability.Resolve(info);
     }
 }
