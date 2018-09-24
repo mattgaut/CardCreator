@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AfterDamageTakenTrigger : TriggeredAbility {
+public class AfterDamageDealtTrigger : TriggeredAbility {
 
     [SerializeField] int damage_needed_to_trigger;
     [SerializeField] bool creatures, players;
 
-    [SerializeField] List<TargetedEffect> effects_targeting_damager;
+    [SerializeField] List<TargetedEffect> effects_targeting_damaged;
 
     public override TriggerType type {
         get {
-            return TriggerType.damage_taken;
+            return TriggerType.damage_dealt;
         }
     }
 
@@ -21,16 +21,16 @@ public class AfterDamageTakenTrigger : TriggeredAbility {
             return false;
         }
 
-        AfterDamageTakenTriggerInfo damage_info = info as AfterDamageTakenTriggerInfo;
+        AfterDamageDealtTriggerInfo damage_info = info as AfterDamageDealtTriggerInfo;
         if (damage_info == null) {
             return false;
         }
 
-        if (damage_info.damaged.entity_type == EntityType.player && !players) {
+        if (damage_info.damager.entity_type == EntityType.player && !players) {
             return false;
         }
 
-        if (damage_info.damaged as Creature != null && !creatures) {
+        if (damage_info.damager as Creature != null && !creatures) {
             return false;
         }
 
@@ -40,12 +40,12 @@ public class AfterDamageTakenTrigger : TriggeredAbility {
     public override void Resolve(TriggerInfo info) {
         base.Resolve(info);
 
-        if (info.type == TriggerType.damage_taken) {
-            AfterDamageTakenTriggerInfo damage_info = info as AfterDamageTakenTriggerInfo;
+        if (info.type == TriggerType.damage_dealt) {
+            AfterDamageDealtTriggerInfo damage_info = info as AfterDamageDealtTriggerInfo;
 
-            if (damage_info.damager != null) {
-                foreach (TargetedEffect te in effects_targeting_damager) {
-                    te.SetTarget(damage_info.damager);
+            if (damage_info.damaged != null) {
+                foreach (TargetedEffect te in effects_targeting_damaged) {
+                    te.SetTarget(damage_info.damaged);
                     te.Resolve(source);
                 }
             }
@@ -53,10 +53,10 @@ public class AfterDamageTakenTrigger : TriggeredAbility {
     }
 }
 
-public class AfterDamageTakenTriggerInfo : TriggerInfo {
+public class AfterDamageDealtTriggerInfo : TriggerInfo {
     public override TriggerType type {
         get {
-            return TriggerType.damage_taken;
+            return TriggerType.damage_dealt;
         }
     }
 
@@ -64,7 +64,7 @@ public class AfterDamageTakenTriggerInfo : TriggerInfo {
     public ICombatant damaged { get; private set; }
     public int damage { get; private set; }
 
-    public AfterDamageTakenTriggerInfo(IEntity damager, ICombatant damaged, int damage) {
+    public AfterDamageDealtTriggerInfo(IEntity damager, ICombatant damaged, int damage) {
         this.damage = damage;
         this.damaged = damaged;
         this.damager = damager;

@@ -57,8 +57,8 @@ public class GameManager : MonoBehaviour {
                 yield return null;
             }
             active_player.GetComponent<Renderer>().material.color = Color.red;
-            gsm.EndTurn(active_player);
             yield return null;
+            gsm.EndTurn(active_player);
             current_position = (current_position + 1) % _players.Count;
         }
     }

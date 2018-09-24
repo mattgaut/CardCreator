@@ -36,7 +36,10 @@ public class AbilityHolder : MonoBehaviour {
     }
 
     public IEnumerable<TriggerInstance> GetLocalTriggers(TriggerInfo info) {
+        Debug.Log("Local: " + local_triggered_abilities.Count);
+        Debug.Log("Info: " + info.type);
         List<TriggeredAbility> triggers = new List<TriggeredAbility>(local_triggered_abilities.Where(a => a.ActiveInZone(card.container.zone) && a.type == info.type && a.TriggersFrom(info)));
+        Debug.Log(triggers.Count);
         List<TriggerInstance> trigger_instances = new List<TriggerInstance>();
         foreach (TriggeredAbility ta in triggers) {
             trigger_instances.Add(new TriggerInstance(ta, info));

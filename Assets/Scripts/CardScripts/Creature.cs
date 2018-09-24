@@ -53,7 +53,11 @@ public class Creature : Card, ICombatant {
     public void NoteBeginTurn() {
         ResetAttacksTaken();
         summoned_this_turn = false;
-        frozen = false;
+    }
+    public void NoteEndTurn() {
+        if (attacks_taken == 0 && (summoned_this_turn == false || mods.HasMod(Modifier.charge))) {
+            frozen = false;
+        }
     }
     public void Freeze() {
         frozen = true;

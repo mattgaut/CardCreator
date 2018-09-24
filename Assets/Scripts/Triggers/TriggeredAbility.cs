@@ -36,6 +36,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
     }
 
     protected bool CheckTrigger(TriggerInfo info) {
+        Debug.Log("Triggers From" + " : " +info);
         return TriggersFrom(info);
     }
 }
@@ -50,6 +51,7 @@ public class TriggerInstance : IStackEffect {
     }
 
     public void Resolve() {
+        Debug.Log(info);
         ability.Resolve(info);
     }
 }
@@ -58,4 +60,4 @@ public abstract class TriggerInfo {
     public abstract TriggerType type { get; }
 }
 
-public enum TriggerType { after_minion_played, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_killed, damage_taken, character_healed, after_creature_summoned }
+public enum TriggerType { after_minion_played, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_killed, damage_taken, character_healed, after_creature_summoned, damage_dealt }

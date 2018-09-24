@@ -103,6 +103,10 @@ public class GameStateManager : MonoBehaviour {
 
     public void EndTurn(Player p) {
         timed_effect_manager.EndEffects(TimePoint.end_of_turn);
+
+        foreach (Creature c in p.field.cards) {
+            c.NoteEndTurn();
+        }
     }
 
     public void UseHeroPower(Player p) {
@@ -293,8 +297,15 @@ public class GameStateManager : MonoBehaviour {
         bool resolve_after = !resolving_stack && !attack_happening;
 
         AfterDamageTakenTriggerInfo info = new AfterDamageTakenTriggerInfo(damager, damaged, damage);
+        AfterDamageDealtTriggerInfo dealt_info = new AfterDamageDealtTriggerInfo(damager, damaged, damage);
 
-        Creature creature = damaged as Creature;
+        Creature creature = damager as Creature;
+        if (creature != null) {
+            AddTriggersToStack(creature.abilities.GetLocalTriggers(dealt_info));
+        }
+        AddTriggersToStack(trigger_manager.GetTriggers(dealt_info));
+
+        creature = damaged as Creature;
         if (creature != null) {
             AddTriggersToStack(creature.abilities.GetLocalTriggers(info));
         }
