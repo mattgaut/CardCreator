@@ -21,6 +21,28 @@ public class CardDatabase : ScriptableObject {
         return cards_by_id.ContainsKey(id);
     }
 
+    public Card GetCard(int id) {
+        if (!cards_by_id.ContainsKey(id)) return null;
+
+        return cards_by_id[id];
+    }
+    public Card GetCard(string name) {
+        foreach (Card c in cards_by_id.Values) {
+            if (c.name == name) {
+                return c;
+            }
+        }
+        return null;
+    }
+    public int GetCardID(string name) {
+        foreach (KeyValuePair<int,Card> c in cards_by_id) {
+            if (c.Value.name == name) {
+                return c.Key;
+            }
+        }
+        return -1;
+    }
+
     public void AddCard(Card card, int id) {
         if (cards_by_id.ContainsKey(id)) {
             return;
