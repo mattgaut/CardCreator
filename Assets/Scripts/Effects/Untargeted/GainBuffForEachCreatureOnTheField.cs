@@ -22,10 +22,10 @@ public class GainBuffForEachCreatureOnTheField : UntargetedEffect {
 
         if (creature) {
             if (attack_buff != 0) {
-                creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, count * attack_buff));
+                creature.attack.ApplyBuff(new StatBuff(source, BuffType.basic, count * attack_buff));
             }
             if (health_buff != 0) {
-                creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, count * health_buff));
+                creature.health.ApplyBuff(new StatBuff(source, BuffType.basic, count * health_buff));
             }
         }
     }

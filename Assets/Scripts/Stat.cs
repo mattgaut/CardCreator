@@ -54,12 +54,12 @@ public class Stat {
 
     public void ClearNonAuraBuffs() {
         for (int i = buffs.Count - 1; i >= 0; i--) {
-            if (buffs[i].buff_type != StatBuff.Type.aura) {
+            if (buffs[i].buff_type != BuffType.aura) {
                 RemoveBuff(buffs[i]);
             }
         }
         for (int i = sets_stack.Count - 1; i >= 0; i--) {
-            if (sets_stack[i].buff_type != StatBuff.Type.aura) {
+            if (sets_stack[i].buff_type != BuffType.aura) {
                 RemoveSetBuff(buffs[i]);
             }
         }
@@ -124,14 +124,13 @@ public class ResourceStat : Stat {
 }
 
 [Serializable]
-public class StatBuff : IEqualityComparer<StatBuff>, IEquatable<StatBuff> {
-    public enum Type { basic, aura, timed }
+public class StatBuff : IBuff, IEqualityComparer<StatBuff>, IEquatable<StatBuff> {
 
     public int buff_value { get; private set; }
-    public Type buff_type { get; private set; }
+    public BuffType buff_type { get; private set; }
     public IEntity source { get; private set; }
 
-    public StatBuff(IEntity source, Type type, int value) {
+    public StatBuff(IEntity source, BuffType type, int value) {
         this.source = source;
         buff_type = type;
         buff_value = value;

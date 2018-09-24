@@ -47,8 +47,8 @@ public class GameManager : MonoBehaviour {
             active_player.GetComponent<Renderer>().material.color = Color.blue;
             gsm.BeginTurn(active_player);
             active_player.command_manager.Clear();
-            while (!active_player.command_manager.end_turn) {
-                if (active_player.command_manager.commands.Count > 0 && gsm.can_take_command) {
+            while (!active_player.command_manager.end_turn || !gsm.can_process_command) {
+                if (active_player.command_manager.commands.Count > 0 && gsm.can_process_command) {
                     Command command = active_player.command_manager.PopCommand();
                     if (command.ValidateCommand()) {
                         command.ResolveCommand();

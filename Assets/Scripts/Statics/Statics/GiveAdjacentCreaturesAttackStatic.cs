@@ -10,7 +10,7 @@ public class GiveAdjacentCreaturesAttackStatic : GiveAdjacentCreaturesBuff {
         if (creature == null) {
             return;
         }
-        creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.aura, attack_buff));
+        creature.attack.ApplyBuff(new StatBuff(source, BuffType.aura, attack_buff));
     }
 
     protected override void RemoveEffects(IEntity remove_from) {
@@ -18,6 +18,6 @@ public class GiveAdjacentCreaturesAttackStatic : GiveAdjacentCreaturesBuff {
         if (creature == null) {
             return;
         }
-        creature.attack.RemoveBuff(new StatBuff(source, StatBuff.Type.aura, attack_buff));
+        creature.attack.RemoveBuff(new StatBuff(source, BuffType.aura, attack_buff));
     }
 }

@@ -11,6 +11,8 @@ public class ModifierContainer : MonoBehaviour, ITargets {
     protected List<Modifier> unavailable_mods;
     protected List<Modifier> buffed_mods;
 
+    List<ModBuff> buffs;
+
     [SerializeField] Battlecry _battlecry_info;
     [SerializeField] Combo _combo_info;
     [SerializeField] Deathrattle _deathrattle_info;
@@ -43,6 +45,18 @@ public class ModifierContainer : MonoBehaviour, ITargets {
         }
     }
 
+    public virtual void ApplyBuff(ModBuff buff) {
+        AddMod(buff.buff_value);
+        buffs.Add(buff);
+    }
+
+    public virtual void RemoveBuff(ModBuff buff) {
+        if (buffs.Contains(buff)) {
+            RemoveMod(buff.buff_value);
+            buffs.Remove(buff);
+        }
+    }
+
     public bool HasMod(Modifier mod) {
         return base_mods.Contains(mod) || buffed_mods.Contains(mod);
     }
@@ -52,6 +66,7 @@ public class ModifierContainer : MonoBehaviour, ITargets {
         }
         buffed_mods.Add(mod);
     }
+
     public void RemoveMod(Modifier mod) {
         if (mod == Modifier.divine_shield || mod == Modifier.stealth) {
             buffed_mods.RemoveAll(a => a == mod);
@@ -62,6 +77,7 @@ public class ModifierContainer : MonoBehaviour, ITargets {
     public void RemoveAllMods() {
         buffed_mods.Clear();
         base_mods.Clear();
+        buffs.Clear();
     }
 
     public bool NeedsTarget() {
@@ -83,6 +99,9 @@ public class ModifierContainer : MonoBehaviour, ITargets {
         source = GetComponent<IEntity>();
         buffed_mods = new List<Modifier>();
         unavailable_mods = new List<Modifier>();
+
+        buffs = new List<ModBuff>();
+
         foreach (Modifier mod in unavailable_mods) {
             RemoveMod(mod);
         }

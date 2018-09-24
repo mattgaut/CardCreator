@@ -17,7 +17,7 @@ public class GivePlayerTimedAttackBuff : UntargetedEffect, ITimedEffect {
         Player player = source.controller;
 
         if (player != null) {
-            player.attack.RemoveBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
+            player.attack.RemoveBuff(new StatBuff(source, BuffType.timed, attack_buff));
         }
     }
 
@@ -25,7 +25,7 @@ public class GivePlayerTimedAttackBuff : UntargetedEffect, ITimedEffect {
         Player player = source.controller;
 
         if (player != null) {
-            player.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
+            player.attack.ApplyBuff(new StatBuff(source, BuffType.timed, attack_buff));
             
             GameStateManager.instance.TrackTimedEffect(this, source);
         }

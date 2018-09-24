@@ -10,14 +10,14 @@ public class ReduceCardCostStatic : StaticAbility {
     protected override void ApplyEffects(IEntity apply_to) {
         Card card = apply_to as Card;
         if (card != null) {
-            card.mana_cost.ApplyBuff(new StatBuff(source, StatBuff.Type.aura, -cost_to_reduce));
+            card.mana_cost.ApplyBuff(new StatBuff(source,BuffType.aura, -cost_to_reduce));
         }
     }
 
     protected override void RemoveEffects(IEntity remove_from) {
         Card card = remove_from as Card;
         if (card != null) {
-            card.mana_cost.RemoveBuff(new StatBuff(source, StatBuff.Type.aura, -cost_to_reduce));
+            card.mana_cost.RemoveBuff(new StatBuff(source, BuffType.aura, -cost_to_reduce));
         }
     }
 }

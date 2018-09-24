@@ -24,15 +24,15 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
             return;
         }
 
-        if (attack_buff > 0) creature.attack.RemoveBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
-        if (health_buff > 0) creature.health.RemoveBuff(new StatBuff(source, StatBuff.Type.timed, health_buff));
+        if (attack_buff > 0) creature.attack.RemoveBuff(new StatBuff(source, BuffType.timed, attack_buff));
+        if (health_buff > 0) creature.health.RemoveBuff(new StatBuff(source, BuffType.timed, health_buff));
     }
 
     public override void Resolve(IEntity source) {
         if (friendly) {
             foreach (Creature creature in source.controller.field.cards.OfType<Creature>()) {
-                if (attack_buff > 0) creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
-                if (health_buff > 0) creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, health_buff));
+                if (attack_buff > 0) creature.attack.ApplyBuff(new StatBuff(source, BuffType.timed, attack_buff));
+                if (health_buff > 0) creature.health.ApplyBuff(new StatBuff(source, BuffType.timed, health_buff));
 
                 GameStateManager.instance.TrackTimedEffect(this, source, creature);
             }
@@ -43,8 +43,8 @@ public class GiveMassTimedBuff : UntargetedEffect, ITimedEffect {
                     continue;
                 }
                 foreach (Creature creature in player.field.cards.OfType<Creature>()) {
-                    if (attack_buff > 0) creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, attack_buff));
-                    if (health_buff > 0) creature.health.ApplyBuff(new StatBuff(source, StatBuff.Type.timed, health_buff));
+                    if (attack_buff > 0) creature.attack.ApplyBuff(new StatBuff(source, BuffType.timed, attack_buff));
+                    if (health_buff > 0) creature.health.ApplyBuff(new StatBuff(source, BuffType.timed, health_buff));
 
                     GameStateManager.instance.TrackTimedEffect(this, source, creature);
                 }

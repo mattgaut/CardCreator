@@ -21,8 +21,8 @@ public class GiveCertainCreaturesMassBuff : UntargetedEffect {
             }
         }
         foreach (Creature creature in to_buff) {
-            if (attack_buff != 0) creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, attack_buff));
-            if (health_buff != 0) creature.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, health_buff));
+            if (attack_buff != 0) creature.attack.ApplyBuff(new StatBuff(source, BuffType.basic, attack_buff));
+            if (health_buff != 0) creature.attack.ApplyBuff(new StatBuff(source, BuffType.basic, health_buff));
         }
     }
 }

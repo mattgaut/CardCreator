@@ -50,6 +50,15 @@ public class CardContainer : MonoBehaviour {
         if (contained_cards.Count < 1) { return null; }
         return contained_cards[0];
     }
+    public List<Card> TopCards(int amount) {
+        List<Card> to_return = new List<Card>();
+
+        for (int i = 0; i < amount && i < cards.Count; i++) {
+            to_return.Add(cards[i]);
+        }
+
+        return to_return;
+    }
 
     public bool RemoveCard(Card c) {
         if (ContainsCard(c)) {

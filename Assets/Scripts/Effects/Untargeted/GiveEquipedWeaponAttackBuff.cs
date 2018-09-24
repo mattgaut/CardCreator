@@ -8,7 +8,7 @@ public class GiveEquipedWeaponAttackBuff : UntargetedEffect {
 
     public override void Resolve(IEntity source) {
         if (source.controller.weapon != null) {
-            source.controller.weapon.attack.ApplyBuff(new StatBuff(source, StatBuff.Type.basic, attack_buff));
+            source.controller.weapon.attack.ApplyBuff(new StatBuff(source, BuffType.basic, attack_buff));
         }
     }
 }

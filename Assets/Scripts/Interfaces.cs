@@ -105,6 +105,12 @@ public interface ITriggeredAbility : IStackEffect {
     bool ActiveInZone(Zone z);
 }
 
-public interface ICardSelectionEffect : IStackEffect {
-    void FinishResolve(Card selected);
+public interface ICardSelectionEffect {
+    void FinishResolve(IEntity source, Card selected, List<Card> cards);
+}
+
+public enum BuffType { basic, aura, timed }
+public interface IBuff {
+    BuffType buff_type { get; }
+    IEntity source { get; }
 }

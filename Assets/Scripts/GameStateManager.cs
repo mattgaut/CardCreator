@@ -10,6 +10,9 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public bool can_take_command {
+        get { return !selecting_card; }
+    }
+    public bool can_process_command {
         get { return !attack_happening && !resolving_stack && !selecting_card; }
     }
 
@@ -20,7 +23,9 @@ public class GameStateManager : MonoBehaviour {
     TimedEffectManager timed_effect_manager;
 
     List<IStackEffect> stack;
+
     ICardSelectionEffect pending_selection_effect;
+    IEntity selection_effect_source;
 
     bool attack_happening;
     bool resolving_stack;
@@ -72,9 +77,21 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void TryMoveCardToHand(Player p, Card c) {
+        if (p.controller.hand.full) {
+            BurnCard(c);
+        } else {
+            MoveCard(c, p.hand);
+        }
+    }
+
+    public void DiscardCard(Card c) {
+        MoveCard(c, c.controller.discard);
+    }
+
     public void DiscardRandomCard(Player p) {
         if (p.hand.count > 0) {
-            MoveCard(p.hand.cards[Random.Range(0, p.hand.count)], p.discard);
+            DiscardCard(p.hand.cards[Random.Range(0, p.hand.count)]);
         }
     }
 
@@ -309,16 +326,24 @@ public class GameStateManager : MonoBehaviour {
         }
 
         if (c.controller.hand.full) {
-            Destroy(c);
+            BurnCard(c);
         } else {
             MoveCard(c, c.controller.hand);
         }
     }
 
-    public void SelectCard(ICardSelectionEffect effect, List<Card> choose_from) {
+    public void BurnCard(Card c) {
+        UnsubscribeEffects(c);
+
+        Destroy(c.gameObject);
+    }
+
+    public void SelectCard(ICardSelectionEffect effect, IEntity source, List<Card> choose_from) {
         if (!selecting_card) {
+            Debug.Log("Gere");
             selecting_card = true;
             pending_selection_effect = effect;
+            selection_effect_source = source;
 
             StartCoroutine(WaitForCardSelection(choose_from));
         }
@@ -327,13 +352,15 @@ public class GameStateManager : MonoBehaviour {
     IEnumerator WaitForCardSelection(List<Card> choose_from) {
         yield return card_selector.StartSingleCardSelection(choose_from.ToArray());
 
-        FinishSelectCard(card_selector.GetCardSelected());
+        FinishSelectCard(card_selector.GetCardSelected(), choose_from);
     }
 
-    void FinishSelectCard(Card selected) {
+    void FinishSelectCard(Card selected, List<Card> cards) {
         if (selecting_card) {
             selecting_card = false;
-            pending_selection_effect.FinishResolve(selected);
+
+            cards.Remove(selected);
+            pending_selection_effect.FinishResolve(selection_effect_source, selected, cards);
             ResolveStack();
         }
     }

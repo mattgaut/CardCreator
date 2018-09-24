@@ -17,6 +17,10 @@ public class CommandManager : MonoBehaviour {
     }
 
     public void AddCommand(Command command) {
+        if (!GameStateManager.instance.can_take_command) {
+            return;
+        }
+
         if (command.ValidateCommand()) {
             commands.Add(command);
         } else {
