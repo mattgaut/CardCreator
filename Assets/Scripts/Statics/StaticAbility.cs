@@ -48,7 +48,9 @@ public abstract class StaticAbility : MonoBehaviour {
     public void AddPossible(IEntity entity) {
         if (!possible_entities.Contains(entity)) {
             possible_entities.Add(entity);
-            Apply(entity);
+            if (AppliesTo(entity)) {
+                Apply(entity);
+            }
         }
     }
     public void RemovePossible(IEntity entity) {

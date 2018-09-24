@@ -21,7 +21,7 @@ public abstract class TriggeredAbility : MonoBehaviour, ITriggeredAbility {
 
     public abstract bool TriggersFrom(TriggerInfo info);
 
-    public void Resolve() {
+    public virtual void Resolve() {
         for (int i = 0; i < effects.Count; i++) {
             effects[i].Resolve(source);
         }

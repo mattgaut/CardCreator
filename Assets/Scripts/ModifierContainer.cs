@@ -46,14 +46,14 @@ public class ModifierContainer : MonoBehaviour, ITargets {
     }
 
     public virtual void ApplyBuff(ModBuff buff) {
-        AddMod(buff.buff_value);
         buffs.Add(buff);
+        buffed_mods.Add(buff.buff_value);
     }
 
     public virtual void RemoveBuff(ModBuff buff) {
         if (buffs.Contains(buff)) {
-            RemoveMod(buff.buff_value);
             buffs.Remove(buff);
+            buffed_mods.Remove(buff.buff_value);
         }
     }
 

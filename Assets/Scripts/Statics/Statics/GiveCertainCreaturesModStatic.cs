@@ -10,16 +10,16 @@ public class GiveCertainCreaturesModStatic : StaticAbility {
     [SerializeField] protected bool other;
 
     public override bool AppliesTo(IEntity entity) {
-        if (!other && ReferenceEquals(entity, source)) {
+        Creature creature = entity as Creature;
+
+        if (other && ReferenceEquals(entity, source)) {
             return false;
         }
-
-        Creature creature = entity as Creature;
 
         if (creature == null || creature.creature_type != to_buff) {
             return false;
         }
-
+        
         return base.AppliesTo(entity);
     }
 
@@ -29,7 +29,7 @@ public class GiveCertainCreaturesModStatic : StaticAbility {
         if (creature == null) {
             return;
         }
-
+        
         creature.mods.ApplyBuff(new ModBuff(source, BuffType.aura, mod));
     }
 

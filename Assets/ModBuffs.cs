@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class ModBuff : IBuff, IEqualityComparer<StatBuff>, IEquatable<StatBuff> {
+public class ModBuff : IBuff, IEqualityComparer<ModBuff>, IEquatable<ModBuff> {
 
     public Modifier buff_value { get; private set; }
     public BuffType buff_type { get; private set; }
@@ -16,16 +16,16 @@ public class ModBuff : IBuff, IEqualityComparer<StatBuff>, IEquatable<StatBuff> 
         buff_value = value;
     }
 
-    public bool Equals(StatBuff x, StatBuff y) {
+    public bool Equals(ModBuff x, ModBuff y) {
         return x.buff_value == y.buff_value && x.buff_type == y.buff_type && x.source == y.source;
     }
 
-    public int GetHashCode(StatBuff obj) {
+    public int GetHashCode(ModBuff obj) {
         return obj.GetHashCode();
     }
 
     public override bool Equals(object obj) {
-        StatBuff other = obj as StatBuff;
+        ModBuff other = obj as ModBuff;
         if (other == null) {
             return false;
         }
@@ -36,7 +36,7 @@ public class ModBuff : IBuff, IEqualityComparer<StatBuff>, IEquatable<StatBuff> 
         return buff_value.GetHashCode() * buff_type.GetHashCode(); ;
     }
 
-    public bool Equals(StatBuff other) {
+    public bool Equals(ModBuff other) {
         return Equals(this, other);
     }
 }

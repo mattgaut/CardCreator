@@ -335,6 +335,7 @@ public class CardCreationWindow : EditorWindow {
         card_object.FindProperty("_art").objectReferenceValue = card_art;
         card_object.FindProperty("_rarity").enumValueIndex = (int)card_rarity;
         if (creation_type == CreationType.Creature) {
+            card_object.FindProperty("_creature_type").intValue = (int)card_creature_type;
             card_object.FindProperty("_attack").FindPropertyRelative("_base_value").intValue = card_attack;
             card_object.FindProperty("_health").FindPropertyRelative("_base_value").intValue = card_health;
         } else if (creation_type == CreationType.Weapon) {

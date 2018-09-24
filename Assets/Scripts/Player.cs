@@ -176,6 +176,11 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
     public void AddOneMaxMana(bool fill_new_mana = false) {
         SetMaxMana(max_mana + 1, fill_new_mana);
     }
+    public void AddMaxMana(int amount, bool fill_new_mana = false) {
+        for (int i = 0; i < amount;i++) {
+            SetMaxMana(max_mana + 1, fill_new_mana);
+        }
+    }
     public void SetMaxMana(int count, bool fill_new_mana = false) {
         if (count > 0) {
             int old = max_mana;
