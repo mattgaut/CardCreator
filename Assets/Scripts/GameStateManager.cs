@@ -9,14 +9,23 @@ public class GameStateManager : MonoBehaviour {
         get; private set;
     }
 
+    public bool can_take_command {
+        get { return !attack_happening && !resolving_stack && !selecting_card; }
+    }
+
+    [SerializeField] CardSelector card_selector;
+
     TriggerManager trigger_manager;
     StaticAbilityManager static_ability_manager;
     TimedEffectManager timed_effect_manager;
 
     List<IStackEffect> stack;
+    ICardSelectionEffect pending_selection_effect;
 
     bool attack_happening;
     bool resolving_stack;
+
+    bool selecting_card;
 
     public void Awake() {
         trigger_manager = GetComponent<TriggerManager>();
@@ -306,6 +315,29 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
+    public void SelectCard(ICardSelectionEffect effect, List<Card> choose_from) {
+        if (!selecting_card) {
+            selecting_card = true;
+            pending_selection_effect = effect;
+
+            StartCoroutine(WaitForCardSelection(choose_from));
+        }
+    }
+
+    IEnumerator WaitForCardSelection(List<Card> choose_from) {
+        yield return card_selector.StartSingleCardSelection(choose_from.ToArray());
+
+        FinishSelectCard(card_selector.GetCardSelected());
+    }
+
+    void FinishSelectCard(Card selected) {
+        if (selecting_card) {
+            selecting_card = false;
+            pending_selection_effect.FinishResolve(selected);
+            ResolveStack();
+        }
+    }
+
     void AddToStack(IStackEffect stack_effect) {
         stack.Add(stack_effect);
     }
@@ -319,6 +351,10 @@ public class GameStateManager : MonoBehaviour {
             IStackEffect effect = stack[stack.Count - 1];
             stack.RemoveAt(stack.Count - 1);
             effect.Resolve();
+
+            if (selecting_card) {
+                return;
+            }
 
             CheckStateBasedEffects();            
         }

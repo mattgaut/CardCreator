@@ -104,3 +104,7 @@ public interface ITriggeredAbility : IStackEffect {
 
     bool ActiveInZone(Zone z);
 }
+
+public interface ICardSelectionEffect : IStackEffect {
+    void FinishResolve(Card selected);
+}

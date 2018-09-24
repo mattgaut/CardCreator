@@ -48,8 +48,11 @@ public class GameManager : MonoBehaviour {
             gsm.BeginTurn(active_player);
             active_player.command_manager.Clear();
             while (!active_player.command_manager.end_turn) {
-                if (active_player.command_manager.commands.Count > 0) {
-                    active_player.command_manager.PopCommand().ResolveCommand();
+                if (active_player.command_manager.commands.Count > 0 && gsm.can_take_command) {
+                    Command command = active_player.command_manager.PopCommand();
+                    if (command.ValidateCommand()) {
+                        command.ResolveCommand();
+                    }
                 }
                 yield return null;
             }
