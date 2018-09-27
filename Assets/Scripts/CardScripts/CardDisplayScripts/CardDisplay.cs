@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public abstract class CardDisplay : MonoBehaviour {
 
     [SerializeField] protected Canvas face;
-    [SerializeField] Image art;
+    [SerializeField] protected Image art;
     protected Card card;
 
     protected virtual void Awake() {

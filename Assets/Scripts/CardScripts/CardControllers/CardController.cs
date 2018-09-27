@@ -76,7 +76,7 @@ public abstract class CardController : MonoBehaviour, IClickable {
     }
 
     public virtual void OnHoverStart() {
-        if (card.container.zone == Zone.hand && !hovering) {
+        if (card.controller == GameManager.current_player && card.container.zone == Zone.hand && !hovering) {
             hovering = true;
             card.transform.position = card.controller.hand.GetComponent<HandViewer>().GetHoverPosition(card);
         }
