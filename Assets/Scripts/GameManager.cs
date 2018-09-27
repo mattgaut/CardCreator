@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     bool game_over;
     [SerializeField] List<Player> _players;
     [SerializeField] GameStateManager gsm;
+    [SerializeField] UIManager ui_manager;
     Player active_player;
 
     int current_position;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour {
             active_player = _players[current_position];
             active_player.GetComponent<Renderer>().material.color = Color.blue;
             gsm.BeginTurn(active_player);
+            ui_manager.HideTurnScreen();
             active_player.command_manager.Clear();
             while (!active_player.command_manager.end_turn || !gsm.can_process_command) {
                 if (active_player.command_manager.commands.Count > 0 && gsm.can_process_command) {
@@ -62,6 +64,12 @@ public class GameManager : MonoBehaviour {
             yield return null;
             gsm.EndTurn(active_player);
             current_position = (current_position + 1) % _players.Count;
+            ui_manager.ShowTurnScreen(current_position == 0);
+            ui_manager.FlipCamera();
+            while (!Input.GetKeyDown(KeyCode.Escape)) {
+                yield return null;
+            }
+            yield return null;
         }
     }
 }
