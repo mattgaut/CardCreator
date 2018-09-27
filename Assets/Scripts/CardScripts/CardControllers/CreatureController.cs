@@ -44,7 +44,7 @@ public class CreatureController : CardController {
     public override void OnClick() {
     }
     public override void OnLeftClickDown() {
-        if (card.container == card.controller.hand) {
+        if (card.container == card.controller.hand && !is_targeting) {
             field_viewer = card.controller.field.GetComponent<FieldViewer>();
             hand_viewer = card.controller.hand.GetComponent<HandViewer>();
             attach_to_mouse = StartCoroutine(AttachToMouse());
@@ -67,7 +67,7 @@ public class CreatureController : CardController {
                     card.controller.command_manager.AddCommand(new AttackCommand(c, creature));
                 }
             }
-        } else if (card.container == card.controller.hand) {
+        } else if (card.container == card.controller.hand && !is_targeting) {
             playing_creatue = false;
             if (!can_click) {
                 card.controller.hand.GetComponent<HandViewer>().ForceUpdate();
@@ -141,7 +141,7 @@ public class CreatureController : CardController {
                 GameObject hover_object = OverObject();
                 if (hover_object != null) {
                     IEntity target = hover_object.GetComponent<IEntity>();
-                    if (target != null) {
+                    if (target != null && !ReferenceEquals(target, creature)) {
                         card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position, target));
                         break;
                     }

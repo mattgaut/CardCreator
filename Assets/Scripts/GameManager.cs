@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
             active_player = _players[current_position];
             active_player.GetComponent<Renderer>().material.color = Color.blue;
             gsm.BeginTurn(active_player);
+            yield return null;
             ui_manager.HideTurnScreen();
             active_player.command_manager.Clear();
             while (!active_player.command_manager.end_turn || !gsm.can_process_command) {
@@ -60,8 +61,8 @@ public class GameManager : MonoBehaviour {
                 }
                 yield return null;
             }
-            active_player.GetComponent<Renderer>().material.color = Color.red;
             yield return null;
+            active_player.GetComponent<Renderer>().material.color = Color.red;
             gsm.EndTurn(active_player);
             current_position = (current_position + 1) % _players.Count;
             ui_manager.ShowTurnScreen(current_position == 0);

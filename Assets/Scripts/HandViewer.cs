@@ -10,6 +10,8 @@ public class HandViewer : MonoBehaviour {
     int position_to_move_right;
     bool scoot_cards;
 
+    [SerializeField] bool hover_up;
+
     [SerializeField] List<Transform> card_positions;
 
     void Awake() {
@@ -40,7 +42,7 @@ public class HandViewer : MonoBehaviour {
         if (i == -1) {
             return card.transform.position;
         }
-        return card_positions[i].position + Vector3.forward * 1.2f;
+        return card_positions[i].position + Vector3.forward * (hover_up ? 1.2f : -1.2f);
     }
 
     public Vector3 GetPosition(Card card) {

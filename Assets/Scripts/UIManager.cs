@@ -20,5 +20,8 @@ public class UIManager : MonoBehaviour {
 
     public void FlipCamera() {
         flip_camera.ToggleFlip();
+        foreach (FlipCanvas c in FlipCanvas.canvases) {
+            if (c != null) c.Flip();
+        }
     }
 }
