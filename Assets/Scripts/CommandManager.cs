@@ -18,12 +18,14 @@ public class CommandManager : MonoBehaviour {
 
     public void AddCommand(Command command) {
         if (!GameStateManager.instance.can_take_command) {
+            command.OnFail();
             return;
         }
 
         if (command.ValidateCommand()) {
             commands.Add(command);
         } else {
+                        command.OnFail();
             command.DisplayInvalid();
         }        
     }
@@ -55,6 +57,7 @@ public abstract class Command {
     }
     public abstract bool ValidateCommand();
     public abstract void ResolveCommand();
+    public virtual void OnFail() { }
     public virtual void DisplayInvalid() { Debug.Log("Invalid Command: " + this); }
 }
 
@@ -87,6 +90,10 @@ public class PlayCreatureCommand : Command {
 
     public override bool ValidateCommand() {
         return to_play.controller.current_mana >= to_play.mana_cost && !to_play.controller.field.full;
+    }
+
+    public override void OnFail() {
+        to_play.controller.hand.GetComponent<HandViewer>().ForceUpdate();
     }
 }
 

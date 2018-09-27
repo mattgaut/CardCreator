@@ -7,6 +7,11 @@ public class HeroPowerController : MonoBehaviour, IClickable {
 
     HeroPower hero_power;
 
+    public bool must_drag { get; private set; }
+    public bool can_click {
+        get { return hero_power.controller == GameManager.current_player; }
+    }
+
     public void OnClick() {
         if (!hero_power.has_targeted_effects && hero_power.is_useable) {
             hero_power.controller.command_manager.AddCommand(new UseHeroPowerCommand(hero_power.controller));
@@ -30,7 +35,15 @@ public class HeroPowerController : MonoBehaviour, IClickable {
         }
     }
 
-    public void OnMouseDown() {
+    public void OnHoverEnd(bool was_clicked) {
+
+    }
+
+    public void OnHoverStart() {
+
+    }
+
+    public void OnLeftClickDown() {
     }
 
     void Awake() {

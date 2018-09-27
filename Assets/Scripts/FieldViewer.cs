@@ -31,6 +31,13 @@ public class FieldViewer : MonoBehaviour {
         scoot_cards = false;
     }
 
+    public Vector3 GetPosition(int i) {        
+        if (i < 0 || i >= card_positions.Count) {
+            return Vector3.zero;
+        }
+        return card_positions[i].position;
+    }
+
     void UpdateCardViews() {
         for (int i = 0; i < field.count; i++) {
             field[i].transform.position = card_positions[i + Shift(i)].transform.position;

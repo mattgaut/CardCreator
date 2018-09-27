@@ -7,6 +7,13 @@ public class PlayerController : MonoBehaviour, IClickable {
 
     Player player;
 
+    public bool must_drag {
+        get; private set;
+    }
+    public bool can_click {
+        get { return player == GameManager.current_player; }
+    }
+
     void Awake() {
         player = GetComponent<Player>();
     }
@@ -34,7 +41,15 @@ public class PlayerController : MonoBehaviour, IClickable {
         }
     }
 
-    public void OnMouseDown() {
+    public void OnLeftClickDown() {
         
+    }
+
+    public void OnHoverStart() {
+
+    }
+
+    public void OnHoverEnd(bool was_clicked) {
+
     }
 }

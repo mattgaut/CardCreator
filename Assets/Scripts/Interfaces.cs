@@ -51,11 +51,16 @@ public interface IDamages {
 }
 
 public interface IClickable {
-    void OnMouseDown();
+    bool must_drag { get; }
+    bool can_click { get; }
+
+    void OnLeftClickDown();
     void OnClick();
     void OnHoldDrag(GameObject dragged_to, Vector3 position_dragged_to);
     void OnFinishDrag(GameObject dragged_to, Vector3 position_dragged_to);
     void OnEndClick();
+    void OnHoverStart();
+    void OnHoverEnd(bool was_clicked);
 }
 
 public interface ICombatant : IDamageable, IEntity {

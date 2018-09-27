@@ -170,6 +170,7 @@ public class Creature : Card, ICombatant {
 
         attack_restrictions = new Dictionary<int, AttackRestriction>();
         next_restriction = 0;
+        current_health = health;
     }
 
     int NumberOfAttacksPerTurn() {

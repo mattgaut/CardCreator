@@ -11,6 +11,15 @@ public abstract class CardController : MonoBehaviour, IClickable {
     [SerializeField] protected CardDisplay display_prefab;
     protected CardDisplay display;
 
+    public bool hovering { get; private set; }
+
+    public bool must_drag {
+        get; protected set;
+    }
+
+    public bool can_click {
+        get { return card.controller == GameManager.current_player; }
+    }
 
     public Card card {
         get; protected set;
@@ -62,7 +71,21 @@ public abstract class CardController : MonoBehaviour, IClickable {
     public virtual void OnEndClick() {
 
     }
-    public virtual void OnMouseDown() {
+    public virtual void OnLeftClickDown() {
 
+    }
+
+    public virtual void OnHoverStart() {
+        if (card.container.zone == Zone.hand && !hovering) {
+            hovering = true;
+            card.transform.position = card.controller.hand.GetComponent<HandViewer>().GetHoverPosition(card);
+        }
+    }
+
+    public virtual void OnHoverEnd(bool was_clicked) {
+        if (card.container.zone == Zone.hand && hovering) {
+            hovering = false;
+            card.transform.position = card.controller.hand.GetComponent<HandViewer>().GetPosition(card);
+        }
     }
 }

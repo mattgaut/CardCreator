@@ -18,22 +18,25 @@ public class ClickHandler : MonoBehaviour {
     private void OnMouseEnter() {
         mouse_over = true;
         StartCoroutine(ClickListener());
+        clickable.OnHoverStart();
     }
 
     private void OnMouseExit() {
         mouse_over = false;
+        clickable.OnHoverEnd(false);
     }
 
     IEnumerator ClickListener() {
         while (mouse_over) {
-            if (Input.GetMouseButtonDown(0)) {
+            if (clickable.can_click && Input.GetMouseButtonDown(0)) {
+                clickable.OnLeftClickDown();
                 bool mouse_left = false;
-                while (!Input.GetMouseButtonUp(0)) {
-                    mouse_left = !mouse_over || mouse_left;
+                while (clickable.can_click && !Input.GetMouseButtonUp(0)) {
+                    mouse_left = !mouse_over || mouse_left || clickable.must_drag;
                     if (mouse_left) clickable.OnHoldDrag(OverObject(), OverPosition());
                     yield return null;
                 }
-                if (mouse_over) {
+                if (!mouse_left) {
                     clickable.OnClick();
                 } else {
                     clickable.OnFinishDrag(OverObject(), OverPosition());

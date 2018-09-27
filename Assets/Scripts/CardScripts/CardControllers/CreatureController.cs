@@ -8,13 +8,16 @@ public class CreatureController : CardController {
     [SerializeField] CreatureFieldDisplay creature_field_display_prefab;
     [SerializeField] Collider field_box;
     FieldViewer field_viewer;
+    HandViewer hand_viewer;
 
     CreatureFieldDisplay creature_field_display;
 
     float field_height;
 
-    bool selecting_targeting;
-    int position_saved;
+    bool is_targeting;
+
+    bool playing_creatue;
+    Coroutine attach_to_mouse;
 
     protected override void Awake() {
         base.Awake();
@@ -40,9 +43,11 @@ public class CreatureController : CardController {
     }
     public override void OnClick() {
     }
-    public override void OnMouseDown() {
+    public override void OnLeftClickDown() {
         if (card.container == card.controller.hand) {
             field_viewer = card.controller.field.GetComponent<FieldViewer>();
+            hand_viewer = card.controller.hand.GetComponent<HandViewer>();
+            attach_to_mouse = StartCoroutine(AttachToMouse());
         }
     }
     public override void OnHoldDrag(GameObject dragged_to, Vector3 position_dragged_to) {
@@ -63,18 +68,29 @@ public class CreatureController : CardController {
                 }
             }
         } else if (card.container == card.controller.hand) {
-            if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {
+            playing_creatue = false;
+            if (!can_click) {
+                card.controller.hand.GetComponent<HandViewer>().ForceUpdate();
+                return;
+            }
+            if (Mathf.Abs(position_dragged_to.z - card.controller.field.transform.position.z) < 1f) {                
                 if (creature.mods.NeedsTarget() && GameStateManager.instance.TargetExists(creature, creature.mods)) {
                     StartCoroutine(TargetingCoroutine(FindPositionInField(position_dragged_to)));
                 } else {
                     card.controller.command_manager.AddCommand(new PlayCreatureCommand(creature, FindPositionInField(position_dragged_to)));
                 }
+            } else {
+                card.controller.hand.GetComponent<HandViewer>().ForceUpdate();
             }
         }
     }
     public override void OnEndClick() {
         InterfaceManager.RemoveTargetingArrow();
-        if (field_viewer != null) field_viewer.StopMakeRoom();
+        if (field_viewer != null && !is_targeting) field_viewer.StopMakeRoom();
+    }
+
+    public override void OnHoverEnd(bool was_clicked) {
+        if (!is_targeting) base.OnHoverEnd(was_clicked);
     }
 
     void SetFieldDisplay(bool field_display) {
@@ -109,8 +125,17 @@ public class CreatureController : CardController {
     }
 
     IEnumerator TargetingCoroutine(int position) {
-        while (!Input.GetMouseButtonDown(1)) {
+        is_targeting = true;
+        card.transform.position = field_viewer.GetPosition(position);
+        display.HideCard();
+        creature_field_display.ShowCard();
+
+        bool cancelled = false;
+        while (!cancelled) {
             yield return null;
+            if (Input.GetMouseButtonDown(1)) {
+                cancelled = true;
+            }
             InterfaceManager.DrawTargetingArrow(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
             if (Input.GetMouseButtonDown(0)) {
                 GameObject hover_object = OverObject();
@@ -118,12 +143,32 @@ public class CreatureController : CardController {
                     IEntity target = hover_object.GetComponent<IEntity>();
                     if (target != null) {
                         card.controller.command_manager.AddCommand(new PlayTagetedCreatureCommand(creature, position, target));
+                        break;
                     }
                 }
-                break;
             }
         }
+        if (cancelled) {
+            display.ShowCard();
+            creature_field_display.HideCard();
+            hand_viewer.ForceUpdate();
+        }
         InterfaceManager.RemoveTargetingArrow();
+        is_targeting = false;
+        field_viewer.StopMakeRoom();
+    }
+
+    IEnumerator AttachToMouse() {
+        playing_creatue = true;
+        must_drag = true;
+        float y = transform.position.y + 1f;
+        while (playing_creatue) {
+            Vector3 mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouse_position.y = y;
+            transform.position = mouse_position;
+            yield return null;
+        }
+        must_drag = false;
     }
 
     GameObject OverObject() {

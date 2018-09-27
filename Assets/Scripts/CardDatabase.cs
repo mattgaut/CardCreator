@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Card Database", fileName = "Card Database")]
@@ -34,6 +35,10 @@ public class CardDatabase : ScriptableObject {
         }
         return null;
     }
+    public List<Card> GetCards() {
+        return new List<Card>(cards_by_id.Values);
+    }
+
     public int GetCardID(string name) {
         foreach (KeyValuePair<int,Card> c in cards_by_id) {
             if (c.Value.name == name) {

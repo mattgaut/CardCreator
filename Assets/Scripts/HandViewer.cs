@@ -12,12 +12,12 @@ public class HandViewer : MonoBehaviour {
 
     [SerializeField] List<Transform> card_positions;
 
-    public void Awake() {
+    void Awake() {
         hand = GetComponent<CardContainer>();
         count = 0;
     }
 
-    public void Update() {
+    void Update() {
         if (count != hand.count) {
             UpdateCardViews();
         }
@@ -31,9 +31,31 @@ public class HandViewer : MonoBehaviour {
         scoot_cards = false;
     }
 
+    public void ForceUpdate() {
+        UpdateCardViews();
+    }
+
+    public Vector3 GetHoverPosition(Card card) {
+        int i = hand.CardPosition(card);
+        if (i == -1) {
+            return card.transform.position;
+        }
+        return card_positions[i].position + Vector3.forward * 1.2f;
+    }
+
+    public Vector3 GetPosition(Card card) {
+        int i = hand.CardPosition(card);
+        if (i == -1) {
+            return card.transform.position;
+        }
+        return card_positions[i].position;
+    }
+
+
     void UpdateCardViews() {
         for (int i = 0; i < hand.count; i++) {
             hand[i].transform.position = card_positions[i + (scoot_cards && i >= position_to_move_right ? 1 : 0)].transform.position;
         }
+        count = hand.count;
     }
 }

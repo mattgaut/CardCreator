@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour {
                     Command command = active_player.command_manager.PopCommand();
                     if (command.ValidateCommand()) {
                         command.ResolveCommand();
+                    } else {
+                        command.OnFail();
                     }
                 }
                 yield return null;
