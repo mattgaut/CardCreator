@@ -4,6 +4,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(CommandManager))]
 public class Player : MonoBehaviour, ICombatant, IPlayer {
+    public enum Class { none, druid, hunter, mage, palladin, priest, rouge, shaman, warlock, warrior }
+
+    public Class player_class {
+        get; private set;
+    }
+
     public CommandManager command_manager {
         get; private set;
     }
@@ -314,6 +320,20 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         if (weapon != null) {
             attack.ApplyBuff(new StatBuff(weapon, BuffType.aura, weapon.attack));
         }
+    }
+
+    public bool MatchesCardClass(Card.Class type) {
+        if (player_class == Class.none || type == Card.Class.neutral) {
+            return true;
+        }
+        return (int)player_class == (int)type;
+    }
+
+    public static bool MatchesCardClass(Player.Class player_class, Card.Class card_class) {
+        if (player_class == Class.none || card_class == Card.Class.neutral) {
+            return true;
+        }
+        return (int)player_class == (int)card_class;
     }
 
     void Update() {

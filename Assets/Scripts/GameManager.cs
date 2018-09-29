@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] List<Player> _players;
     [SerializeField] GameStateManager gsm;
     [SerializeField] UIManager ui_manager;
+    [SerializeField] CardDatabase card_database;
     Player active_player;
 
     int current_position;
@@ -39,6 +40,25 @@ public class GameManager : MonoBehaviour {
 
     void Start() {
         StartCoroutine(GameLoop());
+    }
+
+    void LoadPlayers(List<Decklist> decklists) {
+        if (decklists.Count != players.Count) {
+            return;
+        }
+
+        for (int i = 0; i < players.Count;) {
+            LoadDecklist(players[i], decklists[i]);
+        }
+    }
+
+    void LoadDecklist(Player player, Decklist decklist) {
+        List<Card> cards_in_decklist = new List<Card>();
+
+        foreach (int card_id in decklist.GetIds()) {
+            Card card_prefab = card_database.GetCard(card_id);
+            if (card_prefab != null) cards_in_decklist.Add(Instantiate(card_prefab));            
+        }
     }
 
     IEnumerator GameLoop() {        
