@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(Button))]
 public class UICardDisplay : MonoBehaviour {
 
 
@@ -17,24 +19,36 @@ public class UICardDisplay : MonoBehaviour {
 
     [SerializeField] float scale;
 
-    RectTransform root_transform, rect_transform;
+    [SerializeField] RectTransform root_transform;
+    RectTransform rect_transform;
+    Button button;
 
     private void Awake() {
         if (card != null) {
             SetCard(card);
         }
 
-        root_transform = transform.parent.root.GetComponent<RectTransform>();
         rect_transform = GetComponent<RectTransform>();
-
+        button = GetComponent<Button>();    
     }
 
     private void Update() {
         if (card != null) {
             SetCard(card);
         }
+        float scale_to_use = scale;
         float ratio = (rect_transform.rect.height / root_transform.rect.height);
-        transform.localScale = Vector3.one * scale / ratio;
+        float width_ratio = (rect_transform.rect.width / root_transform.rect.width);
+
+        if (ratio * 2 < width_ratio * 4) {
+            ratio = width_ratio;
+            scale_to_use = scale / 2f;
+        }
+        transform.localScale = Vector3.one * scale_to_use / ratio;
+    }
+
+    public void AddOnClick(UnityAction action) {
+        button.onClick.AddListener(action);
     }
 
     public virtual void SetCard(Card card) {
@@ -50,6 +64,11 @@ public class UICardDisplay : MonoBehaviour {
             SetWeapon(card as Weapon);
         }
     }
+
+    public Card GetCard() {
+        return card;
+    }
+
     void SetWeapon(Weapon card) {
         attack.text = card.attack + "";
         health.text = card.durability + "";        

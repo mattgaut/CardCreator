@@ -19,7 +19,7 @@ public class Decklist {
     }
 
     public bool AddCard(int card_id, bool is_legendary) {
-        if (card_ids.Count < 30 && card_ids.Find((id) => id == card_id) < (is_legendary ? 1 : 2)) {
+        if (card_ids.Count < 30 && card_ids.FindAll((id) => id == card_id).Count < (is_legendary ? 1 : 2)) {
             card_ids.Add(card_id);
             return true;
         }
@@ -28,6 +28,10 @@ public class Decklist {
 
     public bool RemoveCard(int card_id) {
         return card_ids.Remove(card_id);
+    }
+
+    public bool ContainsCard(int card_id) {
+        return card_ids.Contains(card_id);
     }
 
     public IEnumerable<int> GetIds() {
