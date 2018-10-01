@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
 [RequireComponent(typeof(Button))]
 public class UICardDisplay : MonoBehaviour {
 
@@ -47,7 +46,8 @@ public class UICardDisplay : MonoBehaviour {
         transform.localScale = Vector3.one * scale_to_use / ratio;
     }
 
-    public void AddOnClick(UnityAction action) {
+    public void SetOnClick(UnityAction action) {
+        button.onClick.RemoveAllListeners();
         button.onClick.AddListener(action);
     }
 
