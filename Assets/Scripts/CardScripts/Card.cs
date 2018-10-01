@@ -16,12 +16,16 @@ public abstract class Card : MonoBehaviour, IStackEffect, ICard, IDamages {
     [SerializeField] Class _card_class;
     [SerializeField] Sprite _art;
     [SerializeField] Rarity _rarity;
+    [SerializeField] bool _collectible;
     [SerializeField] ModifierContainer _mods;
 
     [SerializeField] CastingRestrictions restrictions;
 
     public Stat mana_cost {
         get { return _mana_cost; }
+    }
+    public bool collectible {
+        get { return _collectible; }
     }
     public string card_name {
         get { return _card_name; }
