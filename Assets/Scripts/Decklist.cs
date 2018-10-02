@@ -7,7 +7,8 @@ using UnityEngine;
 public class Decklist {
 
     public Player.Class deck_class { get; private set; }
-    
+    public int count { get { return card_ids.Count; } }
+
     List<int> card_ids;
 
 	public Decklist() {

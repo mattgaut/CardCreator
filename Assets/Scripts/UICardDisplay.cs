@@ -9,7 +9,7 @@ public class UICardDisplay : MonoBehaviour {
 
 
     [SerializeField] protected Text mana_cost, card_name, description;
-    [SerializeField] protected Transform face, creature_type_block;
+    [SerializeField] protected Transform face, creature_type_block, attack_block, health_block;
     [SerializeField] protected Image art;
 
     [SerializeField] protected Text attack, health, creature_type;
@@ -59,9 +59,11 @@ public class UICardDisplay : MonoBehaviour {
         creature_type_block.gameObject.SetActive(false);
         if (card.type == CardType.Creature) {
             SetCreature(card as Creature);
-        }
-        if (card.type == CardType.Weapon) {
+        } else if (card.type == CardType.Weapon) {
             SetWeapon(card as Weapon);
+        } else {
+            attack_block.gameObject.SetActive(false);
+            health_block.gameObject.SetActive(false);
         }
     }
 
@@ -70,12 +72,18 @@ public class UICardDisplay : MonoBehaviour {
     }
 
     void SetWeapon(Weapon card) {
-        attack.text = card.attack + "";
-        health.text = card.durability + "";        
+        attack_block.gameObject.SetActive(true);
+        health_block.gameObject.SetActive(true);
+
+        attack.text = card.attack.value + "";
+        health.text = card.durability.value + "";        
     }
 
 
     void SetCreature(Creature card) {
+        attack_block.gameObject.SetActive(true);
+        health_block.gameObject.SetActive(true);
+
         attack.text = card.attack.value + "";
         health.text = card.health.value + "";
 
