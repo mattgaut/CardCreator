@@ -38,4 +38,29 @@ public class Decklist {
     public IEnumerable<int> GetIds() {
         return card_ids;
     }
+
+    public List<int> GetIdList() {
+        return card_ids;
+    }
+
+    public void Load(DeckFile decklist) {
+        card_ids = new List<int>(decklist.cards);
+        deck_class = decklist.deck_class;
+    }
+}
+
+
+[System.Serializable]
+public class DeckFile {
+
+    public int[] cards;
+    public Player.Class deck_class;
+    public string name;
+
+    public DeckFile(string name, Decklist decklist) {
+        cards = decklist.GetIdList().ToArray();
+        deck_class = decklist.deck_class;
+        this.name = name;
+    }
+
 }
