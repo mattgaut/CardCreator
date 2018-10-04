@@ -14,6 +14,10 @@ public class Decklist {
 	public Decklist() {
         card_ids = new List<int>();
     }
+    public Decklist(DeckFile file) {
+        card_ids = new List<int>();
+        Load(file);
+    }
 
     public void SetDeckClass(Player.Class _class) {
         deck_class = _class;
@@ -57,10 +61,23 @@ public class DeckFile {
     public Player.Class deck_class;
     public string name;
 
+
+    public DeckFile(string name) {
+        cards = new int[0];
+        deck_class = Player.Class.druid;
+        this.name = name;
+    }
+
     public DeckFile(string name, Decklist decklist) {
         cards = decklist.GetIdList().ToArray();
         deck_class = decklist.deck_class;
         this.name = name;
+    }
+
+    public void Copy(DeckFile deckfile) {
+        cards = deckfile.cards;
+        deck_class = deckfile.deck_class;
+        name = deckfile.name;
     }
 
 }

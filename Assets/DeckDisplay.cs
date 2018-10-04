@@ -29,8 +29,6 @@ public class DeckDisplay : MonoBehaviour {
         to_display = new Decklist();
 
         child_height = card_display_prefab.GetComponent<RectTransform>().rect.height;
-
-        save_button.onClick.AddListener(Save);
     }
 
     private void Update() {
@@ -59,39 +57,15 @@ public class DeckDisplay : MonoBehaviour {
         }
     }
 
-    public void Save() {
-        if (filename == "") {
-            return;
-        }
-        DeckFile data = new DeckFile(name_field.text, to_display);
+    public void Load(DeckFile deck_file) {
+        to_display.Load(deck_file);
+        name_field.text = deck_file.name;
 
-        BinaryFormatter bf = new BinaryFormatter();
-
-        Directory.CreateDirectory(Application.persistentDataPath + "/Decks/");
-        FileStream file = File.Open(Application.persistentDataPath + "/Decks/" + filename + ".deck", FileMode.OpenOrCreate);
-
-        bf.Serialize(file, data);
-
-        file.Close();
-
+        ReloadCardButtons();
     }
 
-    public void Load(string filename) {
-        SetFileName(filename);
-        if (!File.Exists(Application.persistentDataPath + "/Decks/" + filename + ".deck")) {
-            return;
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath + "/Decks/" + filename + ".", FileMode.Open);
-
-        DeckFile deck = (DeckFile)bf.Deserialize(file);
-
-        name_field.text = deck.name;
-
-        to_display.Load(deck);
-
-        file.Close();
+    public DeckFile Save() {
+        return new DeckFile(name_field.text, to_display);
     }
 
     void UpdateCount() {
