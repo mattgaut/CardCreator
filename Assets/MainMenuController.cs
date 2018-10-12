@@ -33,6 +33,7 @@ public class MainMenuController : MonoBehaviour {
         deck_displays[main_deck_index].SetNewDeck(false);
         deck_displays[main_deck_index].SetArt(GetArt(decks[main_deck_index].deck_class));
         deck_displays[main_deck_index].SetDeckName(decks[main_deck_index].name);
+        deck_displays[main_deck_index].SetOnClick(() => SelectDeck(main_deck_index));
 
         SelectDeck(main_deck_index);
     }
