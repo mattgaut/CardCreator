@@ -9,8 +9,10 @@ public class FullCardDisplay : CardDisplay {
     [SerializeField] protected Image border;
     [SerializeField] protected Image cardback;
 
+    protected bool force_faceup;
+
     public override void UpdateDisplay() {
-        cardback.enabled = card.controller != GameManager.current_player;
+        cardback.enabled = (card.controller != GameManager.current_player && !force_faceup);
         
         mana_cost.text = "" + card.mana_cost.value;
         card_name.text = card.card_name;
@@ -23,6 +25,10 @@ public class FullCardDisplay : CardDisplay {
         } else {
             border.color = Color.black;
         }
+    }
+
+    public void ForceFaceup(bool force) {
+        force_faceup = force;
     }
     
 }

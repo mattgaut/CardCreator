@@ -4,21 +4,37 @@ using UnityEngine;
 
 public class FlipCanvas : MonoBehaviour {
 
-    public static List<FlipCanvas> canvases;
+    static List<FlipCanvas> canvases;
+    static bool flipped;
 
     [SerializeField] Canvas canvas;
+    [SerializeField] bool flip_x_instead;
 
-    public void Awake() {
+    public static void FlipAll() {
+        flipped = !flipped;
+        foreach (FlipCanvas canvas in canvases) {
+            canvas.Flip();
+        }
+    }
+
+    void Awake() {
         if (canvases == null) {
             canvases = new List<FlipCanvas>();
         }
         canvases.Add(this);
+        if (flipped) {
+            Flip();
+        }
     }
 
-    public void Flip() {
+    void Flip() {
         Vector3 flip = canvas.transform.localScale;
-        flip.y *= -1;
-        canvas.transform.localScale = flip; 
+        if (flip_x_instead) {
+            flip.x *= -1;
+        } else {
+            flip.y *= -1;
+        }
+        canvas.transform.localScale = flip;
     }
 
     private void OnDestroy() {

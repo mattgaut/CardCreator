@@ -17,6 +17,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     [SerializeField] CardSelector card_selector;
+    [SerializeField] Card coin_prefab;
 
     TriggerManager trigger_manager;
     StaticAbilityManager static_ability_manager;
@@ -52,6 +53,26 @@ public class GameStateManager : MonoBehaviour {
                 trigger_manager.SubscribeTrigger(p.hero_power.trigger);
             }
         }
+
+        GameManager.players[1].hand.AddCard(Instantiate(coin_prefab));
+    }
+
+    public IEnumerator Mulligan(Player p, int cards) {
+        selecting_card = true;
+
+        p.deck.Shuffle();
+
+        yield return card_selector.StartMultiCardSelection(p.deck.TopCards(cards).ToArray());
+
+        foreach (Card c in card_selector.GetCardsSelected()) {
+            p.deck.MoveCardToBottom(c);
+        }
+
+        DrawCard(p, cards);
+
+        p.deck.Shuffle();
+
+        selecting_card = false;
     }
 
     public void BeginTurn(Player p) {

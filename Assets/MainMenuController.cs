@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour {
+
+    public static DeckFile player_1_deckfile {
+        get; private set;
+    }
+    public static DeckFile player_2_deckfile {
+        get; private set;
+    }
 
     [SerializeField] List<UIDeckDisplay> deck_displays;
     [SerializeField] List<Sprite> class_sprites;
@@ -66,8 +74,8 @@ public class MainMenuController : MonoBehaviour {
     }
 
     public void StartGame() {
-        DeckFile player_1_deckfile = null;
-        DeckFile player_2_deckfile = null;
+        player_1_deckfile = null;
+        player_2_deckfile = null;
 
         int p1 = 0, p2 = 0;
         for (int i = 0; i < decks.Count; i++) {
@@ -86,7 +94,7 @@ public class MainMenuController : MonoBehaviour {
             }
         }
 
-        Debug.Log(player_1_deckfile.name + " : " + player_2_deckfile.name);
+        SceneManager.LoadScene("CardGameScene");
     }
 
     void LoadDecks() {

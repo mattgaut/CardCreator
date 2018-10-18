@@ -10,17 +10,17 @@ public class CardSelector : MonoBehaviour {
     [SerializeField] List<CardSelectorButton> positions;
     [SerializeField] Button confirm_button;
 
-    List<Card> _cards_selected;
+    List<int> buttons_selected;
 
     public IEnumerator StartMultiCardSelection(params Card[] cards) {
-        _cards_selected = new List<Card>();
+        buttons_selected = new List<int>();
         done_selecting = false;
 
         confirm_button.gameObject.SetActive(true);
 
         for (int i = 0; i < positions.Count && i < cards.Length; i++) {
             positions[i].gameObject.SetActive(true);
-            positions[i].SetCard(cards[i]);
+            positions[i].SetCard(cards[i], MultiSelectCard);
         }
         for (int i = cards.Length; i < positions.Count; i++) {
             positions[i].gameObject.SetActive(false);
@@ -32,7 +32,7 @@ public class CardSelector : MonoBehaviour {
     }
 
     public IEnumerator StartSingleCardSelection(params Card[] cards) {
-        _cards_selected = new List<Card>();
+        buttons_selected = new List<int>();
         done_selecting = false;
 
         confirm_button.gameObject.SetActive(false);
@@ -51,17 +51,38 @@ public class CardSelector : MonoBehaviour {
     }
 
     public List<Card> GetCardsSelected() {
-        return new List<Card>(_cards_selected);
+        List<Card> selected = new List<Card>();
+        foreach (int i in buttons_selected) {
+            selected.Add(positions[i].to_return);
+        }
+        return selected;
+    }
+
+    public void Flip() {
+        confirm_button.transform.parent.localPosition *= -1f;
+    }
+
+    public List<int> GetPositionsSelected() {
+        return new List<int>(buttons_selected);
     }
 
     public Card GetCardSelected() {
-        return _cards_selected[0];
+        return positions[buttons_selected[0]].to_return;
     }
 
     void SingleSelectCard(CardSelectorButton selected) {
-        _cards_selected = new List<Card>() { selected.to_return };
+        buttons_selected = new List<int>() { positions.IndexOf(selected)};
 
         FinishSelecting();
+    }
+
+    void MultiSelectCard(CardSelectorButton selected) {
+        int position = positions.IndexOf(selected);
+        if (buttons_selected.Contains(position)) {
+            buttons_selected.Remove(position);
+        } else {
+            buttons_selected.Add(position);
+        }
     }
 
     void FinishSelecting() {

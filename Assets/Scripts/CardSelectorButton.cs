@@ -19,6 +19,7 @@ public class CardSelectorButton : MonoBehaviour {
         display.transform.position = transform.position;
         display.transform.SetParent(button.transform, true);
         display.SetCard(card);
+        (display as FullCardDisplay).ForceFaceup(true);
 
         callback = on_select_action;
 
@@ -35,11 +36,9 @@ public class CardSelectorButton : MonoBehaviour {
     void Toggle() {
         selected = !selected;
 
-        Debug.Log("Toggle");
-
         (display as FullCardDisplay).SetHighlight(selected);
 
-        if (callback != null && selected) callback(this);
+        if (callback != null) callback(this);
     }
 
     private void Awake() {

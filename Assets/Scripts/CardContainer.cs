@@ -115,6 +115,11 @@ public class CardContainer : MonoBehaviour {
         controller = player;
     }
 
+    public void MoveCardToBottom(Card c) {
+        contained_cards.Remove(c);
+        contained_cards.Add(c);
+    }
+
     public static void MoveCard(Card c, CardContainer from, CardContainer to) {
         from.RemoveCard(c);
         to.AddCard(c);
