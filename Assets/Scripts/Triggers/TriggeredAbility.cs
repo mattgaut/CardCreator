@@ -59,4 +59,4 @@ public abstract class TriggerInfo {
     public abstract TriggerType type { get; }
 }
 
-public enum TriggerType { after_minion_played, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_killed, damage_taken, character_healed, after_creature_summoned, damage_dealt }
+public enum TriggerType { after_minion_played, before_spell_resolves, after_spell_resolves, after_attack, before_attack, creature_killed, damage_taken, character_healed, after_creature_summoned, damage_dealt, end_of_turn }

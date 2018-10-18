@@ -255,8 +255,8 @@ public class HeroPowerCreator : EditorWindow {
     }
 
     void SaveHeroPower() {
-        hero_power_object.FindProperty("_card_name").stringValue = hero_power_name;
-        hero_power_object.FindProperty("_card_text").stringValue = hero_power_text;
+        hero_power_object.FindProperty("_hero_power_name").stringValue = hero_power_name;
+        hero_power_object.FindProperty("_description").stringValue = hero_power_text;
         hero_power_object.FindProperty("_mana_cost").FindPropertyRelative("_base_value").intValue = hero_power_cost;
         hero_power_object.FindProperty("_art").objectReferenceValue = art;
 

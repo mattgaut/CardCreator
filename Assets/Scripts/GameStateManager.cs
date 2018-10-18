@@ -259,7 +259,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public Card CreateToken(CardContainer initial_container, Card card_to_create, int position = -1) {
-        if (initial_container.full) {
+        if (initial_container.full && initial_container.zone != Zone.equipment) {
             return null;
         }
         Card card = Instantiate(card_to_create);
@@ -270,12 +270,29 @@ public class GameStateManager : MonoBehaviour {
                 AddToStack(ti);
             }
         }
+        if (card.type == CardType.Weapon && initial_container.zone == Zone.equipment) {
+
+            Weapon weapon = card as Weapon;
+            if (weapon != null) {
+                weapon.NoteSummon();
+                if (initial_container.controller.equip.TopCard() != null) {
+                    MoveCard(initial_container.controller.equip.TopCard(), initial_container.controller.graveyard);
+                    initial_container.controller.SetWeapon(null);
+                }
+            }
+        }
 
         if (position >= 0) {
             initial_container.AddCard(card, position);
         } else {
             initial_container.AddCard(card);
         }
+
+        if (card.type == CardType.Weapon && initial_container.zone == Zone.equipment) {
+            Weapon weapon = card as Weapon;
+            weapon.controller.SetWeapon(weapon);
+        }
+
         SubscribeEffects(card);
 
         return card;
