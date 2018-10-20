@@ -12,9 +12,14 @@ public class GameManager : MonoBehaviour {
     [SerializeField] UIManager ui_manager;
     [SerializeField] CardDatabase card_database;
     [SerializeField] CardSelector card_selector;
+
+    [SerializeField] HeroPowers hero_powers;
+
     Player active_player;
 
     int current_position;
+
+    Coroutine game_loop;
 
     public static List<Player>  players {
         get { return new List<Player>(instance._players); }
@@ -27,6 +32,18 @@ public class GameManager : MonoBehaviour {
         to_return.Remove(player);
 
         return to_return;
+    }
+    public static void KillPlayers(List<Player> dead_players) {
+        if (dead_players.Count == players.Count) {
+            instance.EndInDraw();
+        } else {
+            foreach (Player p in dead_players) {
+                instance._players.Remove(p);
+            }
+            if (instance._players.Count == 1) {
+                instance.EndPlayerWin(players[0]);
+            }
+        }
     }
 
 
@@ -42,7 +59,7 @@ public class GameManager : MonoBehaviour {
     void Start() {
         LoadPlayers(new List<DeckFile>() { MainMenuController.player_1_deckfile, MainMenuController.player_2_deckfile });
 
-        StartCoroutine(GameLoop());
+        game_loop = StartCoroutine(GameLoop());
     }
 
     void LoadPlayers(List<DeckFile> decklists) {
@@ -55,6 +72,7 @@ public class GameManager : MonoBehaviour {
 
         for (int i = 0; i < players.Count; i++) {
             LoadDecklist(players[i], new Decklist(decklists[i]));
+            LoadHeroClass(players[i], decklists[i].deck_class);
         }
     }
 
@@ -66,7 +84,11 @@ public class GameManager : MonoBehaviour {
                 Card card = Instantiate(card_prefab);
                 player.deck.AddCard(card);
             }
-        }
+        }        
+    }
+
+    void LoadHeroClass(Player p, Player.Class player_class) {
+        p.LoadHeroPowerFromPrefab(hero_powers.GetPrefab(player_class));
     }
 
     IEnumerator GameLoop() {        
@@ -127,8 +149,61 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void EndInDraw() {
+        game_over = true;
+
+        ui_manager.ShowEndScreen();
+
+        StopCoroutine(game_loop);
+    }
+
+    void EndPlayerWin(Player p) {
+        game_over = true;
+
+        ui_manager.ShowEndScreen();
+
+        StopCoroutine(game_loop);
+    }
+
     void Flip() {
         card_selector.Flip();
         ui_manager.FlipCamera();
+    }
+}
+
+[System.Serializable]
+class HeroPowers {
+
+    [SerializeField] HeroPower druid, hunter, rouge, mage, warrior, warlock, palladin, priest, shaman;
+
+    public HeroPower GetPrefab(Player.Class player_class) {
+        if (player_class == Player.Class.druid) {
+            return druid;
+        }
+        if (player_class == Player.Class.hunter) {
+            return hunter;
+        }
+        if (player_class == Player.Class.mage) {
+            return mage;
+        }
+        if (player_class == Player.Class.palladin) {
+            return palladin;
+        }
+        if (player_class == Player.Class.priest) {
+            return priest;
+        }
+        if (player_class == Player.Class.rouge) {
+            return rouge;
+        }
+        if (player_class == Player.Class.shaman) {
+            return shaman;
+        }
+        if (player_class == Player.Class.warlock) {
+            return warlock;
+        }
+        if (player_class == Player.Class.warrior) {
+            return warrior;
+        }
+        return null;
     }
 }

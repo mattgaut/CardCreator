@@ -17,6 +17,10 @@ public class FlipCanvas : MonoBehaviour {
         }
     }
 
+    public static void Reset() {
+        flipped = false;
+    }
+
     void Awake() {
         if (canvases == null) {
             canvases = new List<FlipCanvas>();

@@ -11,6 +11,10 @@ public class FlipCamera : MonoBehaviour {
         flip_vertical = !flip_vertical;
     }
 
+    public void ResetFlip() {
+        flip_vertical = false;
+    }
+
     void Awake() {
         attached_camera = GetComponent<Camera>();
     }

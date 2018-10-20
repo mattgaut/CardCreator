@@ -62,6 +62,10 @@ public class HeroPower : MonoBehaviour, IEntity, IStackEffect, ITargets {
         return true;
     }
 
+    public void SetController(Player player) {
+        _controller = player;
+    }
+
     public int DealDamage(IDamageable target, int damage) {
         int damage_dealt = target.TakeDamage(this, damage);
         if (mods.HasMod(Modifier.lifesteal)) {

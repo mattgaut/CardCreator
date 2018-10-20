@@ -440,6 +440,14 @@ public class GameStateManager : MonoBehaviour {
     void CheckStateBasedEffects() {
         bool change_made;
         do {
+            List<Player> dead_players = new List<Player>();
+            foreach (Player p in GameManager.players) {
+                if (p.dead) {
+                    dead_players.Add(p);
+                }
+            }
+            GameManager.KillPlayers(dead_players);
+
             static_ability_manager.UpdateStaticAbilities();
 
             change_made = false;

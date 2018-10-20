@@ -1,11 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(HeroPower))]
 public class HeroPowerController : MonoBehaviour, IClickable {
 
+    [SerializeField] Image art;
+
     HeroPower hero_power;
+
+    void Update() {
+        if (art != null) {
+            if (hero_power.controller.can_use_hero_power) {
+                art.color = Color.white;
+            } else {
+                art.color = Color.black;
+            }
+        }
+    }
 
     public bool must_drag { get; private set; }
     public bool can_click {
@@ -48,5 +61,8 @@ public class HeroPowerController : MonoBehaviour, IClickable {
 
     void Awake() {
         hero_power = GetComponent<HeroPower>();
+
+        if (art != null)
+            art.sprite = hero_power.art;
     }
 }

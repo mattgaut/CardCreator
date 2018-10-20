@@ -322,6 +322,20 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
         }
     }
 
+    public void LoadHeroPowerFromPrefab(HeroPower prefab) {
+        if (prefab == null) return;
+
+        HeroPower power = Instantiate(prefab);
+        power.transform.SetParent(hero_power.transform.parent);
+        power.transform.position = hero_power.transform.position;
+        power.transform.localScale = hero_power.transform.localScale;
+        Destroy(hero_power.gameObject);
+
+        _hero_power = power;
+
+        power.SetController(player);
+    }
+
     public bool MatchesCardClass(Card.Class type) {
         if (player_class == Class.none || type == Card.Class.neutral) {
             return true;
