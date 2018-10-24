@@ -36,7 +36,10 @@ public class PingRandomCombatants : UntargetedEffect {
                 (source as Spell).DealDamageWithoutSpellpower(chosen, 1);
                 if (chosen.dead == true) {
                     possible_targets.Remove(chosen);
-                }
+                    if (possible_targets.Count == 0) {
+                        break;
+                    }
+                }                
             }
         } else {
             for (int i = 0; i < number_of_pings; i++) {
@@ -44,6 +47,9 @@ public class PingRandomCombatants : UntargetedEffect {
                 source.DealDamage(chosen, 1);
                 if (chosen.dead == true) {
                     possible_targets.Remove(chosen);
+                    if (possible_targets.Count == 0) {
+                        break;
+                    }
                 }
             }
         }  

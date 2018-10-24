@@ -60,6 +60,8 @@ public class Player : MonoBehaviour, ICombatant, IPlayer {
 
     public int hero_power_uses_per_turn { get { return 1; } }
 
+    public bool has_hero_power_uses_left { get { return times_hero_power_used < hero_power_uses_per_turn; } }
+
     public bool can_use_hero_power { get { return times_hero_power_used < hero_power_uses_per_turn && current_mana >= hero_power.mana_cost; } }
 
     public int attacks_taken { get; private set; }

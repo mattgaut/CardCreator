@@ -8,7 +8,7 @@ public class PlayerDisplay : MonoBehaviour {
 
     Player to_display;
 
-    [SerializeField] Text health, mana, attack;
+    [SerializeField] Text health, mana, attack, armor, deck;
 
 	// Use this for initialization
 	void Awake () {
@@ -19,11 +19,18 @@ public class PlayerDisplay : MonoBehaviour {
 	void Update () {
         health.text = "" + to_display.current_health;
         mana.text = "" + to_display.current_mana + " / " + to_display.max_mana;
+        deck.text = "" + to_display.deck.count;
         if (to_display.attack > 0) {
             attack.enabled = true;
             attack.text = "" + to_display.attack.value;
         } else {
             attack.enabled = false;
+        }
+        if (to_display.armor > 0) {
+            armor.enabled = true;
+            armor.text = "" + to_display.armor;
+        } else {
+            armor.enabled = false;
         }
     }
 }

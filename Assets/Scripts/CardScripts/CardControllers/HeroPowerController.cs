@@ -12,7 +12,7 @@ public class HeroPowerController : MonoBehaviour, IClickable {
 
     void Update() {
         if (art != null) {
-            if (hero_power.controller.can_use_hero_power) {
+            if (hero_power.controller.has_hero_power_uses_left) {
                 art.color = Color.white;
             } else {
                 art.color = Color.black;

@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowEndScreen() {
+        turn_screen_panel.SetActive(false);
         end_screen_panel.SetActive(true);
     }
 

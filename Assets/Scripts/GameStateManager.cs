@@ -25,6 +25,8 @@ public class GameStateManager : MonoBehaviour {
 
     List<IStackEffect> stack;
 
+    Dictionary<Player, int> draw_burn_damage;
+
     ICardSelectionEffect pending_selection_effect;
     IEntity selection_effect_source;
 
@@ -37,6 +39,7 @@ public class GameStateManager : MonoBehaviour {
         trigger_manager = GetComponent<TriggerManager>();
         static_ability_manager = new StaticAbilityManager(this);
         timed_effect_manager = new TimedEffectManager();
+        draw_burn_damage = new Dictionary<Player, int>();
 
         stack = new List<IStackEffect>();
 
@@ -52,6 +55,7 @@ public class GameStateManager : MonoBehaviour {
             if (p.hero_power.has_trigger) {
                 trigger_manager.SubscribeTrigger(p.hero_power.trigger);
             }
+            draw_burn_damage.Add(p, 0);
         }
 
         GameManager.players[1].hand.AddCard(Instantiate(coin_prefab));
@@ -78,17 +82,24 @@ public class GameStateManager : MonoBehaviour {
     public void BeginTurn(Player p) {
         p.NoteBeginTurn();
 
-        if (p.deck.count > 0) {
-            DrawCard(p);
-        }
+        DrawCard(p);
+
         foreach (Creature c in p.field.cards) {
             c.NoteBeginTurn();
         }
-    }   
+    }
 
     public void DrawCard(Player p) {
-        if (!p.hand.full && p.deck.count > 0) {
+        if (p.deck.count == 0) {
+            draw_burn_damage[p] += 1;
+            Debug.Log(draw_burn_damage[p]);
+            p.TakeDamage(p, draw_burn_damage[p]);
+            return;
+        }
+        if (!p.hand.full) {
             MoveCard(p.deck.TopCard(), p.hand);
+        } else {
+            BurnCard(p.deck.TopCard());
         }
     }
 
@@ -382,9 +393,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public void BurnCard(Card c) {
-        UnsubscribeEffects(c);
-
-        Destroy(c.gameObject);
+        MoveCard(c, c.controller.discard);
     }
 
     public void SelectCard(ICardSelectionEffect effect, IEntity source, List<Card> choose_from) {

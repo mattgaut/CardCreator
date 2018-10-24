@@ -13,6 +13,7 @@ public class DeckDisplay : MonoBehaviour {
     [SerializeField] Text count_text;
     [SerializeField] Button save_button;
     [SerializeField] InputField name_field;
+    [SerializeField] Dropdown dropdown;
 
     [SerializeField] CardDatabase database;
 
@@ -60,6 +61,7 @@ public class DeckDisplay : MonoBehaviour {
     public void Load(DeckFile deck_file) {
         to_display.Load(deck_file);
         name_field.text = deck_file.name;
+        dropdown.value = (int)deck_file.deck_class - 1;
 
         ReloadCardButtons();
     }
