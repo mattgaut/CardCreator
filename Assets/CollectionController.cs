@@ -74,7 +74,7 @@ public class CollectionController : MonoBehaviour {
             searching = true;
             searched_sorted_cards = new SortedList<string, Card>();
             foreach (Card c in sorted_cards.Values) {
-                if (c.name.Contains(search) || c.card_text.Contains(search)) searched_sorted_cards.Add(c.name, c);
+                if (c.name.ToLower().Contains(search.ToLower()) || c.card_text.ToLower().Contains(search.ToLower())) searched_sorted_cards.Add(c.name, c);
             }
             pages = (searched_sorted_cards.Count / card_displays.Length) + 1;
         }
